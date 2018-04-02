@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50556
  Source Host           : 123.207.35.163:3306
- Source Schema         : actsboard
+ Source Schema         : access_token_test
 
  Target Server Type    : MySQL
  Target Server Version : 50556
  File Encoding         : 65001
 
- Date: 02/04/2018 10:56:50
+ Date: 02/04/2018 15:48:31
 */
 
 SET NAMES utf8mb4;
@@ -38,8 +38,9 @@ CREATE TABLE `access_token`  (
   `access_token` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `create_time` datetime NOT NULL,
   `type` tinyint(1) NOT NULL COMMENT '是否是测试：1为成功，2为测试',
+  `appid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for activities
