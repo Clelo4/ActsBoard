@@ -103,6 +103,16 @@ if (!function_exists('decrypt')) {
 }
 
 
+if (!function_exists('get_access_token')){
 
-
+    /**
+     * 从数据库中获取access_token
+     * @param $access_token   string
+     */
+    function get_access_token(){
+        $ATModel = model('token.AccessToken');
+        $access_token=$ATModel->getAccessToken();
+        return $access_token;
+    }
+}
 

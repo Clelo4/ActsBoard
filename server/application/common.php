@@ -84,3 +84,50 @@ if (!function_exists('object_merge')) {
         return $result_object;
     }
 }
+
+if(!function_exists('post_https')){
+
+
+    /**
+     * PHP 模拟发起post请求(https)
+     * @param $param json格式  发送的数据
+     * @return $rst  json格式  返回的数据
+     * 
+     */
+    function post_https($url, $param){
+        $curl = curl_init(); // 启动一个CURL会话
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 从证书中检查SSL加密算法是否存在
+        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+        curl_setopt($curl, CURLOPT_POST, 1);//设置为POST方式 
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $param);
+        curl_setopt($curl, CURLOPT_TIMEOUT,30);          //设置超时
+        $rst=curl_exec($curl);  // 执行操作
+        curl_close($curl);
+        return $rst;
+    }
+}
+
+if(!function_exists('get_https')){
+
+    /**
+     * @param $url 连接
+     * @return $rst json对象
+     */
+    function get_https($url) {
+        $curl = curl_init(); // 启动一个CURL会话
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 从证书中检查SSL加密算法是否存在
+        $rst = curl_exec($curl);     //返回api的json对象
+        //关闭URL请求
+        curl_close($curl);
+        return $rst;    //返回json对象
+    }
+}
+

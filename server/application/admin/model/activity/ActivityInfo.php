@@ -121,6 +121,7 @@ class ActivityInfo extends Common{
            &&array_key_exists('school',$param)
            &&array_key_exists('create_user',$param)
         ) {
+
             $param['create_time']=date('Y-m-d H:i:s');
             $param['status']=0;
 
@@ -131,12 +132,22 @@ class ActivityInfo extends Common{
                 return '1';
             }
 
+			$data=[];
+			$key=['act_type','name','act_start_time','act_end_time','school','create_user','create_time','status','apply_way','act_location','act_details','taglist','activity_url','act_pic_url'];
+			for($i=0;$i!=count($key);$i++){
+				if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
+				else { $data[$key[$i]]=NULL; }
+			}
+
             /**
              * code: 验证post传入的参数
              */
 			//return $param;
-			$result=$this->insert($param);
-			return $result;
+			$result=$this->insert($data);
+			if($result==1) {
+				return true;
+			}
+
 
         } 
         else {
