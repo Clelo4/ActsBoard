@@ -4,7 +4,7 @@ namespace app\admin\controller\weixin;
 
 use app\admin\controller\ApiCommon;
 
-class Base extends{
+class Base extends ApiCommon{
 
     public function index(){
         return 'ok';
@@ -13,7 +13,7 @@ class Base extends{
     /**
      * 上传logo图片
      */
-    public uploadLoao(){
+    public function uploadLoao(){
 
     }
 }
