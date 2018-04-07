@@ -11,8 +11,9 @@ class Url extends Common{
 
     public function getActPic($act_id){
         $data;
-        if($id.length==11){
-            $data=$this->where('act_id',$id)->select();
+        $act_id=(string)$act_id;
+        if(strlen($act_id)==11){
+            $data=$this->where('act_id',$act_id)->select();
             return $data;
         }
         return NULL;

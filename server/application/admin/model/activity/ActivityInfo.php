@@ -74,10 +74,11 @@ class ActivityInfo extends Common{
 	 * @param int  活动id
 	 * 
 	 */
-	public function getActivitiesById($id){
+	public function getActivitiesById($act_id){
 		$data;
-		if($id.length==11){
-			$data=$this->where('act_id',$id)->where('status',1)->select();
+		$act_id=(string)$act_id;
+		if(strlen($act_id)==11){
+			$data=$this->where('act_id',$act_id)->where('status',1)->select();
 			return $data;
 		}
 		return NULL;
