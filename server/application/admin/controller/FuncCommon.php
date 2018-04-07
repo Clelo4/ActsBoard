@@ -6,7 +6,7 @@
  * 没有返回 false
  * @return  boolean
  */
-public function isHasSpace($data){
+function isHasSpace($data){
     if(strpos($data," ")) { return true; }
     else { return false; }
 }
@@ -17,7 +17,7 @@ public function isHasSpace($data){
  * @param isStrict  boolean     是否要求等于指定长度
  * @return  int  true:成功   false:验证失败    2：参数错误
  */
-public function isRightSize($data,$size,$isStrict=false){
+function isRightSize($data,$size,$isStrict=false){
     if($isStrict){
         return (strlen($data)==$size)?true:false;
     } else {
@@ -33,7 +33,7 @@ public function isRightSize($data,$size,$isStrict=false){
  * @param string $formats 需要检验的格式数组
  * @return boolean
  */
-public function checkDateIsValid($date, $formats = array("Y-m-d", "Y/m/d")) {
+function checkDateIsValid($date, $formats = array("Y-m-d", "Y/m/d")) {
     $unixTime = strtotime($date);
     if (!$unixTime) { //strtotime转换不对，日期格式显然不对。
         return false;
@@ -50,7 +50,7 @@ public function checkDateIsValid($date, $formats = array("Y-m-d", "Y/m/d")) {
 /**
  * 过滤字符串
  */
-public function filter($data){
+function filter($data){
     htmlspecialchars();
     // stripslashes()      //使用PHP stripslashes()函数去除用户输入数据中的反斜杠 (\)
 }

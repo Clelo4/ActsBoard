@@ -14,7 +14,7 @@ class AddActivity extends ApiCommon{
         return 'ok';
     }
 
-    public function postActivityInfo(){
+    public function addActivityInfo(){
         $result;
         $param=Request::post();
 

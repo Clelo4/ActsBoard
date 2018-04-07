@@ -76,10 +76,11 @@ class ActivityInfo extends Common{
 	 */
 	public function getActivitiesById($id){
 		$data;
-		if(is_numeric($id)){
-			$data=$this->where('id',$id)->where('status',1)->select();
+		if($id.length==11){
+			$data=$this->where('act_id',$id)->where('status',1)->select();
 			return $data;
 		}
+		return NULL;
 	}
 
 	/**
