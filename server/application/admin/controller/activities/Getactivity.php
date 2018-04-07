@@ -27,7 +27,7 @@ class GetActivity extends ApiCommon{
         $ActModel = model('activity.ActivityInfo');
         $ActPicModel = model('common.Url');
         if(isset($this->param['id'])){
-            $id=$this->param['act_id'];
+            $id=$this->param['id'];
             $act_data=$ActModel->getActivitiesById($id);
             $act_pic=$ActPicModel->getActPic($id);
             if($act_data && $act_pic){
