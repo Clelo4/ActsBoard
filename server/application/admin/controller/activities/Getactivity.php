@@ -26,27 +26,17 @@ class GetActivity extends ApiCommon{
         $result;
         $result0;
         $ActModel = model('activity.ActivityInfo');
-        $ActPicModel = model('common.Url');
         if(isset($this->param['id'])){
             $id=$this->param['id'];
             $act_data=$ActModel->getActivitiesById($id);
-            $act_pic=$ActPicModel->getActPic($id);
-            if($act_data && $act_pic){
+            if($act_data){
                 if(count($act_data)!=0){
-                    $act_data=$act_data[0];
-                    $act_pic=$act_pic[0];
+                    $result=$act_data[0];
+                    unset($result['id']);
                     $result['id']=$id;
-                    $result['type']=$act_data['act_type'];
-                    $result['name']=$act_data['name'];
-                    $result['valid_date']=$act_data['valid_date'];
-                    $result['apply_way']=$act_data['apply_way'];
-                    $result['school']=$act_data['school'];
-                    $result['taglist']=$act_data['taglist'];
-                    $result['url']=$act_data['activity_url'];
-                    $result['litimg_url']=$act_pic['litimg_url'];
-                    $result['pic_url']=$act_pic['pic_url'];
-                    $result['location']=$act_data['act_location'];
-                    $result['act_detail']=$act_data['act_detail'];
+                    unset($result['create_user']);
+                    unset($result['status']);
+                    unset($result['create_time']);
                     $result0['data']=$result;
                     return resultArray($result0);
                 } else{
@@ -66,38 +56,53 @@ class GetActivity extends ApiCommon{
     public function getActs(){
         $result;
         $search_arr=[];
+        $nums=10;     // 每页默认数据条数
+
+        // page字段可选
+        if(Request::has('page')){
+            $search_arr['page']=$this->param['page'];
+        }
+        
+        // 获取默认列表,没有任何参数
+        if(count(Request::param())==0 ){
+            $ActModel = model('activity.ActivityInfo');
+            $data=$ActModel->getActivities($nums);
+            $result['data']=$data;
+            return resultArray($result);
+        }
+
+        // 获取用户推荐列表
         if(Request::has('type')){
             // 设定了type参数字段
-            if(Request::param['type']=='recommend' && Request::has('user_id')){
+            if($this->param['type']=='recommend' && Request::has('user_id')){
                 //
-                
+                // CODE 
             } else {
                 // type字段出错
-                $result['error']='type字段出错';
+                $result['error']='参数设置出错或缺失1002';
                 return resultArray($result);
             }
         }
+
+        // 根据规则获取列表
         if(Request::has('days')){
-            $search_arr['days']=Request::param['days'];
+            $search_arr['days']=$this->param['days'];
         }
         if(Request::has('type')){
-            $search_arr['type']=Request::param['type'];
+            $search_arr['type']=$this->param['type'];
         }
         if(Request::has('school')){
-            $search_arr['school']=Request::param['school'];
+            $search_arr['school']=$this->param['school'];
         }
         if(Request::has('sort')){
-            $search_arr['sort']=Request::param['sort'];
+            $search_arr['sort']=$this->param['sort'];
         }
+        
         $ActModel = model('activity.ActivityInfo');
-        if(isset($this->param['act_id'])){
-            $data=$ActModel->getActivitiesById($this->param['act_id']);
-            $result['data']=$data;
-            return resultArray($result);
-        } else{
-            $result['error']='参数错误';
-            return resultArray($result);
-        }
+        $data=$ActModel->getActivitiesByRule($search_arr,$nums);
+        
+        $result['data']=$data;
+        return resultArray($result);
     }
 
 

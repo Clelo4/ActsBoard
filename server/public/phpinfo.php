@@ -60,8 +60,16 @@
 // 	$URL='https://api.weixin.qq.com/cgi-bin/menu/create?access_token=8_qqQPwMG4DZ_PkdujtRb2E8EIOdJaZj_1R_GG07k-qls091nENw9CyfUFxi3BjWeh9PFtmNUi7Y6-M48KbioIN5TOrQhbVgJhQspp1x6pjxi6HR0dSjH_3yI2xPbEuMdkY8nthzqGIbzTRz1aASRcAHATLK';
 // 	echo postHttps($URL,$arr);
 
-// 
-	echo phpinfo();
+
+// echo "今天是 " . date('YmdHi') . "<br>";
+// echo "今天是 " . date("Y.m.d") . "<br>";
+// echo "今天是 " . date("Y-m-d") . "<br>";
+// echo "今天是 " . date("l");
+	$a=[];
+	array_push($a,1,2);
+	echo $a;
+	echo 'ok';
+
 
 ?>
 

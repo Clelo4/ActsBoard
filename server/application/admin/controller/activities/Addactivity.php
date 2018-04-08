@@ -14,12 +14,21 @@ class AddActivity extends ApiCommon{
         return 'ok';
     }
 
+    /**
+     * 发布活动信息
+     */
     public function addActivityInfo(){
         $result;
         $param=Request::post();
 
         $ActModel = model('activity.ActivityInfo');
-        $result['data']=$ActModel->addActInfo($param);
+
+        if($ActModel->addActivityInfo($param)){
+            $result['data']='success';
+        } else{
+            $result['error']='操作失败';
+        }
         return resultArray($result);
+
     }
 }

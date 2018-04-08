@@ -78,7 +78,7 @@ class ActivityInfo extends Common{
 		$data;
 		$act_id=(string)$act_id;
 		if(strlen($act_id)==11){
-			$data=$this->where('act_id',$act_id)->where('status',1)->select();
+			$data=$this->where('act_id',$act_id)->where('status',0)->select();
 			return $data;
 		}
 		return NULL;
@@ -86,24 +86,41 @@ class ActivityInfo extends Common{
 
 	/**
 	 * 通过限定活动类型和活动时间范围获取所有活动信息
-	 * @param $type        (string)   活动类型
-	 * @param $startTime   (string)
-	 * @param $endTime     (string)
-	 * 时间精确度：日
+	 * @param $search_arr array
 	 * @return NULL     错误
 	 * @return result   mysql 查询结果
 	 */
-	public function getActivitiesByTimeRange($type,$startTime,$endTime){
+	public function getActivitiesByRule($search_arr,$nums){
 		$data;
-		// 验证日期是否正确
-		if(date('Y-m-d',strtotime($startTime))!='1970-01-01' && date('Y-m-d',strtotime($endTime))!='1970-01-01' )
-		{
-			$data=$this->where('act_type',$type)->whereTime('act_end_time','between',[$startTime,$endTime])->select();
-			//
-			return $data;
-		} else{
-			return NULL;
+		// 分页
+		$sort='asc';
+		$currentTime=date('Y-m-d');
+		if(isset($search_arr['sort'])){
+			$sort=$search_arr['sort'];
+			unset($search_arr['sort']);
 		}
+		if(isset($search_arr['page'])){
+			$array=[];
+			for($i = 0;$i != count($search_arr);$i++){
+				$tmp=[];
+				array_push($temp,$search_arr['']);
+				array_push();
+			}
+			$data=$this->where([])->page($search_arr['page'])->limit($nums)->select();
+				
+			
+		} else {
+		// 没有分页
+
+		}
+		
+	}
+
+	// 获取默认列表
+	public function getActivities($nums){
+		$data;
+		$data=$this->where('status',0)->order('valid_date','asc')->limit($nums)->select();
+		return $data;
 	}
 
 	/**
@@ -111,29 +128,37 @@ class ActivityInfo extends Common{
 	 * @param array
 	 * @return boolean 返回值
 	 */
-	public function addActInfo($param){
+	public function addActivityInfo($param){
 
+		/**
+		 * 
+		type:活动类别
+		name:活动名称
+		valid_date:该信息的有效日期，截止到那天23:59:59
+		school:学校
+		taglist:活动标签
+		litimg_url:活动缩略图
+		pic_url:活动图片原图
+		location:活动地点
+		act_detail:活动内容
+		 */
 		// 检查必要的key是否存在；
-		if(array_key_exists('act_type',$param)
+		if(array_key_exists('type',$param)
            &&array_key_exists('name',$param)
-           &&array_key_exists('act_start_time',$param)
-           &&array_key_exists('act_end_time',$param)
-           &&array_key_exists('apply_location',$param)
-           &&array_key_exists('apply_way',$param)
+           &&array_key_exists('valid_date',$param)
+           &&array_key_exists('location',$param)
            &&array_key_exists('school',$param)
-           &&array_key_exists('create_user',$param)
         ) {
 
+			// '20181022001' (11位)
             $param['create_time']=date('Y-m-d H:i:s');
-            $param['status']=0;
+            $param['status']=0; // 0为合法
 
             $dateFormat_Type=array('Y-m-d H:i:s');
-            if(!checkDateIsValid($param['act_start_time'],$dateFormat_Type)
-               &&checkDateIsValid($param['act_end_time'],$dateFormat_Type)
-            ){
-                return '1';
+            if(!checkDateIsValid($param['valid_date'],$dateFormat_Type)){
+                return false;
             }
-
+			$act_id=date('YmdHis').
 			$data=[];
 			$key=['act_type','name','act_start_time','act_end_time','school','create_user','create_time','status','apply_way','act_location','act_details','taglist','activity_url','act_pic_url'];
 			for($i=0;$i!=count($key);$i++){

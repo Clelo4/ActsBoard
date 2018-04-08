@@ -84,7 +84,7 @@ __[To Client]__ *对外接口*
 ### **请求字段说明：**
 | 参数名 | 类型 | 含义 | 备注 |
 | --- | --- | --- | --- |
-
+| page | int  | 页数 | 分页获取数据时的参数 |
 <br>
 
 ### **返回值字段说明：**
@@ -150,7 +150,12 @@ __[To Client]__ *对外接口*
 <div id='u2'>
 
 > [GET] 根据条件筛选活动列表：**  _/activities/getacts?{}={}_
-+ 请求参数(自由组合)：days:时间(可选), type:活动类别(可选), school:学校(可选), sort:排序方式(可选)
++ 请求参数(自由组合)：
+  + days:时间(可选)
+  + type:活动类别(可选),
+  + school:学校(可选)
+  + sort:排序方式(可选)
+  + page:页数(可选)
 + 省略的参数默认值：全部
 
 ```
@@ -181,7 +186,8 @@ __[To Client]__ *对外接口*
 <div id='u3'>
 
 > [GET] 获取默认活动列表：**   _/activities/getacts_
-+ 请求参数：无参数
++ 请求参数：
+  + page:页数(可选)
 ```
 // 返回实例
 {
@@ -212,7 +218,9 @@ __[To Client]__ *对外接口*
 <div id='u4'>
 
 > [GET] 根据user获取推荐的活动列表：**  _/activities/getacts?type=recommend&user_id={}_
-+ 请求参数：user_id (用户id)
++ 请求参数：
+  + user_id：用户id(必选)
+  + page：页数(可选)
 ```
 // 返回实例
 {
@@ -265,7 +273,7 @@ __[To Client]__ *对外接口*
 + 请求参数:
   + type:活动类别
   + name:活动名称
-  + validity_date:该信息的有效日期，截止到那天23:59:59
+  + valid_date:该信息的有效日期，截止到那天23:59:59
   + school:学校
   + taglist:活动标签
   + litimg_url:活动缩略图
