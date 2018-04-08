@@ -95,24 +95,46 @@ class ActivityInfo extends Common{
 		// 分页
 		$sort='asc';
 		$currentTime=date('Y-m-d');
+		$endTime;
+		$preTime;
 		if(isset($search_arr['sort'])){
-			$sort=$search_arr['sort'];
+			// $sort=$search_arr['sort'];  // 默认asc,后期再改
 			unset($search_arr['sort']);
 		}
+		if(isset($search_arr['days'])){
+			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));
+			$endTime=$endTime.' 23:59:59';
+			unset($search_arr['days']);
+			$preTime=date('Y-m-d',strtotime('-1 day'));
+			$preTime=$preTime.' 23:59:59';
+		}
+		// 如果分页
 		if(isset($search_arr['page'])){
+			$page=$search_arr['page'];
+			unset($search_arr['page']);
 			$array=[];
+
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
-				array_push($temp,$search_arr['']);
-				array_push();
+				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
+				array_push($array,$tmp);
 			}
-			$data=$this->where([])->page($search_arr['page'])->limit($nums)->select();
-				
+			$data=$this->where($array)->where('valid_date','<=',$endTime)->where('valid_date','>',$preTime)->order('valid_date',$sort)->page($page)->limit($nums)->select();
 			
 		} else {
 		// 没有分页
+			$array=[];
 
+			for($i = 0;$i != count($search_arr);$i++){
+				$tmp=[];
+				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
+				array_push($array,$tmp);
+			}
+			$data=$this->where($array)->where('valid_date','<=',$endTime)->where('valid_date','>',$preTime)->order('valid_date',$sort)->limit($nums)->select();
+			
 		}
+
+		return $data;
 		
 	}
 

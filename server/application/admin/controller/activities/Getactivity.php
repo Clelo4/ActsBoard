@@ -72,9 +72,9 @@ class GetActivity extends ApiCommon{
         }
 
         // 获取用户推荐列表
-        if(Request::has('type')){
+        if(Request::has('recommend')){
             // 设定了type参数字段
-            if($this->param['type']=='recommend' && Request::has('user_id')){
+            if($this->param['recommend']=='yes' && Request::has('user_id')){
                 //
                 // CODE 
             } else {

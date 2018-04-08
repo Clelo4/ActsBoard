@@ -217,7 +217,7 @@ __[To Client]__ *对外接口*
 
 <div id='u4'>
 
-> [GET] 根据user获取推荐的活动列表：**  _/activities/getacts?type=recommend&user_id={}_
+> [GET] 根据user获取推荐的活动列表：**  _/activities/getacts?recommend=yes&user_id={}_
 + 请求参数：
   + user_id：用户id(必选)
   + page：页数(可选)
