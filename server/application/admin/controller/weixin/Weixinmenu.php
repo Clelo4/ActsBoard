@@ -22,19 +22,25 @@ class WeixinMenu extends ApiCommon{
 			'button'=>array(
 				array(
 				'type'=>'view',
-				'name'=>'ActsBoard',
-				'url'=>'http://music.163.com',
+				'name'=>'大厅',
+				'url'=>'http://web.iamxuyuan.com',
 				'sub_button'=>[]
 				),
 				array(
 					'type'=>'view',
-					'name'=>'Acts111',
-					'url'=>'http://music.163.com',
+					'name'=>'推荐',
+					'url'=>'http://web.iamxuyuan.com',
+					'sub_button'=>[]
+				),
+				array(
+					'type'=>'view',
+					'name'=>'设置',
+					'url'=>'http://web.iamxuyuan.com',
 					'sub_button'=>[]
 				),		
 			)
 		);
-		$param=json_encode($arr);
+		$param=json_encode($arr,JSON_UNESCAPED_UNICODE);
 
 		$url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
 		$resultData=post_https($url,$param);
@@ -42,9 +48,9 @@ class WeixinMenu extends ApiCommon{
 	}
 
 	/**
-	 * 从数据库中获取access_token;
+	 * 从数据库中获取公众号的access_token;
 	 */
-	public function getAccessToken(){
+	private function getAccessToken(){
 		$result;
 		// $ATModel = model('token.AccessToken');
 		// $data=$ATModel->getAccessToken();

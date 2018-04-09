@@ -4,11 +4,10 @@
  * email:clelo4@qq.com
  */
 
- namespace app\admin\controller\user;
+ namespace app\admin\controller\weixn;
  use think\facade\Request;
  use app\admin\controller\ApiCommon;
- use think\Model;
- use app\admin\model\user\UserPushRule;
+//  use think\Model;
 
  class PublishRule extends ApiCommon{
      public function index(){
@@ -35,7 +34,7 @@
             $frequency=Request::post('frequency');
             $type=Request::post('type');
 
-            $UserModel=model('user.UserPushRule');
+            $UserModel=model('weixin.UserPushRule');
             $result0=$UserModel->setUserPushRule($user_id,$school,$frequency,$type);
         }
 

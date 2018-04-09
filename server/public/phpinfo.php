@@ -65,11 +65,11 @@
 // echo "今天是 " . date("Y.m.d") . "<br>";
 // echo "今天是 " . date("Y-m-d") . "<br>";
 // echo "今天是 " . date("l");
-	$a=[];
-	array_push($a,1,2);
-	echo $a;
-	echo 'ok';
-
+	$test='{"access_token":"8_FVdbUb9dpYIyZh6wNwIR2QH3lehbhqd6Lzjs_a90XhG6wELlWocyQR-d2dRX7eiaEi5h7o9ZEuESHIP_AlIYWrEvmhNnDdLSraVjS8qQddY","expires_in":7200,"refresh_token":"8_6yyJxZhvbjoUqAI9pxMhBjSgd2dkynRhvSVVJOPzCY0iucZM8LuZ1ROm2osp3HCQb2ar5-ds_nbryMRkLtwXhexxDpHafiC-thfhd4I6wl8","openid":"oKvv71Ur9gf7ikUZNv0ifRbRrMBQ","scope":"snsapi_base"}';
+	$result=json_encode($test);
+	$arr=[];
+	$arr['1']=11;
+	echo json_encode($arr);
 
 ?>
 

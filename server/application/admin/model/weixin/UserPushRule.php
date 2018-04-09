@@ -2,7 +2,7 @@
 /**
  * author: jack
  */
-namespace app\admin\model\user;
+namespace app\admin\model\weixin;
 
 use app\admin\model\Common;
 
