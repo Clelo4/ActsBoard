@@ -45,39 +45,38 @@ class ApiCommon extends Common
                 exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
             }
 
+            // 权限验证通过
+            // 更新缓存
+            cache('Auth_'.$authKey, $cache, config('LOGIN_SESSION_VALID'));
+            // $authAdapter = new AuthAdapter($authKey);
+            // // Request = Request::instance();
+            // $ruleName = Request::module().'-'.Request::controller() .'-'.Request::action();
+            // if (!$authAdapter->checkLogin($ruleName, $cache['userInfo']['auth_id'])) {
+            //     header('Content-Type:application/json; charset=utf-8');
+            //     exit(json_encode(['code'=>102,'error'=>'没有权限']));
+            // }
+            // $GLOBALS['userInfo'] = $userInfo;
+        }
+        if($host == 'wexin') {  // 微信客户端
+            // 检查账号有效性
+            $userInfo = $cache['userInfo'];
+            $map['id'] = $userInfo['id'];
+            $map['status'] = 1;
+            if (!Db::name('admin_user')->where($map)->value('id')) {
+                header('Content-Type:application/json; charset=utf-8');
+                exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
+            }
+
             // 更新缓存
             cache('Auth_'.$authKey, $cache, config('LOGIN_SESSION_VALID'));
             $authAdapter = new AuthAdapter($authKey);
-            $request = Request::instance();
-            $ruleName = $request->module().'-'.$request->controller() .'-'.$request->action();
+            // Request = Request::instance();
+            $ruleName = Request::module().'-'.Request::controller() .'-'.Request::action();
             if (!$authAdapter->checkLogin($ruleName, $cache['userInfo']['id'])) {
                 header('Content-Type:application/json; charset=utf-8');
                 exit(json_encode(['code'=>102,'error'=>'没有权限']));
             }
             $GLOBALS['userInfo'] = $userInfo;
         }
-        if($host == 'wexin') {  // 微信客户端
-
-        }
-
-        // 检查账号有效性
-        $userInfo = $cache['userInfo'];
-        $map['id'] = $userInfo['id'];
-        $map['status'] = 1;
-        if (!Db::name('admin_user')->where($map)->value('id')) {
-            header('Content-Type:application/json; charset=utf-8');
-            exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
-        }
-
-        // 更新缓存
-        cache('Auth_'.$authKey, $cache, config('LOGIN_SESSION_VALID'));
-        $authAdapter = new AuthAdapter($authKey);
-        $request = Request::instance();
-        $ruleName = $request->module().'-'.$request->controller() .'-'.$request->action();
-        if (!$authAdapter->checkLogin($ruleName, $cache['userInfo']['id'])) {
-            header('Content-Type:application/json; charset=utf-8');
-            exit(json_encode(['code'=>102,'error'=>'没有权限']));
-        }
-        $GLOBALS['userInfo'] = $userInfo;
     }
 }

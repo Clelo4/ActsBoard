@@ -72,8 +72,10 @@ class Base extends Common
 
     public function logout()
     {
-        $param = $this->param;
-        cache('Auth_'.$param['authkey'], null);
+        $authKey = cookie('authKey');
+        cache('Auth_'.$authKey, null); // 删除服务器session缓存
+        cookie('authKey',null); // 删除cookie的authKey
+        cookie('PHPSESSID',null); // 删除cookie的PHPSESSID
         return resultArray(['data'=>'退出成功']);
     }
 

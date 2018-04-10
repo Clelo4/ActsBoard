@@ -8,14 +8,21 @@
         <header>    
             <img src="images/logo.gif" alt="ActsBoard Team" />    
             <nav>      
-                <ul>        
+                <ul>
                     <li>
-                        <a href=" ",style="display:inline">登录</a>
+                        <a href="logout.html",style="display:inline">登录</a>
                     </li>        
-                    <li><a href="signup.html">注册</a>
-                    </li>
                     <li>
-                        <a href="about.html">关于</a>
+                        <form id="tf" method="POST" action="http://127.0.0.1/admin/base/logout">
+                            <button type="submit" value="Send" >登出</button>    
+                        </form>
+                    </li>        
+                    <li>
+                        <a href="signup.html",style="display:inline">注册</a>
+                    </li>
+                    
+                    <li>
+                        <a href="about.html",style="display:inline">关于</a>
                     </li>
                 </ul>    
             </nav>  

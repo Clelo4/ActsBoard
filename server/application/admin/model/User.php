@@ -216,6 +216,14 @@ class User extends Common
 			$this->error="注册失败,请检查后重试";
 			return false;
 		}
+		$authKey = cookie('authKey');
+		$sessionId = cookie('PHPSESSID');
+		if($authKey || $sessionId){
+			$cache = cache('Auth_'.$authKey,NULL); // 删除过期的缓存
+			cookie('authKey',NULL); // 删除浏览器cookie的authKey字段
+			cookie('PHPSESSID',NULL);  // 删除浏览器cookie的PHPSESSID字段
+			// 注册成功后必须登录
+		}
 		return true;
 		
 	}
@@ -287,7 +295,19 @@ class User extends Common
 		$data['rememberKey'] = encrypt($secret);
 		}
 
-		// 保存缓存        
+		/**
+		 *  删除服务器的session缓存
+		*/
+		$authKey = cookie('authKey');
+		$sessionId = cookie('PHPSESSID');
+		if($authKey || $sessionId){
+			$cache = cache('Auth_'.$authKey,NULL); // 删除过期的缓存
+			cookie('authKey',NULL); // 删除浏览器cookie的authKey字段
+			cookie('PHPSESSID',NULL);  // 删除浏览器cookie的PHPSESSID字段
+			// 注册成功后必须登录
+		}
+
+		// 刷新缓存        
 		session_start();
 		$info['userInfo'] = $userInfo;
 		$info['sessionId'] = session_id();
