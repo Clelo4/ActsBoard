@@ -13,6 +13,23 @@ use think\Request;
 
 class Base extends Common
 {
+    /**
+     * 注册
+     */
+    public function signup(){
+        $userModel = model('User');
+        $param = $this->param;
+        $username = $param['username'];
+        $password = $param['password'];
+        $email = $param['email'];
+        $verifyCode = isset($param['verifyCode'])? $param['verifyCode']: '';
+        $data = $userModel->signup($username, $password,$verifyCode,$email);
+        if(!$data){
+            return resultArray(['error'=>$userModel->getError()]);
+        }
+        return resultArray(['data'=>$data]);
+    }
+
     public function login()
     {   
         $userModel = model('User');
@@ -23,6 +40,7 @@ class Base extends Common
         $isRemember = isset($param['isRemember'])? $param['isRemember']: '';
         $data = $userModel->login($username, $password, $verifyCode, $isRemember);
         if (!$data) {
+            $tmp= $userModel->getError();
             return resultArray(['error' => $userModel->getError()]);
         }
         return resultArray(['data' => $data]);

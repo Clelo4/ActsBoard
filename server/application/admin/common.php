@@ -102,7 +102,9 @@ if (!function_exists('decrypt')) {
 
 }
 
-
+/**
+ * Jack
+ */
 if (!function_exists('get_access_token')){
 
     /**

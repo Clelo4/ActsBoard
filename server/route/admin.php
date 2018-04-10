@@ -18,6 +18,8 @@ return [
 
 	'admin/login' => ['admin/base/index', ['method' => 'GET']],
 
+	// 【基础】注册
+	'admin/base/signup' => ['admin/base/signup', ['method' => 'POST']],
 	// 【基础】登录
 	'admin/base/login' => ['admin/base/login', ['method' => 'POST']],
 	// 【基础】记住登录

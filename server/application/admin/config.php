@@ -2,4 +2,4 @@
 
 // admin模块配置文件
 
-return [];
+return ['IDENTIFYING_CODE'=>true];
