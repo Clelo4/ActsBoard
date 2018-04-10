@@ -2,9 +2,9 @@
 
 namespace app\admin\controller\weixin;
 
-use app\admin\controller\ApiCommon;
+use app\admin\controller\WeixinApiCommon;
 use think\facade\Request;
-class Base extends ApiCommon{
+class Base extends WeixinApiCommon{
 
     static $appid="wxb569d7a3f448c503";
     static $secret="29938d5779d3dd83b9dab916f6e469d4";
@@ -19,7 +19,10 @@ class Base extends ApiCommon{
 
     }
 
-    // 服务器接收来自微信用户客户端的code，调用getAccessToken函数获得用户的openid
+    /** 
+     * 服务器接收来自微信用户客户端的code，调用getAccessToken函数获得用户的openid
+     * 服务器为微信用户设置永久cookie以保存openid
+     */
     public function getCode(){
         // 微信客户端
         $result;
@@ -31,13 +34,23 @@ class Base extends ApiCommon{
             if($openid){
                 // 获取到了用户的openid
                 // 在数据库创建创建用户，并返回用户的user_id
+                $authKey = user_md5(date('Y-m-d').$openid); // 生成新的authKey
                 $userModel = model('weixin.UserBase');
                 $data=$userModel->userInfo($openid);
-                $result['data']=$data;
-                return resultArray($result);
+                
+                $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$auth_key]);
+                if($auth_key){
+                    // 设置cookie
+                    cookie('openid',$openid,3600*24*30); // 有效期一个月
+                    cookie('authKey',$authKey,3600*24*30); // 有效期一个月
+                    cookie("_access",1,3600*24*30);
+                    $result['data']=$data;
+                    return resultArray($result);    
+                }
             }
         }
         $result['error']="连接超时";
+        cookie('_access',0);
         return resultArray($result);
         
         // 服务器

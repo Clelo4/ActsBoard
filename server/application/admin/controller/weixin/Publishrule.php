@@ -6,10 +6,10 @@
 
  namespace app\admin\controller\weixn;
  use think\facade\Request;
- use app\admin\controller\ApiCommon;
+ use app\admin\controller\WeixinApiCommon;
 //  use think\Model;
 
- class PublishRule extends ApiCommon{
+ class PublishRule extends WeixinApiCommon{
      public function index(){
         return 'admin/user.PublishRule/setPublishRule';
      }
@@ -18,7 +18,6 @@
       * 用户设定推送规则
       */
      public function setPublishRule(){
-        // user_id:用户id(必选)
         // school:学校(必选)
         // frequency:频率(必选)
         // type:活动类型(必选)

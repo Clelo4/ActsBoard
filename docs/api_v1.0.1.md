@@ -5,9 +5,20 @@ __[To Client]__ *对外接口*
 ### _Author：_ _jack_
 ### _Time：_ _2018-04-05_
 ### _Email：_ _jack0000davis@gmail.com_
-### _API 文档版本：_ v1.0
+### _API 文档版本：_ v1.0.1
 
 ---
+<br>
+
+## __API接口开发流程：__
+__(开发中)->(已测试)->(已对接)->(发布)__
+
+### 规范：
+    1. 接口只有已测试后，前端才能采用此接口进行测试
+
+---
+<br>
+
 <br>
 
 ## **API简述:**
@@ -17,17 +28,17 @@ __[To Client]__ *对外接口*
 ### __用户端__
 >
 
->**[GET] 根据活动id获取该活动的所有信息：**  _[/activities/getinfo?id={}](#u1)_ *(已测试)*
+>**[GET] 根据活动id获取该活动的所有信息：**  _[/activities/getinfo?id={}](#u1)_ (已测试)
 
->**[GET] 根据条件筛选活动列表：**  _[/activities/getacts?{}={}](#u2)_ *(已测试)*
+>**[GET] 根据条件筛选活动列表：**  _[/activities/getacts?{}={}](#u2)_ (已测试)
 
->**[GET] 获取默认活动列表：**   _[/activities/getacts](#u3)_ *(已测试)*
+>**[GET] 获取默认活动列表：**   _[/activities/getacts](#u3)_ (已测试)
 
->**[GET] 根据user获取推荐的活动列表：**   _[/activities/getacts?recommend=yes](#u4)_ (以后解决)
+>**[GET] 根据user获取推荐的活动列表：**   _[/activities/getacts?recommend=yes](#u4)_ (开发中)
 
->**[POST] 设定用户推送规则：** _[/user/setrule](#u5)_
+>**[POST] 设定用户推送规则：** _[/user/setrule](#u5)_ (开发中)
 
->**[POST] 发布活动信息：** _[/activities/publish](#u6)_
+>**[POST] 发布活动信息：** _[/activities/publish](#u6)_ (开发中)
 
 </div>
 ---
@@ -36,17 +47,17 @@ __[To Client]__ *对外接口*
 ### __管理端__:
 >
 
->**[POST] 管理员登录：** _[/manage/admin/login](#a1)_
+>**[POST] 管理员登录：** _[/manage/admin/login](#a1)_ (开发中)
 
->**[GET] 获取活动列表：** _[/manage/getacts?start={}&nums={}](#a2)_
+>**[GET] 获取活动列表：** _[/manage/getacts?start={}&nums={}](#a2)_ (开发中)
 
->**[GET] 获取特定类别的活动列表：** _[/manage/getacts?type={}](#a3)_
+>**[GET] 获取特定类别的活动列表：** _[/manage/getacts?type={}](#a3)_ (开发中)
 
->**[POST] 用户管理：** _[/manage/admin/user](#a4)_
+>**[POST] 用户管理：** _[/manage/admin/user](#a4)_ (开发中)
 
 >**[POST] 活动管理：** _[/manage/admin/activities](#a5)_
 
->**[POST] 推送管理：** _[/manage/admin/recommend](#a6)_
+>**[POST] 推送管理：** _[/manage/admin/recommend](#a6)_ (开发中)
 
 </div>
 
@@ -93,6 +104,16 @@ __[To Client]__ *对外接口*
 | errcode | int | 返回状态 | 0为成功 |
 | errmsg | string | error说明 |
 | data | 各种类型 | 返回数据 |  |
+<br>
+
+### **cookie字段说明：**
+| 参数名 | 类型 | 含义 | 备注 |
+| --- | --- | --- | --- |
+| openid | string | 微信用户id |  |
+| authKey | string | 访问Key |
+| PHPSESSID | string | session id |  |
+| _access | int | 验证是否通过身份验证 | 1：验证通过，0：验证失败 |
+
 ---
 <br>
 
@@ -251,7 +272,6 @@ __[To Client]__ *对外接口*
 
 > [POST] 设定用户推送规则：** _/user/setrule_
 + 请求参数
-  + user_id:用户id(必选)
   + school:学校(必选)
   + frequency:频率(必选)
   + type:活动类型(必选)

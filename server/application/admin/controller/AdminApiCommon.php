@@ -1,10 +1,10 @@
 <?php
 // +----------------------------------------------------------------------
-// | Description: Api基础类，验证权限
+// | Description: Api基础类，验证管理端权限
 // +----------------------------------------------------------------------
 // | Author: linchuangbin <linchuangbin@honraytech.com>
 // +----------------------------------------------------------------------
-// 只适用与后台管理
+// 只适用于后台管理
 namespace app\admin\controller;
 
 use think\facade\Request;
@@ -58,7 +58,7 @@ class ApiCommon extends Common
             // $GLOBALS['userInfo'] = $userInfo;
         } else{
             header('Content-Type:application/json; charset=utf-8');
-            exit(json_encode(['code'=>103, 'error'=>'禁止登录']));
+            exit(json_encode(['code'=>103, 'error'=>'没有访问权限']));
         }
     }
 }
