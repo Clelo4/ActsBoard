@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>  
+        <meta charset="utf-8" />  
+        <title>ActsBoard</title>
+    </head>
+    <body>  
+        <header>    
+            <img src="images/logo.gif" alt="ActsBoard Team" />    
+            <nav>      
+                <ul>        
+                    <li>
+                        <a href="login.html",style="display:inline">登录</a>
+                    </li>        
+                    <li>
+                        <a href="signup.html",style="display:inline">注册</a>
+                    </li>
+                    <li>
+                        <a href="logout.html",style="display:inline">登出</a>
+                    </li>
+                    <li>
+                        <a href="about.html",,style="display:inline">关于</a>
+                    </li>
+                </ul>    
+            </nav>  
+        </header>  
+        <article>
+            <h1>华南理工大学 ActsBoard team</h1>
+            <div>
+                <form id="tf" method="POST" action="http://127.0.0.1/admin/base/login">
+                    <p>
+                        <label for="name">username:</label>          
+                        <input type="text" id="name" name="username" placeholder="username" required="required" />        
+                    </p >        
+                    <p>          
+                        <label for="password">password:</label>          
+                        <input type="text" id="name" name="password" placeholder="password" required="required" />        
+                    </p >
+                    <button type="submit" value="Send" >登录</button>    
+                </form>    
+            </div>  
+        </article>
+    </body>
+</html>

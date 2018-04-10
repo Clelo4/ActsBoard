@@ -1,13 +1,15 @@
 <?php
-
 /**
-*/
+ * author: jack
+ * email: clelo4@qq.com
+ * 只有后台可以访问
+ */
 
 namespace app\admin\controller\weixin;
 
-use app\admin\controller\ApiCommon;
+use app\admin\controller\AdminApiCommon;
 
-class WeixinMenu extends ApiCommon{
+class WeixinMenu extends AdminApiCommon{
 
 	public function index(){
 		return 'ok';

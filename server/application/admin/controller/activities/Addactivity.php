@@ -2,13 +2,14 @@
 /**
  * author: jack
  * email: clelo4@qq.com
+ * 只有后台可以访问
  */
 
 namespace app\admin\controller\activities;
 use think\facade\Request;
-use app\admin\controller\ApiCommon;
+use app\admin\controller\AdminApiCommon;
 
-class AddActivity extends ApiCommon{
+class AddActivity extends AdminApiCommon{
 
     public function Index(){
         return 'ok';

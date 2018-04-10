@@ -1,9 +1,9 @@
 <?php
 namespace app\admin\controller\weixin;
 
-use app\admin\controller\ApiCommon;
+use app\admin\controller\AdminApiCommon;
 
-class User extends ApiCommon{
+class User extends AdminApiCommon{
 
     public function index(){
         return 'index';

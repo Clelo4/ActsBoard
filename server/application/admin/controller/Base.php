@@ -30,6 +30,9 @@ class Base extends Common
         return resultArray(['data'=>$data]);
     }
 
+    /**
+     * 登录
+     */
     public function login()
     {   
         $userModel = model('User');

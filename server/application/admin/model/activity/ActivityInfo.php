@@ -78,7 +78,8 @@ class ActivityInfo extends Common{
 		$data;
 		$act_id=(string)$act_id;
 		if(strlen($act_id)==11){
-			$data=$this->where('act_id',$act_id)->where('status',0)->select();
+			//
+			$data=$this->where('act_id',$act_id)->where('status',1)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->find();
 			return $data;
 		}
 		return NULL;
@@ -95,8 +96,13 @@ class ActivityInfo extends Common{
 		// 分页
 		$sort='asc';
 		$currentTime=date('Y-m-d');
-		$endTime;
-		$preTime;
+		$preTime=date('Y-m-d');
+		$preTime=$preTime.' 00:00:00';
+		$array=[]; // 查询条件
+		$tmp=[];
+		array_push($tmp,'valid_date','>',$preTime);
+		array_push($array,$tmp);
+
 		if(isset($search_arr['sort'])){
 			// $sort=$search_arr['sort'];  // 默认asc,后期再改
 			unset($search_arr['sort']);
@@ -105,45 +111,43 @@ class ActivityInfo extends Common{
 			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));
 			$endTime=$endTime.' 23:59:59';
 			unset($search_arr['days']);
-			$preTime=date('Y-m-d',strtotime('-1 day'));
-			$preTime=$preTime.' 23:59:59';
+			$tmp=[];
+			array_push($tmp,'valid_date','<=',$endTime);
+			array_push($array,$tmp);
 		}
 		// 如果分页
 		if(isset($search_arr['page'])){
 			$page=$search_arr['page'];
 			unset($search_arr['page']);
-			$array=[];
 
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->where($array)->where('valid_date','<=',$endTime)->where('valid_date','>',$preTime)->order('valid_date',$sort)->page($page)->limit($nums)->select();
+			$data=$this->where($array)->where('status',1)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
 			
 		} else {
 		// 没有分页
-			$array=[];
 
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->where($array)->where('valid_date','<=',$endTime)->where('valid_date','>',$preTime)->order('valid_date',$sort)->limit($nums)->select();
-			
+			$data=$this->where($array)->order('valid_date',$sort)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
 		}
 
 		return $data;
 		
 	}
 
-	// 获取默认列表
-	public function getActivities($nums){
-		$data;
-		$data=$this->where('status',0)->order('valid_date','asc')->limit($nums)->select();
-		return $data;
-	}
+	// // 获取默认列表
+	// public function getActivities($nums){
+	// 	$data;
+	// 	$data=$this->where('status',0)->order('valid_date','asc')->limit($nums)->select();
+	// 	return $data;
+	// }
 
 	/**
 	 * 添加活动信息
