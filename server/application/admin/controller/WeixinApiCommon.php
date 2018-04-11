@@ -30,11 +30,11 @@ class WeixinApiCommon extends Common
             exit(json_encode(['code'=>101, 'error'=>'登录已失效']));
         }
 
-        if($host == 'wexin') {  // 是否是微信客户端
+        if($host == 'weixin') {  // 是否是微信客户端
             // 检查账号有效性
             $map['openid'] = $openid;
             $auth_key=Db::name('access_openid')->where($map)->value('auth_key');
-            if (!$auth_key || $auth_key!=$authKey ) {
+            if (!$auth_key || $auth_key!=$authKey ) { // authKey是否正确
                 header('Content-Type:application/json; charset=utf-8');
                 cookie('_access',0);  // 设置cookie
                 exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));

@@ -2,21 +2,15 @@
 
 namespace app\admin\controller\weixin;
 
-use app\admin\controller\WeixinApiCommon;
+use app\admin\controller\ApiCommon;
 use think\facade\Request;
-class Base extends WeixinApiCommon{
+use think\Db;
+class Base extends ApiCommon{
 
     static $appid="wxb569d7a3f448c503";
     static $secret="29938d5779d3dd83b9dab916f6e469d4";
     public function index(){
         return 'ok';
-    }
-
-    /**
-     * 上传logo图片
-     */
-    public function uploadLoao(){
-
     }
 
     /** 
@@ -38,12 +32,13 @@ class Base extends WeixinApiCommon{
                 $userModel = model('weixin.UserBase');
                 $data=$userModel->userInfo($openid);
                 
-                $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$auth_key]);
+                $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$authKey]);
                 if($auth_key){
                     // 设置cookie
                     cookie('openid',$openid,3600*24*30); // 有效期一个月
                     cookie('authKey',$authKey,3600*24*30); // 有效期一个月
                     cookie("_access",1,3600*24*30);
+                    cookie("host","weixin",3600*24*30);
                     $result['data']=$data;
                     return resultArray($result);    
                 }

@@ -4,6 +4,7 @@
 // +----------------------------------------------------------------------
 // | Author: linchuangbin <linchuangbin@honraytech.com>
 // +----------------------------------------------------------------------
+// for weixin
 namespace app\admin\controller;
 
 use think\facade\Request;
@@ -23,10 +24,12 @@ class ApiCommon extends Common
         $host = cookie('host');     // 识别host，为了区分是否是weixin客户端还是web端，web端host：we.iamxuyuan.com
 
         // 检测openid、authKey和host
-        if ( empty('openid') || empty($authKey) || empty($host)) {
+        if ( empty($openid) || empty($authKey) || empty($host)) {
             cookie('_access',0); // 验证失败，设置cookie的_access值为0
+        } else{
+            cookie('_access',1); // 验证成功
         }
-        cookie('_access',1); // 验证成功
+        
 
         // /*获取头部信息*/ 
         // $header=$this->header;
@@ -44,7 +47,7 @@ class ApiCommon extends Common
         // }
 
         // // 区分账号
-        // if($host == 'web.iamxuyuan.com') {  // web端
+        // if($host == 'web') {  // web端
         //     // 检查账号有效性
         //     $userInfo = $cache['userInfo'];
         //     $map['auth_id'] = $userInfo['auth_id'];

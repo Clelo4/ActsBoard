@@ -4,12 +4,12 @@
  * email:clelo4@qq.com
  */
 
- namespace app\admin\controller\weixn;
+ namespace app\admin\controller\weixin;
  use think\facade\Request;
  use app\admin\controller\WeixinApiCommon;
 //  use think\Model;
 
- class PublishRule extends WeixinApiCommon{
+class PublishRule extends WeixinApiCommon{
      public function index(){
         return 'admin/user.PublishRule/setPublishRule';
      }
@@ -23,18 +23,18 @@
         // type:活动类型(必选)
         $result;
         $result0;
-        if(Request::has('user_id')
-           && Request::has('school')
+        // 获取用户openid
+        $openid = cookie('openid');
+        if(Request::has('school')
            && Request::has('frequency')
            && Request::has('type')
         ) {
-            $user_id=Request::post('user_id');
             $school=Request::post('school');
             $frequency=Request::post('frequency');
             $type=Request::post('type');
 
             $UserModel=model('weixin.UserPushRule');
-            $result0=$UserModel->setUserPushRule($user_id,$school,$frequency,$type);
+            $result0=$UserModel->setUserPushRule($openid,$school,$frequency,$type);
         }
 
         if(!$result0){

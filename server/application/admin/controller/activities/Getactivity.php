@@ -15,10 +15,6 @@ class GetActivity extends WeixinApiCommon{
         return resultArray($result);
     }
 
-    public function getActsList(){
-
-    }
-
     /**
      * 通过id获取活动详细信息
      */

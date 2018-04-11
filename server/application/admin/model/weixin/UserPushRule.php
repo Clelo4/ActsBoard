@@ -12,7 +12,7 @@ class UserPushRule extends Common{
     /**
      * 获取用户推送规则
      */
-    public function getUserPushRule($user_id){
+    public function getUserPushRule($openid){
         $data;
         
         return NULL;
@@ -22,14 +22,14 @@ class UserPushRule extends Common{
      * 设置用户推送规则
      * @return boolean true 插入成功 false 插入失败
      */
-    public function setUserPushRule($user_id,$school,$frequency,$type){
-        $data=['user_id'=>$user_id,'school'=>$school,'frequency'=>$frequency,'type'=>$type];
-        // 如果不存在user_id则新增一条新的记录
+    public function setUserPushRule($openid,$school,$frequency,$type){
+        $data=['openid'=>$openid,'school'=>$school,'frequency'=>$frequency,'type'=>$type];
+        // 如果不存在openid则新增一条新的记录，否则只更新记录
         $result;
-        if(count($this->where('user_id',$user_id)->select())==0){
+        if(!$this->where('openid',$openid)->find()){
             $result=$this->insert($data);
         } else{
-            $result=$this->where('user_id',$user_id)->update($data);
+            $result=$this->where('openid',$openid)->update($data);
         }
 
         return true;

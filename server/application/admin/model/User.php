@@ -312,7 +312,7 @@ class User extends Common
 		$info['userInfo'] = $userInfo;
 		$info['sessionId'] = session_id();
 		$authKey = user_md5($userInfo['username'].$userInfo['password'].$info['sessionId']);
-		$host = 'web.iamxuyuan.com';
+		$host = 'web';
 
 		// $info['_AUTH_LIST_'] = $dataList['rulesList'];
 		$info['authKey'] = $authKey;

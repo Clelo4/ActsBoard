@@ -13,7 +13,7 @@ use app\common\adapter\AuthAdapter;
 use app\common\controller\Common;
 use think\facade\Log;
 
-class ApiCommon extends Common
+class AdminApiCommon extends Common
 {
     public function __construct()
     {
@@ -34,7 +34,7 @@ class ApiCommon extends Common
         }
 
         // 区分账号
-        if($host == 'web.iamxuyuan.com') {  // web端
+        if($host == 'web') {  // web端
             // 检查账号有效性
             $userInfo = $cache['userInfo'];
             $map['auth_id'] = $userInfo['auth_id'];
