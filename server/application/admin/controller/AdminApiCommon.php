@@ -39,8 +39,8 @@ class AdminApiCommon extends Common
             $userInfo = $cache['userInfo'];
             $map['auth_id'] = $userInfo['auth_id'];
             $map['status'] = 1;
-            $tt=Db::name('auth_user')->where($map)->value('auth_id');
-            if (!Db::name('auth_user')->where($map)->value('auth_id')) {
+            $tt=Db::name('auth_user')->where($map)->value('auth_id');  // 调试用
+            if (!$tt) {
                 header('Content-Type:application/json; charset=utf-8');
                 exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
             }

@@ -16,6 +16,7 @@ class Base extends ApiCommon{
     /** 
      * 服务器接收来自微信用户客户端的code，调用getAccessToken函数获得用户的openid
      * 服务器为微信用户设置永久cookie以保存openid
+     * 服务器不保存session缓存，但在数据库中保存openid和authKey(验证用户身份)
      */
     public function getCode(){
         // 微信客户端
@@ -31,8 +32,12 @@ class Base extends ApiCommon{
                 $authKey = user_md5(date('Y-m-d').$openid); // 生成新的authKey
                 $userModel = model('weixin.UserBase');
                 $data=$userModel->userInfo($openid);
-                
-                $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$authKey]);
+                $auth_key;
+                if(Db::name('access_openid')->find('openid',$openid)){
+                    $auth_key=Db::name('access_openid')->where('openid',$openid)->update(['auth_key'=>$authKey]);
+                } else{
+                    $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$authKey]);
+                }
                 if($auth_key){
                     // 设置cookie
                     cookie('openid',$openid,3600*24*30); // 有效期一个月

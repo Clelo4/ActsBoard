@@ -149,6 +149,7 @@ class ActivityInfo extends Common{
 	// 	return $data;
 	// }
 
+
 	/**
 	 * 添加活动信息
 	 * @param array
@@ -161,6 +162,8 @@ class ActivityInfo extends Common{
 		type:活动类别
 		name:活动名称
 		valid_date:该信息的有效日期，截止到那天23:59:59
+		create_time
+		create_user
 		school:学校
 		taglist:活动标签
 		litimg_url:活动缩略图
@@ -175,33 +178,38 @@ class ActivityInfo extends Common{
            &&array_key_exists('location',$param)
            &&array_key_exists('school',$param)
         ) {
-
 			// '20181022001' (11位)
             $param['create_time']=date('Y-m-d H:i:s');
-            $param['status']=0; // 0为合法
+            $param['status']=1; // 1为合法
 
-            $dateFormat_Type=array('Y-m-d H:i:s');
+			$dateFormat_Type=array('Y-m-d');
+
+			// 验证valid_date的合法性
             if(!checkDateIsValid($param['valid_date'],$dateFormat_Type)){
                 return false;
-            }
-			$act_id=date('YmdHis').
+			} else{
+				$param['valid_date']=$param['valid_date'].' 23:59:59';
+			}
+
 			$data=[];
-			$key=['act_type','name','act_start_time','act_end_time','school','create_user','create_time','status','apply_way','act_location','act_details','taglist','activity_url','act_pic_url'];
+			$key=['type','name','valid_date','school','create_user','create_time','status','apply_way','location','act_detail','taglist','url'];
 			for($i=0;$i!=count($key);$i++){
 				if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
 				else { $data[$key[$i]]=NULL; }
 			}
 
-            /**
-             * code: 验证post传入的参数
-             */
-			//return $param;
+			//
+			$data['act_id']=generateId();
+
+			// -------------------------
+			$authKey = cookie('authKey'); // 获取cookie中的authKey
+            $data['create_user'] = cache('Auth_'.$authKey)['userInfo']['auth_id'];
+
+			// -------------------------
 			$result=$this->insert($data);
 			if($result==1) {
 				return true;
 			}
-
-
         } 
         else {
             return false;

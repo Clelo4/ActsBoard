@@ -65,12 +65,31 @@
 // echo "今天是 " . date("Y.m.d") . "<br>";
 // echo "今天是 " . date("Y-m-d") . "<br>";
 // echo "今天是 " . date("l");
-	$test='{"access_token":"8_FVdbUb9dpYIyZh6wNwIR2QH3lehbhqd6Lzjs_a90XhG6wELlWocyQR-d2dRX7eiaEi5h7o9ZEuESHIP_AlIYWrEvmhNnDdLSraVjS8qQddY","expires_in":7200,"refresh_token":"8_6yyJxZhvbjoUqAI9pxMhBjSgd2dkynRhvSVVJOPzCY0iucZM8LuZ1ROm2osp3HCQb2ar5-ds_nbryMRkLtwXhexxDpHafiC-thfhd4I6wl8","openid":"oKvv71Ur9gf7ikUZNv0ifRbRrMBQ","scope":"snsapi_base"}';
-	$result=json_encode($test);
-	$arr=[];
-	$arr['1']=11;
-	echo json_encode($arr);
+	// $test='{"access_token":"8_FVdbUb9dpYIyZh6wNwIR2QH3lehbhqd6Lzjs_a90XhG6wELlWocyQR-d2dRX7eiaEi5h7o9ZEuESHIP_AlIYWrEvmhNnDdLSraVjS8qQddY","expires_in":7200,"refresh_token":"8_6yyJxZhvbjoUqAI9pxMhBjSgd2dkynRhvSVVJOPzCY0iucZM8LuZ1ROm2osp3HCQb2ar5-ds_nbryMRkLtwXhexxDpHafiC-thfhd4I6wl8","openid":"oKvv71Ur9gf7ikUZNv0ifRbRrMBQ","scope":"snsapi_base"}';
+	// $result=json_encode($test);
+	// $arr=[];
+	// $arr['1']=11;
+	// echo json_encode($arr);
 
+	/**
+	 * 生成活动的唯一id
+	 * author：jack
+	 * email：jack0000davis@gmail.com
+	 */
+	function generateId(){
+		$id='';
+		$currentTime=date('YmdHms');
+		$id=substr(date('Y'),2,2).date('z').substr(crc32($currentTime),-3,3).rand(0,9).rand(0,9);
+		$num=0;
+		for($i=0;$i!=10;$i++){
+			$num+=substr($id,$i,1);
+		}
+		$id=$id.$num%10;
+		return $id;
+	}
+	
+	echo "ok";
+	echo $id;
 ?>
 
 	

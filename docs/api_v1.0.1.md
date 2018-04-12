@@ -38,7 +38,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 >**[POST] 设定用户推送规则：** _[/user/setrule](#u5)_ (已测试)
 
->**[POST] 发布活动信息：** _[/activities/publish](#u6)_ (开发中)
+>**[POST] 发布活动信息：** _[/activities/publish](#u6)_ (已测试)
 
 </div>
 ---
