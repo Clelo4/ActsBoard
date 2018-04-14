@@ -38,26 +38,29 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 >**[POST] 设定用户推送规则：** _[/user/setrule](#u5)_ (已测试)
 
->**[POST] 发布活动信息：** _[/activities/publish](#u6)_ (已测试)
-
+>**[POST] 获取用户的openid：** _[/weixin/getuserid](#u6)_ (已测试)
 </div>
+
 ---
 <div id='a'>
 
 ### __管理端__:
 >
 
->**[POST] 管理员登录：** _[/manage/admin/login](#a1)_ (开发中)
+>**[POST] 管理员登录：** _[/manage/admin/login](#a1)_ (已测试)
 
->**[GET] 获取活动列表：** _[/manage/getacts?start={}&nums={}](#a2)_ (开发中)
+>**[POST] 管理员注册：** _[/manage/admin/signup](#a2)_ (已测试)
 
->**[GET] 获取特定类别的活动列表：** _[/manage/getacts?type={}](#a3)_ (开发中)
+>**[POST] 退出登录：** _[/manage/admin/logout](#a3)_ (已测试)
 
->**[POST] 用户管理：** _[/manage/admin/user](#a4)_ (开发中)
+>**[POST] 发布活动信息：** _[/manage/activities/publish](#a7)_ (已测试)
 
->**[POST] 活动管理：** _[/manage/admin/activities](#a5)_
+>**[GET] 获取活动列表：** _[/manage/activities/getacts](#a8)_ (已测试)
 
->**[POST] 推送管理：** _[/manage/admin/recommend](#a6)_ (开发中)
+>**[GET] 根据活动id获取该活动的所有信息：**  _[/manage/activities/getinfo?id={}](#a9)_ (已测试)
+
+>**[POST] 修改活动内容：** _[/manage/activities/change](#a10)_ (已测试)
+
 
 </div>
 
@@ -113,6 +116,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 | authKey | string | 访问Key |
 | PHPSESSID | string | session id |  |
 | _access | int | 验证是否通过身份验证 | 1：验证通过，0：验证失败 |
+| host | string | 识别客户端是微信还是web | 微信：weixin，网页：web |
 
 ---
 <br>
@@ -170,7 +174,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 <div id='u2'>
 
-> [GET] 根据条件筛选活动列表：**  _/activities/getacts?{}={}_
+> [GET] 根据条件筛选活动列表：  _/activities/getacts?{}={}_
 + 请求参数(自由组合)：
   + days:时间(可选)
   + type:活动类别(可选),
@@ -206,7 +210,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 <div id='u3'>
 
-> [GET] 获取默认活动列表：**   _/activities/getacts_
+> [GET] 获取默认活动列表：   _/activities/getacts_
 + 请求参数：
   + page:页数(可选)
 ```
@@ -238,7 +242,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 <div id='u4'>
 
-> [GET] 根据user获取推荐的活动列表：**  _/activities/getacts?recommend=yes&user_id={}_
+> [GET] 根据user获取推荐的活动列表：  _/activities/getacts?recommend=yes&user_id={}_
 + 请求参数：
   + page：页数(可选)
 ```
@@ -270,7 +274,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 <div id='u5'>
 
-> [POST] 设定用户推送规则：** _/user/setrule_
+> [POST] 设定用户推送规则： _/user/setrule_
 + 请求参数
   + school:学校(必选)
   + frequency:频率(必选)
@@ -288,7 +292,78 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 <div id='u6'>
 
-> [POST] 发布活动信息：** _/activities/publish_
+> [POST] 获取用户的openid： _/weixin/getuserid_
++ 请求参数
+  + code：微信服务器的返回的code
+```
+// 返回实例
+{
+    'errcode':0,
+    'data':用户的openid,
+    'errmsg':''
+}
+```
+[返回](#u)
+</div>
+
+
+<div id='a1'>
+
+> [POST] 管理员登录： _/manage/admin/login_
++ 请求参数：
+  + username:用户名
+  + password:密码
+
+```
+// 返回实例
+{
+    'errcode':0,
+    'data':'登录成功',
+    'errmsg':''
+}
+```
+[返回](#a)
+</div>
+
+<div id='a2'>
+
+> [POST] 管理员注册： _/manage/admin/signup_
++ 请求参数：
+  + username:用户名(必选)
+  + password:密码(必选)
+  + register_code:注册码(必选)
+
+```
+// 返回实例
+{
+    'errcode':0,
+    'data':'注册成功',
+    'errmsg':''
+}
+```
+[返回](#a)
+</div>
+
+<div id='a3'>
+
+> [POST] 退出登录： _/manage/admin/logout_
++ 请求参数：无
+
+```
+// 返回实例
+{
+    'errcode':0,
+    'data':'退出成功',
+    'errmsg':''
+}
+```
+[返回](#a)
+</div>
+
+
+<div id='a7'>
+
+> [POST] 发布活动信息： _/manage/activities/publish_
 + 请求参数:
   + type:活动类别
   + name:活动名称
@@ -308,102 +383,75 @@ __(开发中)->(已测试)->(已对接)->(发布)__
     'errmsg':''
 }
 ```
-[返回](#u)
+[返回](#a)
 </div>
 
-<div id='a1'>
+<div id='a8'>
 
-> [POST] 管理员登录：** _/manage/admin/login_
-+ 请求参数：
-  + username:用户名
-  + password:密码
-  + token:登录令牌Token(存在就发送)
-  + key:保留关键字(暂不使用)
+> [GET] 查询活动列表： _/manage/activities/getacts_
++ 请求参数(自由组合)：
+  + days:时间(可选)
+  + type:活动类别(可选),
+  + school:学校(可选)
+  + sort:排序方式(可选)
+  + page:页数(可选)
++ 省略的参数默认值：全部
 
+[返回](#a)
+</div>
+
+
+<div id='a9'>
+
+> [GET] 根据活动id获取该活动的所有信息：  _/manage/activities/getinfo?id={}_
++ 请求参数：id (活动id)
 ```
 // 返回实例
 {
     'errcode':0,
-    'data':'success',
+    'data':{
+        'id':1,
+        'type':'讲座',                // 活动类别
+        'name':'ActsBoard讲座',           // 活动名称
+        'valid_date':'2019-09-09',     // 该信息的有效日期，截止到那天23:59
+        'apply_way':'',                   // 申请方式
+        'school':'华南理工大学',                    // 学校
+        'taglist':'有趣,无聊,妹子多',               // 活动标签
+        'url':'http://www.scut.edu.cn',   // 活动链接
+        'litimg_url':'http://www.scut.edu.cn',     // 活动缩略图
+        'pic_url':'http://www.scut.edu.cn',    // 活动图片原图
+        'location':'华南理工大学'               // 活动地点
+        'act_detail':'ActsBoard是一家五百强企业，融资400个亿...'   // 活动内容
+    }
     'errmsg':''
 }
 ```
 [返回](#a)
 </div>
 
-<div id='a2'>
+<div id='a10'>
 
-> [GET] 查询活动列表：** _/manage/getacts?start={}&nums={}_
-+ 请求参数：
-  + start:开始页数(必选)
-  + nums:查询数目(必选)
-```
-请求实例:
- /manage/getcats?start=0&nums=20
- /manage/getcats?start=20&nums=20
-```
-[返回](#a)
-</div>
-
-<div id='a3'>
-
-> [GET] 获取特定类别的活动列表：** _/manage/getacts?type={}&sort={}_
-+ 请求参数：
+> [POST] 修改活动信息：  _/manage/activities/change_
++ 请求参数:
+  + id:活动id
   + type:活动类别
-  + sort:排序方式
+  + name:活动名称
+  + valid_date:该信息的有效日期，截止到那天23:59:59
+  + school:学校
+  + taglist:活动标签
+  + litimg_url:活动缩略图
+  + pic_url:活动图片原图
+  + location:活动地点
+  + act_detail:活动内容
+
 ```
 // 返回实例
 {
     'errcode':0,
-    'data':[
-        {
-        'id':1,
-        'type':'讲座',                // 活动类别
-        'name':'ActsBoard讲座',           // 活动名称
-        'valid_date':'2019-09-09',     // 该信息的有效日期，截止到那天23:59
-        'school':'华南理工大学',                    // 学校
-        'taglist':'有趣,无聊,妹子多',               // 活动标签
-        'litimg_url':'http://www.scut.edu.cn',     // 活动缩略图
-        'pic_url':'http://www.scut.edu.cn',    // 活动图片原图
-        'location':'华南理工大学'               // 活动地点
-        'act_detail':'ActsBoard是一家五百强企业，融资400个亿...'   // 活动内容
-        },
-        {},
-        {},
-        ....
-    ],
-    'errmsg':'',
+    'data':'修改成功',
+    'errmsg':''
 }
 ```
 [返回](#a)
 </div>
 
-<div id='a4'>
-
-> [POST] 用户管理：** _/manage/admin/user_
-+ 请求参数：
-```
-
-```
-[返回](#a)
-</div>
-
-<div id='a5'>
-
-> [POST] 活动管理：** _/manage/admin/activities_
-+ 请求参数：
-```
-
-```
-[返回](#a)
-</div>
-
-<div id='a6'>
-
-> [POST] 推送管理：** _/manage/admin/recommend_
-+ 请求参数：
-```
-
-```
-[返回](#a)
-</div>

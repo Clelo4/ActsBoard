@@ -3,19 +3,28 @@
 use think\facade\Route;
 
 #[POST] 管理员登录： 
-Route::post('manage/admin/login','');
+Route::post('manage/admin/login','admin/base/login');
+
+#[POST] 管理员注册： 
+Route::post('manage/admin/signup','admin/base/signup');
+
+#[POST] 退出登录： 
+Route::post('manage/admin/logout','admin/base/logout');
+
+#[POST] 添加活动：
+Route::post('manage/activities/publish','admin/activities.AddActivity/addActivityInfo');
 
 #[GET] 获取活动列表： 
-Route::get('manage/getacts','');
+Route::get('manage/activities/getacts','admin/activities.GetActivity/getActs');
 
-#[GET] 获取特定类别的活动列表： 
-Route::get('manage/getacts','');
+#[GET] 获取活动的详细信息
+Route::get('manage/activities/getinfo','admin/activities.GetActivity/getActById');
 
-#[POST] 用户管理： 
-Route::post('manage/admin/user','');
+#[GET] 修改活动信息
+Route::post('manage/activities/change','admin/activities.ChangeActivity/changeActivityInfo');
 
-#[POST] 活动管理： 
-Route::post('manage/admin/activities','');
+// #[GET] 获取用户列表
+// Route::get('manage/weixin/getfollower','admin/manage.User/getFollower');
 
-#[POST] 推送管理： 
-Route::post('manage/admin/recommend','');
+// #[GET] 获取用户信息
+// Route::get('manage/weixin/getuserinfo','admin/manage.User/getUserInfo');

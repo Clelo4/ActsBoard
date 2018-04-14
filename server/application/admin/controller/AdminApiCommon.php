@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | Author: linchuangbin <linchuangbin@honraytech.com>
 // +----------------------------------------------------------------------
-// 只适用于后台管理
+// 只适用于后台管理，与账户操作有关
 namespace app\admin\controller;
 
 use think\facade\Request;
@@ -18,8 +18,6 @@ class AdminApiCommon extends Common
     public function __construct()
     {
         parent::__construct();
-        /*获取头部信息*/ 
-        $header=$this->header;
         // $authKey = $this->header['authkey'];
         // $sessionId = $this->header['sessionid'];
         $authKey = cookie('authKey');

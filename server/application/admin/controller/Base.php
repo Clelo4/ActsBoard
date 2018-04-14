@@ -21,13 +21,17 @@ class Base extends Common
         $param = $this->param;
         $username = $param['username'];
         $password = $param['password'];
+        // 注册码
+        if(!isset($param['register_code']) || $param['register_code'] != '0971'){
+            return resultArray(['error'=>'注册码错误']);
+        }
         $email = $param['email'];
         $verifyCode = isset($param['verifyCode'])? $param['verifyCode']: '';
         $data = $userModel->signup($username, $password,$verifyCode,$email);
         if(!$data){
             return resultArray(['error'=>$userModel->getError()]);
         }
-        return resultArray(['data'=>$data]);
+        return resultArray(['data'=>'注册成功']);
     }
 
     /**
@@ -46,7 +50,7 @@ class Base extends Common
             $tmp= $userModel->getError();
             return resultArray(['error' => $userModel->getError()]);
         }
-        return resultArray(['data' => $data]);
+        return resultArray(['data' => '登录成功']);
     }
 
     public function index(){
@@ -70,9 +74,10 @@ class Base extends Common
         if (!$data) {
             return resultArray(['error' => $userModel->getError()]);
         } 
-        return resultArray(['data' => $data]);
+        return resultArray(['data' => '登录成功']);
     }    
 
+    // 退出登录
     public function logout()
     {
         $authKey = cookie('authKey');

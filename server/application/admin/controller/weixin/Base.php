@@ -2,10 +2,9 @@
 
 namespace app\admin\controller\weixin;
 
-use app\admin\controller\ApiCommon;
 use think\facade\Request;
 use think\Db;
-class Base extends ApiCommon{
+class Base {
 
     static $appid="wxb569d7a3f448c503";
     static $secret="29938d5779d3dd83b9dab916f6e469d4";
@@ -30,11 +29,11 @@ class Base extends ApiCommon{
                 // 获取到了用户的openid
                 // 在数据库创建创建用户，并返回用户的user_id
                 $authKey = user_md5(date('Y-m-d').$openid); // 生成新的authKey
-                $userModel = model('weixin.UserBase');
+                $userModel = model('manage.UserBase');
                 $data=$userModel->userInfo($openid);
-                $auth_key;
-                if(Db::name('access_openid')->find('openid',$openid)){
-                    $auth_key=Db::name('access_openid')->where('openid',$openid)->update(['auth_key'=>$authKey]);
+                $auth_key=1;
+                if(Db::name('access_openid')->where('openid',$openid)->find()){
+                    Db::name('access_openid')->where('openid',$openid)->update(['auth_key'=>$authKey]);
                 } else{
                     $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$authKey]);
                 }

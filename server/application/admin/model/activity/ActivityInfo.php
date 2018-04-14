@@ -159,6 +159,7 @@ class ActivityInfo extends Common{
 
 		/**
 		 * 
+		id:活动id
 		type:活动类别
 		name:活动名称
 		valid_date:该信息的有效日期，截止到那天23:59:59
@@ -176,7 +177,8 @@ class ActivityInfo extends Common{
            &&array_key_exists('name',$param)
            &&array_key_exists('valid_date',$param)
            &&array_key_exists('location',$param)
-           &&array_key_exists('school',$param)
+		   &&array_key_exists('school',$param)
+		   &&array_key_exists('id',$param)
         ) {
 			// '20181022001' (11位)
             $param['create_time']=date('Y-m-d H:i:s');
@@ -216,4 +218,44 @@ class ActivityInfo extends Common{
         }
 	}
 
+	/**
+	 * 修改活动信息
+	 * @param array
+	 * @return boolean 返回值
+	 */
+	public function changeActivityInfo($param){
+
+		// 检查必要的key是否存在；
+		if(array_key_exists('type',$param)
+           &&array_key_exists('name',$param)
+           &&array_key_exists('valid_date',$param)
+           &&array_key_exists('location',$param)
+           &&array_key_exists('school',$param)
+        ) {
+			$dateFormat_Type=array('Y-m-d');
+
+			// 验证valid_date的合法性
+            if(!checkDateIsValid($param['valid_date'],$dateFormat_Type)){
+                return false;
+			} else{
+				$param['valid_date']=$param['valid_date'].' 23:59:59';
+			}
+
+			$data=[];
+			$key=['type','name','valid_date','school','apply_way','location','act_detail'];
+			for($i=0;$i!=count($key);$i++){
+				if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
+				else { $data[$key[$i]]=NULL; }
+			}
+
+			// -------------------------
+			$result=$this->where('act_id',$param['id'])->update($data);
+			if($result==1) {
+				return true;
+			}
+        } 
+        else {
+            return false;
+        }
+	}
 }

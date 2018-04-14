@@ -5,10 +5,10 @@
 
 namespace app\admin\controller\activities;
 
-use app\admin\controller\WeixinApiCommon;
+use app\admin\controller\ApiCommon;
 use think\facade\Request;
 
-class GetActivity extends WeixinApiCommon{
+class GetActivity extends ApiCommon{
     public function index(){
         $result;
         $result['error']="404";

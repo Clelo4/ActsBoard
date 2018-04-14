@@ -130,22 +130,3 @@ if(!function_exists('get_https')){
         return $rst;    //返回json对象
     }
 }
-
-if(!function_exists('generateId')){
-    /**
-	 * 生成活动的唯一id
-	 * author：jack
-	 * email：jack0000davis@gmail.com
-	 */
-	function generateId(){
-		$id='';
-		$currentTime=date('YmdHms');
-		$id=substr(date('Y'),2,2).date('z').substr(crc32($currentTime),-3,3).rand(0,9).rand(0,9);
-		$num=0;
-		for($i=0;$i!=10;$i++){
-			$num+=substr($id,$i,1);
-		}
-		$id=$id.$num%10;
-		return $id;
-	}
-}
