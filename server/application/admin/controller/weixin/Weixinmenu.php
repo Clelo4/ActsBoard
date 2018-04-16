@@ -6,7 +6,6 @@
  */
 
 namespace app\admin\controller\weixin;
-
 use app\admin\controller\AdminApiCommon;
 
 class WeixinMenu extends AdminApiCommon{
@@ -15,6 +14,11 @@ class WeixinMenu extends AdminApiCommon{
 		return 'ok';
 	}
 
+	/**
+	 * @category 创建自定义菜单
+	 * @author jack <chengjunjie.jack@outlook.com>
+	 * @return void
+	 */
 	public function createWeixinMenu(){
 		// $ATModel = model('token.AccessToken');
 		// $access_token=$ATModel->getAccessToken();
@@ -42,10 +46,9 @@ class WeixinMenu extends AdminApiCommon{
 				),		
 			)
 		);
-		$param=json_encode($arr,JSON_UNESCAPED_UNICODE);
 
 		$url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
-		$resultData=post_https($url,$param);
+		$resultData=post_https($url,$arr);
 		return $resultData;
 	}
 

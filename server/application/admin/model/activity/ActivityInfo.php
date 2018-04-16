@@ -188,6 +188,7 @@ class ActivityInfo extends Common{
 
 			// 验证valid_date的合法性
             if(!checkDateIsValid($param['valid_date'],$dateFormat_Type)){
+				$this->error="日期不合法";
                 return false;
 			} else{
 				$param['valid_date']=$param['valid_date'].' 23:59:59';
@@ -214,6 +215,7 @@ class ActivityInfo extends Common{
 			}
         } 
         else {
+			$this->error = "请求参数缺失";
             return false;
         }
 	}

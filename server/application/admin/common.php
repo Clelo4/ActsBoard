@@ -108,8 +108,9 @@ if (!function_exists('decrypt')) {
 if (!function_exists('get_access_token')){
 
     /**
-     * 从数据库中获取access_token
-     * @param $access_token   string
+     * 从数据库中获取微信的统一接口凭证access_token
+     * @author jack <chengjunejie.jack@outlook.com>
+     * @return string $access_token
      */
     function get_access_token(){
         $ATModel = model('token.AccessToken');
@@ -122,8 +123,8 @@ if (!function_exists('get_access_token')){
 if(!function_exists('generateId')){
     /**
 	 * 生成活动的唯一id
-	 * author：jack
-	 * email：jack0000davis@gmail.com
+	 * @author jack <chengjunjie.jack@outlook.com>
+	 * @return string
 	 */
 	function generateId(){
 		$id='';
@@ -136,4 +137,16 @@ if(!function_exists('generateId')){
 		$id=$id.$num%10;
 		return $id;
 	}
+}
+
+if (!function_exists('getweixinip')){
+    /**
+     * 获取微信服务器ip地址
+     * @return json
+     */
+    function getweixinip(){
+        $url = 'https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='.get_access_token();
+        $result = get_https($url);
+        return $result;
+    }
 }

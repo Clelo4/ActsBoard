@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller\weixin;
+namespace app\admin\controller\user;
 
 use think\facade\Request;
 use think\Db;

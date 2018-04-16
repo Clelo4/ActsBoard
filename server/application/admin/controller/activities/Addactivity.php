@@ -1,8 +1,7 @@
 <?php
 /**
- * author: jack
- * email: clelo4@qq.com
- * 只有后台可以访问
+ * @category 添加活动，只有后天管理端才能访问
+ * @author jack <chengjunjie.jack@outlook.com>
  */
 
 namespace app\admin\controller\activities;
@@ -16,7 +15,9 @@ class AddActivity extends AdminApiCommon{
     }
 
     /**
-     * 发布活动信息
+     * @category 添加活动
+     * @author jack <clelo4@qq.com>
+     * @return json
      */
     public function addActivityInfo(){
         $result;
@@ -27,9 +28,8 @@ class AddActivity extends AdminApiCommon{
         if($ActModel->addActivityInfo($param)){
             $result['data']='success';
         } else{
-            $result['error']='操作失败';
+            $result['error']=$ActModel->getError();
         }
         return resultArray($result);
-
     }
 }

@@ -4,7 +4,7 @@
  * email:clelo4@qq.com
  */
 
- namespace app\admin\controller\weixin;
+ namespace app\admin\controller\user;
  use think\facade\Request;
  use app\admin\controller\WeixinApiCommon;
 //  use think\Model;
@@ -33,7 +33,7 @@ class PublishRule extends WeixinApiCommon{
             $frequency=Request::post('frequency');
             $type=Request::post('type');
 
-            $UserModel=model('weixin.UserPushRule');
+            $UserModel=model('user.UserPushRule');
             $result0=$UserModel->setUserPushRule($openid,$school,$frequency,$type);
         }
 

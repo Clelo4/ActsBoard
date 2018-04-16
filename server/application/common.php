@@ -90,11 +90,13 @@ if(!function_exists('post_https')){
 
     /**
      * PHP 模拟发起post请求(https)
-     * @param $param json格式  发送的数据
-     * @return $rst  json格式  返回的数据
-     * 
+     * @param string $url
+     * @param array $param
+     * @return json $rst
      */
     function post_https($url, $param){
+        // 转为json格式
+        $param=json_encode($param,JSON_UNESCAPED_UNICODE);
         $curl = curl_init(); // 启动一个CURL会话
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -114,8 +116,9 @@ if(!function_exists('post_https')){
 if(!function_exists('get_https')){
 
     /**
-     * @param $url 连接
-     * @return $rst json对象
+     * PHP模拟发亲get请求(https)
+     * @param string $url
+     * @return json $rst
      */
     function get_https($url) {
         $curl = curl_init(); // 启动一个CURL会话

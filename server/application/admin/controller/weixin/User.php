@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\controller\weixin;
+namespace app\admin\controller\manage;
 
 use app\admin\controller\AdminApiCommon;
 
@@ -11,7 +11,7 @@ class User extends AdminApiCommon{
 
     /**
      * 从微信服务器获取用户的详细信息
-     * 
+     * @author jack <chengjunjie.jack@outlook.com>
      */
     public function getUserInfo(){
         $result;
