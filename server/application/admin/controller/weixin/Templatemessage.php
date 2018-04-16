@@ -147,5 +147,4 @@ class TemplateMessage extends AdminApiCommon
         return ['errcode'=> '400','errmsg'=> '服务器出错'];
     }
 
-    
 }
