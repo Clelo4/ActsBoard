@@ -28,7 +28,7 @@ class AdminApiCommon extends Common
         // 校验sessionid和authKey
         if (empty($sessionId)||empty($authKey) || empty($host) ||empty($cache)) {
             header('Content-Type:application/json; charset=utf-8');
-            exit(json_encode(['code'=>101, 'error'=>'登录已失效']));
+            exit(json_encode(['code'=>101, 'error'=>'请登录']));
         }
 
         // 区分账号
@@ -37,8 +37,7 @@ class AdminApiCommon extends Common
             $userInfo = $cache['userInfo'];
             $map['auth_id'] = $userInfo['auth_id'];
             $map['status'] = 1;
-            $tt=Db::name('auth_user')->where($map)->value('auth_id');  // 调试用
-            if (!$tt) {
+            if (!Db::name('auth_user')->where($map)->value('auth_id')) {
                 header('Content-Type:application/json; charset=utf-8');
                 exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
             }
@@ -46,14 +45,6 @@ class AdminApiCommon extends Common
             // 权限验证通过
             // 更新缓存
             cache('Auth_'.$authKey, $cache, config('LOGIN_SESSION_VALID'));
-            // $authAdapter = new AuthAdapter($authKey);
-            // // Request = Request::instance();
-            // $ruleName = Request::module().'-'.Request::controller() .'-'.Request::action();
-            // if (!$authAdapter->checkLogin($ruleName, $cache['userInfo']['auth_id'])) {
-            //     header('Content-Type:application/json; charset=utf-8');
-            //     exit(json_encode(['code'=>102,'error'=>'没有权限']));
-            // }
-            // $GLOBALS['userInfo'] = $userInfo;
         } else{
             header('Content-Type:application/json; charset=utf-8');
             exit(json_encode(['code'=>103, 'error'=>'没有访问权限']));

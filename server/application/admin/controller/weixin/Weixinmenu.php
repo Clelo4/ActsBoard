@@ -7,12 +7,9 @@
 
 namespace app\admin\controller\weixin;
 use app\admin\controller\AdminApiCommon;
+use think\facade\Request;
 
 class WeixinMenu extends AdminApiCommon{
-
-	public function index(){
-		return 'ok';
-	}
 
 	/**
 	 * @category 创建自定义菜单
@@ -20,11 +17,16 @@ class WeixinMenu extends AdminApiCommon{
 	 * @return void
 	 */
 	public function createWeixinMenu(){
-		// $ATModel = model('token.AccessToken');
-		// $access_token=$ATModel->getAccessToken();
 		$access_token=get_access_token();
+
+		if (!$this->request->isPost()){
+			return resultArray(['error' => '非法请求']);
+		}
+
+		$param = Request::post();
+		// 替换param的数据，目前不接受来自请求的数据
 		// 待发送的json格式数据---菜单
-		$arr=array(
+		$param=array(
 			'button'=>array(
 				array(
 				'type'=>'view',
@@ -48,19 +50,11 @@ class WeixinMenu extends AdminApiCommon{
 		);
 
 		$url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
-		$resultData=post_https($url,$arr);
-		return $resultData;
-	}
-
-	/**
-	 * 从数据库中获取公众号的access_token;
-	 */
-	private function getAccessToken(){
-		$result;
-		// $ATModel = model('token.AccessToken');
-		// $data=$ATModel->getAccessToken();
-		$data=get_access_token();
-		$result['data'] = $data;
-		return resultArray($result);
+		try{
+			$resultData=post_https($url,$param);
+			return $resultData;
+		} catch(Exception $e){
+			return resultArray(['error' => $e->getMessage()]);
+		}
 	}
 }

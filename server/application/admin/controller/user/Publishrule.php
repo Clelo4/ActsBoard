@@ -10,9 +10,6 @@
 //  use think\Model;
 
 class PublishRule extends WeixinApiCommon{
-     public function index(){
-        return 'admin/user.PublishRule/setPublishRule';
-     }
 
      /**
       * 用户设定推送规则

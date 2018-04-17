@@ -2,12 +2,9 @@
 namespace app\admin\controller\manage;
 
 use app\admin\controller\AdminApiCommon;
+use app\admin\model\weixin\UserManage;
 
 class User extends AdminApiCommon{
-
-    public function index(){
-        return 'index';
-    }
 
     /**
      * 从微信服务器获取用户的详细信息
@@ -15,17 +12,18 @@ class User extends AdminApiCommon{
      */
     public function getUserInfo(){
         $result;
-        if(isset($this->param['user_id'])){
-            $user_opendid=$this->param['user_id'];
-            $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.get_access_token().'&openid='.$user_opendid;
-            $data=get_https($url);
-            $result['data']=$data;
-            return resultArray($result);
-        } else{
+        if(!isset($this->param['user_id'])){
             $result['error']='参数错误';
             return resultArray($result);
         }
-        
+            
+        $openid=$this->param['user_id'];
+        $model = Model('weixin.UserManage');
+        $userInfo = $model->userInfo($openid);
+        if(!$userInfo){
+            return resultArray(['error'=>$model->getError()]);
+        }
+        return resultArray(['data' => $userInfo]);
     }
 
     /**

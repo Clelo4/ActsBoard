@@ -16,7 +16,7 @@ class AddActivity extends AdminApiCommon{
 
     /**
      * @category 添加活动
-     * @author jack <clelo4@qq.com>
+     * @author jack <chengjunjie.jack@outlook.com>
      * @return json
      */
     public function addActivityInfo(){

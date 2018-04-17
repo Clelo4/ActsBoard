@@ -2,4 +2,5 @@
 // activities
 use think\facade\Route;
 
-Route::get('test','index/test/index');
+Route::get('test','admin/weixin.TemplateMessage/TeamplateTest');
+

@@ -4,13 +4,16 @@ namespace app\admin\controller\user;
 
 use think\facade\Request;
 use think\Db;
+use think\Validate;
+
+/**
+ * 验证微信用户的基础类
+ * @author jack <chengjunjie.jack@outlook.com>
+ */
 class Base {
 
     static $appid="wxb569d7a3f448c503";
     static $secret="29938d5779d3dd83b9dab916f6e469d4";
-    public function index(){
-        return 'ok';
-    }
 
     /** 
      * 服务器接收来自微信用户客户端的code，调用getAccessToken函数获得用户的openid
@@ -20,32 +23,35 @@ class Base {
     public function getCode(){
         // 微信客户端
         $result;
-
         $param=Request::post();
-        if(isset($param['code'])){
-            $code=$param['code'];
-            $openid=$this->getAccessToken($code);
-            if($openid){
-                // 获取到了用户的openid
-                // 在数据库创建创建用户，并返回用户的user_id
-                $authKey = user_md5(date('Y-m-d').$openid); // 生成新的authKey
-                $userModel = model('manage.UserBase');
-                $data=$userModel->userInfo($openid);
-                $auth_key=1;
-                if(Db::name('access_openid')->where('openid',$openid)->find()){
-                    Db::name('access_openid')->where('openid',$openid)->update(['auth_key'=>$authKey]);
-                } else{
-                    $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$authKey]);
-                }
-                if($auth_key){
-                    // 设置cookie
-                    cookie('openid',$openid,3600*24*30); // 有效期一个月
-                    cookie('authKey',$authKey,3600*24*30); // 有效期一个月
-                    cookie("_access",1,3600*24*30);
-                    cookie("host","weixin",3600*24*30);
-                    $result['data']=$data;
-                    return resultArray($result);    
-                }
+
+        // 验证code
+        $validate = Validate::make(['code' => 'require'],['code' => 'code错误']);
+        if (!$validate->check($param)){
+            return resultArray(['error' => $validate->getError()]);
+        }
+
+        $openid=$this->getAccessToken($param['code']);
+        if($openid){
+            // 获取到了用户的openid
+            // 在数据库创建创建用户，并返回用户的user_id
+            $authKey = user_md5(date('YmdHms').$openid); // 生成新的authKey
+            $userModel = model('weixin.UserManage');
+            $data=$userModel->userInfo($openid);
+            $auth_key=1;
+            if(Db::name('access_openid')->where('openid',$openid)->find()){
+                Db::name('access_openid')->where('openid',$openid)->update(['auth_key'=>$authKey]);
+            } else{
+                $auth_key=Db::name('access_openid')->insert(['openid'=>$openid,'auth_key'=>$authKey]);
+            }
+            if($auth_key){
+                // 设置cookie
+                cookie('openid',$openid,3600*24*30); // 有效期一个月
+                cookie('authKey',$authKey,3600*24*30); // 有效期一个月
+                cookie("_access",1,3600*24*30);
+                cookie("host","weixin",3600*24*30);
+                $result['data']=$data;
+                return resultArray($result);    
             }
         }
         $result['error']="连接超时";
@@ -56,8 +62,8 @@ class Base {
         
     }
 
-    // 服务器通过code向微信服务器获取用户的access_token
     /**
+     * 服务器通过code向微信服务器获取用户的access_token
      * @param $code string 微信客户端传回的code
      */
     private function getAccessToken($code){

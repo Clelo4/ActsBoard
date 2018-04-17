@@ -50,6 +50,8 @@ class ReceiveMsgFromWeixin extends Common{
             return '';
         }
 
+        $result='';
+
         //获取用户发送的信息
         $data = $GLOBALS['HTTP_RAW_POST_DATA'];
         if (!empty($data)){
@@ -59,14 +61,7 @@ class ReceiveMsgFromWeixin extends Common{
             // 消息类型分离
             switch($MsgType)
             {
-                case 'event':
-                    if ($data->Event->__toString() == 'wxa_widget_data') {
-                        $result = $this->receiveWidgetEvent($data);
-                    }
-                    else {
-                        $result = $this->receiveEvent($data);
-                    }
-                    break;
+
                 case 'text':
                     $result = $this->receiveText($data);
                     break;
@@ -85,12 +80,27 @@ class ReceiveMsgFromWeixin extends Common{
                 case 'link':
                     $result = $this->receiveLink($data);
                     break;
+                case 'event': // 事件类型
+                    switch($data->Event->__toString()){
+                        case 'wxa_widget_data': // 小程序事件
+                            $result = $this->receiveWidgetEvent($data);
+                            break;
+                        case 'subscribe': // 订阅事件
+                            $result = $this->subscribe($data);
+                            break;
+                        case 'unsubscribe': // 取消订阅事件
+                            break;
+                        default:
+                            $result = $this->receiveEvent($data);
+                            break;
+                        }
+                    break;
                 default:
                     break;
             }
         }
 
-        return '';
+        return $result;
     }
 
     /**
@@ -108,7 +118,33 @@ class ReceiveMsgFromWeixin extends Common{
         return ;
     }
 
+    /**
+     * 向用户返回文本信息
+     * @author jack <chengjunjie.jack@outlook.com>
+     * @param SimpleXMLElement $data
+     * @return void
+     */
     protected function receiveText($data){
-        
+        // Tag: 目前不对用户发送的信息进行分析处理，只统一返回相同的数据
+        $ToUserName = $data->FromUserName->__toString();
+        $FromUserName = $data->ToUserName->__tostring();
+        $content = "Hello! Wellcom to ActsBoard\n<a href='https://www.baidu.com'>请完成设置</a>\n联系：chengjunjie.jack@outlook.com";
+        $CreateTime = intval(time());
+        return "<xml><ToUserName><![CDATA[".$ToUserName."]]></ToUserName><FromUserName><![CDATA[".$FromUserName."]]></FromUserName><CreateTime>".$CreateTime."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$content."]]></Content></xml>";
+    }
+
+    /**
+     * 用户关注事件，返回信息给用户
+     * @author jack <chengjunjie.jack@outlook.com>
+     * @param SimpleXMLElement $data
+     * @return void
+     */
+    protected function subscribe($data){
+        // Tag: 目前不对用户发送的信息进行分析处理，只统一返回相同的数据
+        $ToUserName = $data->FromUserName->__toString();
+        $FromUserName = $data->ToUserName->__tostring();
+        $content = "Hello! Wellcom to ActsBoard\n<a href='https://www.baidu.com'>请完成设置</a>\n联系：chengjunjie.jack@outlook.com";
+        $CreateTime = intval(time());
+        return "<xml><ToUserName><![CDATA[".$ToUserName."]]></ToUserName><FromUserName><![CDATA[".$FromUserName."]]></FromUserName><CreateTime>".$CreateTime."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$content."]]></Content></xml>";
     }
 }

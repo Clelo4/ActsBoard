@@ -10,13 +10,13 @@ use think\Validate;
  */
 class ManageLogin extends Validate{
     protected $rule = [
-        'username' => 'require | max:25',
-        'password' => 'require | between:6,32',
-        'validateCode' => 'require',
+        'username' => 'require|max:25',
+        'password' => 'require|length:6,32',
+        'verifyCode' => 'require',
     ];
     protected $message = [
         'username' => '用户名或密码错误',
         'password' => '用户名或密码错误',
-        'validateCode' => '验证码错误',
+        'verifyCode' => '验证码错误',
     ];
 }

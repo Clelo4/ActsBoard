@@ -8,9 +8,9 @@ use think\Validate;
  */
 class SendTemplateMsg extends Validate{
     protected $rule = [
-        'touser' => 'require | alphaNum | length:28',
-        'template_id' => 'require | alphaNum ',
-        'url' => 'require | url',
+        'touser' => 'require|length:28',
+        'template_id' => 'require|chsDash',
+        'url' => 'url',
         'data' => 'array',
         'miniprogram' => 'array',
     ];

@@ -10,6 +10,8 @@ namespace app\admin\controller;
 use com\verify\HonrayVerify;
 use app\common\controller\Common;
 use think\Request;
+use app\admin\validate\ManageSignUp as ManageSignUpValidate;
+use app\admin\validate\ManageLogin as ManageLoginValidate;
 
 class Base extends Common
 {
@@ -19,15 +21,26 @@ class Base extends Common
     public function signup(){
         $userModel = model('User');
         $param = $this->param;
-        $username = $param['username'];
-        $password = $param['password'];
-        // 注册码
+
+        // 验证注册参数
+        $validate = new ManageSignUpValidate();
+        if(!$validate->check($param)){
+            return resultArray(['error' => $validate->getError()]);
+        }
+
+        // 验证注册码
         if(!isset($param['register_code']) || $param['register_code'] != '0971'){
             return resultArray(['error'=>'注册码错误']);
         }
+
+        // code：验证验证码，后期完善 
+
+        $username = $param['username'];
+        $password = $param['password'];
         $email = $param['email'];
-        $verifyCode = isset($param['verifyCode'])? $param['verifyCode']: '';
-        $data = $userModel->signup($username, $password,$verifyCode,$email);
+        $mobile = $param['mobile'];
+
+        $data = $userModel->signup($username, $password,$email,$mobile);
         if(!$data){
             return resultArray(['error'=>$userModel->getError()]);
         }
@@ -41,6 +54,12 @@ class Base extends Common
     {   
         $userModel = model('User');
         $param = $this->param;
+
+        // 验证登录参数
+        $validate = new ManageLoginValidate();
+        if (!$validate->check($param)){
+            return resultArray(['error' => $validate->getError()]);
+        }
         $username = $param['username'];
         $password = $param['password'];
         $verifyCode = isset($param['verifyCode'])? $param['verifyCode']: '';

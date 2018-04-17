@@ -178,17 +178,15 @@ class User extends Common
 
 
 	/**
-	 * [signup 注册]
-	 * @jack
-	 * @DateTime  2018-4-10
-	 * @param     [string]                   $username [账号]
-	 * @param     [string]                   $passw    [密码]
-	 * @param     [string]                   $verifyCode [验证码]
-	 * @param     [string]              	 $email      [邮箱]
-	 * @param     [string]                   $mobile     [手机号]
-	 * @return    [type]                               [description]
+	 * 后台管理注册
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @param string $email
+	 * @param string $mobile
+	 * @return boolean
 	 */
-	public function signup($username, $password,$verifyCode,$email='',$mobile=''){
+	public function signup($username, $password,$email,$mobile){
 		if (!$username) {
 			$this->error = '帐号不能为空';
 			return false;
@@ -264,11 +262,11 @@ class User extends Common
 		$map['username'] = $username;
 		$userInfo = $this->where($map)->find();
     	if (!$userInfo) {
-			$this->error = '帐号不存在';
+			$this->error = '帐号或密码错误';
 			return false;
     	}
     	if (user_md5($password) !== $userInfo['password']) {
-			$this->error = '密码错误';
+			$this->error = '帐号或密码错误';
 			return false;
 		}
 		if ($userInfo['islock'] === 1) {

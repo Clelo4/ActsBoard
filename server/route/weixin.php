@@ -2,8 +2,8 @@
 // weixin 
 use think\facade\Route;
 
-Route::get('weixin/wx','admin/weixin.WeixinMenu/getAccessToken');
-Route::get('weixin/test','admin/weixin.WeixinMenu/createWeixinMenu');
+// 创建微信自定菜单
+Route::get('weixin/createMenu','admin/weixin.WeixinMenu/createWeixinMenu');
 // 消息接口
 Route::post('wx','admin/weixin.ReceiveMsgFromWeixin/wechatCallbackApi');
 Route::get('wx','admin/weixin.ReceiveMsgFromWeixin/checkSever');
