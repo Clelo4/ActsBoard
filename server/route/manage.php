@@ -3,10 +3,10 @@
 use think\facade\Route;
 
 #[POST] 管理员登录： 
-Route::post('manage/admin/login','admin/base/login');
+Route::any('manage/admin/login','admin/base/login');
 
 #[POST] 管理员注册： 
-Route::post('manage/admin/signup','admin/base/signup');
+Route::any('manage/admin/signup','admin/base/signup');
 
 #[POST] 退出登录： 
 Route::post('manage/admin/logout','admin/base/logout');

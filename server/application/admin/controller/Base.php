@@ -19,6 +19,12 @@ class Base extends Common
      * 注册
      */
     public function signup(){
+
+        // 如果不是post请求就返回
+        if (!$this->request->isPost()){
+            return ;
+        }
+
         $userModel = model('User');
         $param = $this->param;
 
@@ -52,6 +58,10 @@ class Base extends Common
      */
     public function login()
     {   
+        // 如果不是post请求就返回
+        if (!$this->request->isPost()){
+            return ;
+        }
         $userModel = model('User');
         $param = $this->param;
 
