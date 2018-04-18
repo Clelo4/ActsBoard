@@ -18,33 +18,33 @@ class WeixinApiCommon extends Common
     public function __construct()
     {
         parent::__construct();
-        // 获取cookie，三个cookie都长久保存与微信客户端中
-        $openid = cookie('openid');
-        $authKey = cookie('authKey');
-        $host = cookie('host');     // 识别host，为了区分是否是weixin客户端还是web端，web端host：we.iamxuyuan.com
+        // // 获取cookie，三个cookie都长久保存与微信客户端中
+        // $openid = cookie('openid');
+        // $authKey = cookie('authKey');
+        // $host = cookie('host');     // 识别host，为了区分是否是weixin客户端还是web端，web端host：we.iamxuyuan.com
 
-        // 检测openid、authKey和host
-        if ( empty('openid') || empty($authKey) || empty($host)) {
-            header('Content-Type:application/json; charset=utf-8');
-            cookie('_access',0); // 设置cookie
-            exit(json_encode(['code'=>101, 'error'=>'登录已失效']));
-        }
+        // // 检测openid、authKey和host
+        // if ( empty('openid') || empty($authKey) || empty($host)) {
+        //     header('Content-Type:application/json; charset=utf-8');
+        //     cookie('_access',0); // 设置cookie
+        //     exit(json_encode(['code'=>101, 'error'=>'登录已失效']));
+        // }
 
-        if($host == 'weixin') {  // 是否是微信客户端
-            // 检查账号有效性
-            $map['openid'] = $openid;
-            $auth_key=Db::name('access_openid')->where($map)->value('auth_key');
-            if (!$auth_key || $auth_key!=$authKey ) { // authKey是否正确
-                header('Content-Type:application/json; charset=utf-8');
-                cookie('_access',0);  // 设置cookie
-                exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
-            }
-            // 通过验证
-            cookie('_access',1); // 允许访问
-        } else{
-            header('Content-Type:application/json; charset=utf-8');
-            cookie('_access',0);  // 设置cookie
-            exit(json_encode(['code'=>103, 'error'=>'没有访问权限']));
-        }
+        // if($host == 'weixin') {  // 是否是微信客户端
+        //     // 检查账号有效性
+        //     $map['openid'] = $openid;
+        //     $auth_key=Db::name('access_openid')->where($map)->value('auth_key');
+        //     if (!$auth_key || $auth_key!=$authKey ) { // authKey是否正确
+        //         header('Content-Type:application/json; charset=utf-8');
+        //         cookie('_access',0);  // 设置cookie
+        //         exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
+        //     }
+        //     // 通过验证
+        //     cookie('_access',1); // 允许访问
+        // } else{
+        //     header('Content-Type:application/json; charset=utf-8');
+        //     cookie('_access',0);  // 设置cookie
+        //     exit(json_encode(['code'=>103, 'error'=>'没有访问权限']));
+        // }
     }
 }
