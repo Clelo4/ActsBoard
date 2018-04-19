@@ -9,10 +9,10 @@ Route::any('manage/admin/login','admin/base/login');
 Route::any('manage/admin/signup','admin/base/signup');
 
 #[POST] 退出登录： 
-Route::post('manage/admin/logout','admin/base/logout');
+Route::any('manage/admin/logout','admin/base/logout');
 
 #[POST] 添加活动：
-Route::post('manage/activities/publish','admin/activities.AddActivity/addActivityInfo');
+Route::any('manage/activities/publish','admin/activities.AddActivity/addActivityInfo');
 
 #[GET] 获取活动列表： 
 Route::get('manage/activities/getacts','admin/activities.GetActivity/getActs');
@@ -21,7 +21,7 @@ Route::get('manage/activities/getacts','admin/activities.GetActivity/getActs');
 Route::get('manage/activities/getinfo','admin/activities.GetActivity/getActById');
 
 #[GET] 修改活动信息
-Route::post('manage/activities/change','admin/activities.ChangeActivity/changeActivityInfo');
+Route::any('manage/activities/change','admin/activities.ChangeActivity/changeActivityInfo');
 
 // #[GET] 获取用户列表
 // Route::get('manage/weixin/getfollower','admin/manage.User/getFollower');

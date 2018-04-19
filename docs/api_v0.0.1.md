@@ -4,8 +4,8 @@ __[To Client]__ *对外接口*
 # __Activities__
 ### _Author：_ _jack_
 ### _Time：_ _2018-04-05_
-### _Email：_ _jack0000davis@gmail.com_
-### _API 文档版本：_ v1.0.1
+### _Email：_ _chengjunjie.jack@outlook.com_
+### _API 文档版本：_ v0.0.1
 
 ---
 <br>
@@ -23,7 +23,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 ## **API简述:**
 
-<div id='u'>
+<div id="u">
 
 ### __用户端__
 >
@@ -42,7 +42,7 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 </div>
 
 ---
-<div id='a'>
+<div id="a">
 
 ### __管理端__:
 >
@@ -72,12 +72,12 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ### **通用字段说明：**
 | 参数名 | 类型 | 含义 | 备注 |
 | --- | --- | --- | --- |
-| id | string | 活动唯一id  | '20181022001' (11位) |
-| type | string | 特定的类型 | 依据接口的要求为准 |
+| id | string | 活动唯一id  | "20181022001" (11位) |
+| type | string | 类型 | 依据接口的要求为准 |
 | name | string | 活动名称 | 1-255位 |
 | valid_date | string| 活动信息的最后有效期 | 2018-09-09 23:59:59 |
 | sort | int | 排序方式 | 1：按有效期由近及远、2：按有效期由远及近、3：按活动信息创建时间由久到近 |
-| taglist | string | 标签列表 | 'tag1,tag2,ta3' |
+| taglist | array | 标签列表 | ["tag1","tag2","ta3"] |
 | sex | int | 性别 | 性别：1男 2女 |
 | school | string | 学校 | |
 | litimg_url | string | 缩略图链接 | 1-255位字符 |
@@ -87,8 +87,8 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 | url | string | 活动链接 | 1-255位 |
 | location | string | 活动地点 | |
 | content | string | 文本内容 | |
-| username  |  string |  账号名  |  6-15位字符,只能包含英文字母、数字、下 划线，不含空格(不区分大小写)  |
-| password  |  string  | 密码  |  6-18位字符,可包含数字，字母(区分大小写)  |
+| username  |  string |  账号名  |  6-25位字符,只能包含英文字母、数字、下 划线，不含空格(不区分大小写)  |
+| password  |  string  | 密码  |  6-32位字符,可包含数字，字母(区分大小写)  |
 | token | string | 令牌 |  |
 | user_id  | string  |  用户  |  (11位)  |
 | post_id   |  int | 部门 |  |
@@ -125,17 +125,17 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 > 成功返回示例：
 ``` 
 {
-    'errcode':0,
-    'data':(返回数据，可以json类型或其他类型),
-    'errmsg':''
+    "errcode":0,
+    "data":(返回数据，可以json类型或其他类型),
+    "errmsg":""
 }
 ```
 
 > 失败返回示例：
 ``` 
 {
-    'errcode':(错误代码),
-    'errmsg':(错误信息说明)
+    "errcode":(错误代码),
+    "errmsg":(错误信息说明)
 }
 ```
 
@@ -144,35 +144,35 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 
 ## __API详细说明：__
 
-<div id='u1'>
+<div id="u1">
 
 > [GET] 根据活动id获取该活动的所有信息：  _/activities/getinfo?id={}_
 + 请求参数：id (活动id)
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':{
-        'id':1,
-        'type':'讲座',                // 活动类别
-        'name':'ActsBoard讲座',           // 活动名称
-        'valid_date':'2019-09-09',     // 该信息的有效日期，截止到那天23:59
-        'apply_way':'',                   // 申请方式
-        'school':'华南理工大学',                    // 学校
-        'taglist':'有趣,无聊,妹子多',               // 活动标签
-        'url':'http://www.scut.edu.cn',   // 活动链接
-        'litimg_url':'http://www.scut.edu.cn',     // 活动缩略图
-        'pic_url':'http://www.scut.edu.cn',    // 活动图片原图
-        'location':'华南理工大学'               // 活动地点
-        'act_detail':'ActsBoard是一家五百强企业，融资400个亿...'   // 活动内容
+    "errcode":0,
+    "data":{
+        "id":12345678901,
+        "type":"讲座",                // 活动类别
+        "name":"ActsBoard讲座",           // 活动名称
+        "valid_date":"2019-09-09",     // 该信息的有效日期，截止到那天23:59
+        "apply_way":"",                   // 申请方式
+        "school":"华南理工大学",                    // 学校
+        "taglist":["有趣","无聊","妹子多"],               // 活动标签
+        "url":"http://www.scut.edu.cn",   // 活动链接
+        "litimg_url":"http://www.scut.edu.cn",     // 活动缩略图
+        "pic_url":"http://www.scut.edu.cn",    // 活动图片原图
+        "location":"华南理工大学"               // 活动地点
+        "act_detail":"ActsBoard是一家五百强企业，融资400个亿..."   // 活动内容
     }
-    'errmsg':''
+    "errmsg":""
 }
 ```
 [返回](#u)
 </div>
 
-<div id='u2'>
+<div id="u2">
 
 > [GET] 根据条件筛选活动列表：  _/activities/getacts?{}={}_
 + 请求参数(自由组合)：
@@ -186,29 +186,29 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':[
+    "errcode":0,
+    "data":[
         {
-        'id':1,
-        'type':'讲座',                // 活动类别
-        'name':'ActsBoard讲座',           // 活动名称
-        'valid_date':'2019-09-09',     // 该信息的有效日期，截止到那天23:59
-        'school':'华南理工大学',                    // 学校
-        'taglist':'有趣,无聊,妹子多',               // 活动标签
-        'litimg_url':'http://www.scut.edu.cn',     // 活动缩略图
-        'pic_url':'http://www.scut.edu.cn',    // 活动图片原图
-        'location':'华南理工大学'               // 活动地点
-        'act_detail':'ActsBoard是一家五百强企业，融资400个亿...'   // 活动内容
+        "id":1,
+        "type":"讲座",                // 活动类别
+        "name":"ActsBoard讲座",           // 活动名称
+        "valid_date":"2019-09-09",     // 该信息的有效日期，截止到那天23:59
+        "school":"华南理工大学",                    // 学校
+        "taglist":["有趣","无聊","妹子多"],               // 活动标签
+        "litimg_url":"http://www.scut.edu.cn",     // 活动缩略图
+        "pic_url":"http://www.scut.edu.cn",    // 活动图片原图
+        "location":"华南理工大学"               // 活动地点
+        "act_detail":"ActsBoard是一家五百强企业，融资400个亿..."   // 活动内容
     },
         ...
     ],
-    'errmsg':''
+    "errmsg":""
 }
 ```
 [返回](#u)
 </div>
 
-<div id='u3'>
+<div id="u3">
 
 > [GET] 获取默认活动列表：   _/activities/getacts_
 + 请求参数：
@@ -216,31 +216,31 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':[
+    "errcode":0,
+    "data":[
         {
-        'id':1,
-        'type':'讲座',                // 活动类别
-        'name':'ActsBoard讲座',           // 活动名称
-        'valid_date':'2019-09-09',     // 该信息的有效日期，截止到那天23:59
-        'school':'华南理工大学',                    // 学校
-        'taglist':'有趣,无聊,妹子多',               // 活动标签
-        'litimg_url':'http://www.scut.edu.cn',     // 活动缩略图
-        'pic_url':'http://www.scut.edu.cn',    // 活动图片原图
-        'location':'华南理工大学'               // 活动地点
-        'act_detail':'ActsBoard是一家五百强企业，融资400个亿...'   // 活动内容
+        "id":1,
+        "type":"讲座",                // 活动类别
+        "name":"ActsBoard讲座",           // 活动名称
+        "valid_date":"2019-09-09",     // 该信息的有效日期，截止到那天23:59
+        "school":"华南理工大学",                    // 学校
+        "taglist":["有趣","无聊","妹子多"],               // 活动标签
+        "litimg_url":"http://www.scut.edu.cn",     // 活动缩略图
+        "pic_url":"http://www.scut.edu.cn",    // 活动图片原图
+        "location":"华南理工大学"               // 活动地点
+        "act_detail":"ActsBoard是一家五百强企业，融资400个亿..."   // 活动内容
     },
         {},
         {},
     ],
-    'errmsg':''
+    "errmsg":""
 }
 ```
 
 [返回](#u)
 </div>
 
-<div id='u4'>
+<div id="u4">
 
 > [GET] 根据user获取推荐的活动列表：  _/activities/getacts?recommend=yes&user_id={}_
 + 请求参数：
@@ -248,31 +248,31 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':[
+    "errcode":0,
+    "data":[
         {
-        'id':1,
-        'type':'讲座',                // 活动类别
-        'name':'ActsBoard讲座',           // 活动名称
-        'valid_date':'2019-09-09',     // 该信息的有效日期，截止到那天23:59
-        'school':'华南理工大学',                    // 学校
-        'taglist':'有趣,无聊,妹子多',               // 活动标签
-        'litimg_url':'http://www.scut.edu.cn',     // 活动缩略图
-        'pic_url':'http://www.scut.edu.cn',    // 活动图片原图
-        'location':'华南理工大学'               // 活动地点
-        'act_detail':'ActsBoard是一家五百强企业，融资400个亿...'   // 活动内容
+        "id":1,
+        "type":"讲座",                // 活动类别
+        "name":"ActsBoard讲座",           // 活动名称
+        "valid_date":"2019-09-09",     // 该信息的有效日期，截止到那天23:59
+        "school":"华南理工大学",                    // 学校
+        "taglist":["有趣","无聊","妹子多"],               // 活动标签
+        "litimg_url":"http://www.scut.edu.cn",     // 活动缩略图
+        "pic_url":"http://www.scut.edu.cn",    // 活动图片原图
+        "location":"华南理工大学"               // 活动地点
+        "act_detail":"ActsBoard是一家五百强企业，融资400个亿..."   // 活动内容
         },
         {},
         {},
         ....
     ],
-    'errmsg':'',
+    "errmsg":"",
 }
 ```
 [返回](#u)
 </div>
 
-<div id='u5'>
+<div id="u5">
 
 > [POST] 设定用户推送规则： _/user/setrule_
 + 请求参数
@@ -282,15 +282,15 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':'success',
-    'errmsg':''
+    "errcode":0,
+    "data":"success",
+    "errmsg":""
 }
 ```
 [返回](#u)
 </div>
 
-<div id='u6'>
+<div id="u6">
 
 > [POST] 获取用户的openid： _/weixin/getuserid_
 + 请求参数
@@ -298,34 +298,35 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':用户的openid,
-    'errmsg':''
+    "errcode":0,
+    "data":用户的openid,
+    "errmsg":""
 }
 ```
 [返回](#u)
 </div>
 
 
-<div id='a1'>
+<div id="a1">
 
 > [POST] 管理员登录： _/manage/admin/login_
 + 请求参数：
-  + username:用户名
-  + password:密码
+  + username:用户名(必选)
+  + password:密码(必选)
+  + verifyCode:验证码(必选)
 
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':'登录成功',
-    'errmsg':''
+    "errcode":0,
+    "data":"登录成功",
+    "errmsg":""
 }
 ```
 [返回](#a)
 </div>
 
-<div id='a2'>
+<div id="a2">
 
 > [POST] 管理员注册： _/manage/admin/signup_
 + 请求参数：
@@ -338,15 +339,15 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':'注册成功',
-    'errmsg':''
+    "errcode":0,
+    "data":"注册成功",
+    "errmsg":""
 }
 ```
 [返回](#a)
 </div>
 
-<div id='a3'>
+<div id="a3">
 
 > [POST] 退出登录： _/manage/admin/logout_
 + 请求参数：无
@@ -354,41 +355,41 @@ __(开发中)->(已测试)->(已对接)->(发布)__
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':'退出成功',
-    'errmsg':''
+    "errcode":0,
+    "data":"退出成功",
+    "errmsg":""
 }
 ```
 [返回](#a)
 </div>
 
 
-<div id='a7'>
+<div id="a7">
 
 > [POST] 发布活动信息： _/manage/activities/publish_
 + 请求参数:
-  + type:活动类别
-  + name:活动名称
-  + valid_date:该信息的有效日期，截止到那天23:59:59
-  + school:学校
-  + taglist:活动标签
-  + litimg_url:活动缩略图
-  + pic_url:活动图片原图
+  + type:活动类别(必选)
+  + name:活动名称(必选)
+  + valid_date:该信息的有效日期，截止到那天23:59:59(必选)
+  + school:学校(必选)
+  + taglist:活动标签(必选)
+  + litimg_url:活动缩略图(可选)
+  + pic_url:活动图片原图(必选)
   + location:活动地点
-  + act_detail:活动内容
+  + act_detail:活动内容(必选)
 
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':'success',
-    'errmsg':''
+    "errcode":0,
+    "data":"success",
+    "errmsg":""
 }
 ```
 [返回](#a)
 </div>
 
-<div id='a8'>
+<div id="a8">
 
 > [GET] 查询活动列表： _/manage/activities/getacts_
 + 请求参数(自由组合)：
@@ -397,61 +398,61 @@ __(开发中)->(已测试)->(已对接)->(发布)__
   + school:学校(可选)
   + sort:排序方式(可选)
   + page:页数(可选)
-+ 省略的参数默认值：全部
++ 省略的参数取默认值
 
 [返回](#a)
 </div>
 
 
-<div id='a9'>
+<div id="a9">
 
 > [GET] 根据活动id获取该活动的所有信息：  _/manage/activities/getinfo?id={}_
 + 请求参数：id (活动id)
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':{
-        'id':1,
-        'type':'讲座',                // 活动类别
-        'name':'ActsBoard讲座',           // 活动名称
-        'valid_date':'2019-09-09',     // 该信息的有效日期，截止到那天23:59
-        'apply_way':'',                   // 申请方式
-        'school':'华南理工大学',                    // 学校
-        'taglist':'有趣,无聊,妹子多',               // 活动标签
-        'url':'http://www.scut.edu.cn',   // 活动链接
-        'litimg_url':'http://www.scut.edu.cn',     // 活动缩略图
-        'pic_url':'http://www.scut.edu.cn',    // 活动图片原图
-        'location':'华南理工大学'               // 活动地点
-        'act_detail':'ActsBoard是一家五百强企业，融资400个亿...'   // 活动内容
+    "errcode":0,
+    "data":{
+        "id":1,
+        "type":"讲座",                // 活动类别
+        "name":"ActsBoard讲座",           // 活动名称
+        "valid_date":"2019-09-09",     // 该信息的有效日期，截止到那天23:59
+        "apply_way":"",                   // 申请方式
+        "school":"华南理工大学",                    // 学校
+        "taglist":["有趣","无聊","妹子多"],               // 活动标签
+        "url":"http://www.scut.edu.cn",   // 活动链接
+        "litimg_url":"http://www.scut.edu.cn",     // 活动缩略图
+        "pic_url":"http://www.scut.edu.cn",    // 活动图片原图
+        "location":"华南理工大学"               // 活动地点
+        "act_detail":"ActsBoard是一家五百强企业，融资400个亿..."   // 活动内容
     }
-    'errmsg':''
+    "errmsg":""
 }
 ```
 [返回](#a)
 </div>
 
-<div id='a10'>
+<div id="a10">
 
 > [POST] 修改活动信息：  _/manage/activities/change_
 + 请求参数:
-  + id:活动id
-  + type:活动类别
-  + name:活动名称
-  + valid_date:该信息的有效日期，截止到那天23:59:59
-  + school:学校
-  + taglist:活动标签
-  + litimg_url:活动缩略图
-  + pic_url:活动图片原图
+  + id:活动id(必选)
+  + type:活动类别(必选)
+  + name:活动名称(必选)
+  + valid_date:该信息的有效日期，截止到那天23:59:59(必选)
+  + school:学校(必选)
+  + taglist:活动标签(必选)
+  + litimg_url:活动缩略图(可选)
+  + pic_url:活动图片原图(必选)
   + location:活动地点
-  + act_detail:活动内容
+  + act_detail:活动内容(必选)
 
 ```
 // 返回实例
 {
-    'errcode':0,
-    'data':'修改成功',
-    'errmsg':''
+    "errcode":0,
+    "data":"修改成功",
+    "errmsg":""
 }
 ```
 [返回](#a)

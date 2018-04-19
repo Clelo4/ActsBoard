@@ -44,10 +44,9 @@ class ReceiveMsgFromWeixin extends Common{
      * @return void
      */
     public function wechatCallbackApi(){
-        // 若不为post请求，则返回空数据
-        $TT=$this->request;
+        // 如果不为post请求，返回空
         if (!$this->request->isPost()){
-            return '';
+            return ;
         }
 
         $result='';

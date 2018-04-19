@@ -109,6 +109,10 @@ class Base extends Common
     // 退出登录
     public function logout()
     {
+        // 如果不是post请求就返回
+        if (!$this->request->isPost()){
+            return ;
+        }
         $authKey = cookie('authKey');
         cache('Auth_'.$authKey, null); // 删除服务器session缓存
         cookie('authKey',null); // 删除cookie的authKey

@@ -21,6 +21,10 @@ class Base {
      * 服务器不保存session缓存，但在数据库中保存openid和authKey(验证用户身份)
      */
     public function getCode(){
+        // 如果不为post请求，放回空
+        if (!$this->request->isPost()){
+            return ;
+        }
         // 微信客户端
         $result;
         $param=Request::post();

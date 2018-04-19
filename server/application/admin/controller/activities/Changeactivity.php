@@ -13,9 +13,15 @@ class ChangeActivity extends AdminApiCommon{
 
 
     /**
-     * 发布活动信息
+     * 修改活动信息
+     * @author jack <chengjunjie.jack@outlook.com>
+     * @return mixed
      */
     public function changeActivityInfo(){
+        // 如果不为post请求，返回空
+        if (!$this->request->isPost()){
+            return ;
+        }
         $result;
         $param=Request::post();
 
@@ -24,9 +30,8 @@ class ChangeActivity extends AdminApiCommon{
         if($ActModel->changeActivityInfo($param)){
             $result['data']='修改成功';
         } else{
-            $result['error']='操作失败';
+            $result['error']=$ActModel->getError();
         }
         return resultArray($result);
-
     }
 }

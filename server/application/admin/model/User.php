@@ -227,15 +227,14 @@ class User extends Common
 	}
 
 	/**
-	 * [login 登录]
-	 * @AuthorHTL
-	 * @DateTime  2017-02-10T22:37:49+0800
-	 * @param     [string]                   $u_username [账号]
-	 * @param     [string]                   $u_pwd      [密码]
-	 * @param     [string]                   $verifyCode [验证码]
-	 * @param     Boolean                  	 $isRemember [是否记住密码]
-	 * @param     Boolean                    $type       [是否重复登录]
-	 * @return    [type]                               [description]
+	 * 后台管理登录
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @param string $verifyCode
+	 * @param boolean $isRemember
+	 * @param boolean $type
+	 * @return boolean
 	 */
 	public function login($username, $password, $verifyCode = '', $isRemember = false, $type = false)
 	{
@@ -294,7 +293,7 @@ class User extends Common
 		}
 
 		/**
-		 *  删除服务器的session缓存
+		 *  删除服务器的旧session缓存
 		*/
 		$authKey = cookie('authKey');
 		$sessionId = cookie('PHPSESSID');
@@ -327,7 +326,7 @@ class User extends Common
 		$data['userInfo']		= $userInfo;
 		// $data['authList']		= $dataList['rulesList'];
 		// $data['menusList']		= $dataList['menusList'];
-		return $data;
+		return true;
     }
 
 	/**

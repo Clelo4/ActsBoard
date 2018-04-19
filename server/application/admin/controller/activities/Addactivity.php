@@ -20,6 +20,10 @@ class AddActivity extends AdminApiCommon{
      * @return json
      */
     public function addActivityInfo(){
+        // 如果不为post请求，返回空
+        if (!$this->request->isPost()){
+            return ;
+        }
         $result;
         $param=Request::post();
 

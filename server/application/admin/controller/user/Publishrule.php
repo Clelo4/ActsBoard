@@ -15,6 +15,10 @@ class PublishRule extends WeixinApiCommon{
       * 用户设定推送规则
       */
      public function setPublishRule(){
+         // 如果不为post请求，返回空
+        if (!$this->request->isPost()){
+            return ;
+        }
         // school:学校(必选)
         // frequency:频率(必选)
         // type:活动类型(必选)
