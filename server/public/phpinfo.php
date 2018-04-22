@@ -1,4 +1,5 @@
 <?php
+
 	// $d1=date('Y-m-d',strtotime('2017-13-3'));
 	// $d2=date('Y-m-d',strtotime('2017-9-2'));
 	// if($d1=='1970-01-1') { echo "ok"; }
@@ -85,11 +86,19 @@
 			$num+=substr($id,$i,1);
 		}
 		$id=$id.$num%10;
+		throw new Exception("Value must be 1 or below");
 		return $id;
 	}
-	
+
 	echo "ok";
 	echo $id;
+	try{
+		echo "try";
+		generateId();
+	} catch(Exception $e){
+		echo 'error';
+		echo $e->getMessage();
+	}
 ?>
 
 	

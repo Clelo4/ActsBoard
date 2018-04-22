@@ -7,6 +7,7 @@
 namespace app\admin\controller\activities;
 use think\facade\Request;
 use app\admin\controller\AdminApiCommon;
+use app\admin\validate\AddAct as AddActValidate;
 
 class AddActivity extends AdminApiCommon{
 
@@ -26,6 +27,11 @@ class AddActivity extends AdminApiCommon{
         }
         $result;
         $param=Request::post();
+
+        $validate = new AddActValidate();
+		if (!$validate->check($param)){
+			return resultArray(['error' => ($validate->getError())]);
+		}
 
         $ActModel = model('activity.ActivityInfo');
 

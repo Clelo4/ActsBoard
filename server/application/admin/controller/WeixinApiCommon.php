@@ -27,7 +27,7 @@ class WeixinApiCommon extends Common
         // if ( empty('openid') || empty($authKey) || empty($host)) {
         //     header('Content-Type:application/json; charset=utf-8');
         //     cookie('_access',0); // 设置cookie
-        //     exit(json_encode(['code'=>101, 'error'=>'登录已失效']));
+        //     exit(json_encode(['errcode'=>101, 'errmsg'=>'登录已失效','data'=>'']));
         // }
 
         // if($host == 'weixin') {  // 是否是微信客户端
@@ -37,14 +37,14 @@ class WeixinApiCommon extends Common
         //     if (!$auth_key || $auth_key!=$authKey ) { // authKey是否正确
         //         header('Content-Type:application/json; charset=utf-8');
         //         cookie('_access',0);  // 设置cookie
-        //         exit(json_encode(['code'=>103, 'error'=>'账号已被删除或禁用']));
+        //         exit(json_encode(['errcode'=>103, 'errmsg'=>'账号已被删除或禁用','data'=>'']));
         //     }
         //     // 通过验证
         //     cookie('_access',1); // 允许访问
         // } else{
         //     header('Content-Type:application/json; charset=utf-8');
         //     cookie('_access',0);  // 设置cookie
-        //     exit(json_encode(['code'=>103, 'error'=>'没有访问权限']));
+        //     exit(json_encode(['errcode'=>103, 'errmsg'=>'账号已被删除或禁用','data'=>'']));
         // }
     }
 }

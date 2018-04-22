@@ -5,7 +5,7 @@
 namespace app\admin\model\activity;
 
 use app\admin\model\Common;
-
+use think\Validate;
 
 /**
  * 验证数据是否有空格
@@ -173,51 +173,55 @@ class ActivityInfo extends Common{
 		act_detail:活动内容
 		 */
 		// 检查必要的key是否存在；
-		if(array_key_exists('type',$param)
-           &&array_key_exists('name',$param)
-           &&array_key_exists('valid_date',$param)
-           &&array_key_exists('location',$param)
-		   &&array_key_exists('school',$param)
-		   &&array_key_exists('id',$param)
-        ) {
-			// '20181022001' (11位)
-            $param['create_time']=date('Y-m-d H:i:s');
-            $param['status']=1; // 1为合法
 
-			$dateFormat_Type=array('Y-m-d');
+		// '20181022001' (11位)
+		$param['create_time']=date('Y-m-d H:i:s');
+		$param['status']=1; // 1为合法
 
-			// 验证valid_date的合法性
-            if(!checkDateIsValid($param['valid_date'],$dateFormat_Type)){
-				$this->error="日期不合法";
-                return false;
-			} else{
-				$param['valid_date']=$param['valid_date'].' 23:59:59';
-			}
+		// 验证valid_date的合法性
+		$param['valid_date']=date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
 
-			$data=[];
-			$key=['type','name','valid_date','school','create_user','create_time','status','apply_way','location','act_detail','taglist','url'];
-			for($i=0;$i!=count($key);$i++){
-				if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
-				else { $data[$key[$i]]=NULL; }
-			}
+		$data=[];
+		$key=['type','name','valid_date','school','create_user','create_time','status','apply_way','location','act_detail','taglist','url'];
+		for($i=0;$i!=count($key);$i++){
+			if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
+			else { $data[$key[$i]]=NULL; }
+		}
 
-			//
-			$data['act_id']=generateId();
+		//
+		$data['act_id']=generateId();
 
-			// -------------------------
-			$authKey = cookie('authKey'); // 获取cookie中的authKey
-            $data['create_user'] = cache('Auth_'.$authKey)['userInfo']['auth_id'];
-
-			// -------------------------
+		// -------------------------
+		$authKey = cookie('authKey'); // 获取cookie中的authKey
+		$data['create_user'] = cache('Auth_'.$authKey)['userInfo']['auth_id'];
+		$data['create_user']='test';
+		// -------------------------
+		try{
 			$result=$this->insert($data);
-			if($result==1) {
-				return true;
-			}
-        } 
-        else {
-			$this->error = "请求参数缺失";
-            return false;
-        }
+		} catch(Exception $e){
+			$this->error=$e->getMessage();
+		}
+
+		if($result==1) {
+			return true;
+		}
+        
+	}
+
+	/**
+	 * 删除某个活动
+	 *n@author jack <chengjunjie.jack@outlook.com>
+	 * @param string $act_id
+	 * @return boolean
+	 */
+	public function deleteActivity($act_id){
+		try{
+			$data = $this->where('act_id',$act_id)->delete();
+			return true;
+		} catch(Exception $e){
+			$this->error = $e->getMessage();
+			return false;
+		}
 	}
 
 	/**
@@ -233,6 +237,7 @@ class ActivityInfo extends Common{
            &&array_key_exists('valid_date',$param)
            &&array_key_exists('location',$param)
            &&array_key_exists('school',$param)
+           &&array_key_exists('id',$param)
         ) {
 			$dateFormat_Type=array('Y-m-d');
 
