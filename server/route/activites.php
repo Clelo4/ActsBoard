@@ -8,6 +8,5 @@ Route::get('activities/getinfo','admin/activities.GetActivity/getActById');
 Route::get('activities/getacts','admin/activities.GetActivity/getActs');
 // 活动有效活动的总数
 Route::get('activities/getallnum','admin/activities.FindAll/getAllNum');
-// 删除某个活动
-Route::any('activities/deleteact','admin/activities.DeleteActivity/deleteAct');
+
 // Route::get('');

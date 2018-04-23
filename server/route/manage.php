@@ -23,6 +23,9 @@ Route::get('manage/activities/getinfo','admin/activities.GetActivity/getActById'
 #[GET] 修改活动信息
 Route::any('manage/activities/change','admin/activities.ChangeActivity/changeActivityInfo');
 
+// 删除某个活动
+Route::any('manage/activities/deleteact','admin/activities.DeleteActivity/deleteAct');
+
 // #[GET] 获取用户列表
 // Route::get('manage/weixin/getfollower','admin/manage.User/getFollower');
 

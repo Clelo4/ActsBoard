@@ -19,8 +19,8 @@ class DeleteActivity extends AdminApiCommon{
 			return resultArray(['error' => '删除失败']);
         }
         
-        $model = Model('activities.ActivityInfo');
-        $data = $model->deleteActivity($$param['act_id']);
+        $ActModel = model('activity.ActivityInfo');
+        $data = $ActModel->deleteActivity($param['act_id']);
         if($data){
             return resultArray(['data' => '删除成功']);
         }
