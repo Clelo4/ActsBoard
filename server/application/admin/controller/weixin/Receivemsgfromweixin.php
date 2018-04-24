@@ -52,7 +52,8 @@ class ReceiveMsgFromWeixin extends Common{
         $result='';
 
         //获取用户发送的信息
-        $data = $GLOBALS['HTTP_RAW_POST_DATA'];
+        // $data = $GLOBALS['HTTP_RAW_POST_DATA'];
+        $data = file_get_contents("php://input");
         if (!empty($data)){
             $data = simplexml_load_string($data,'SimpleXMLElement',LIBXML_NOCDATA);
             $MsgType = $data->MsgType->__toString(); // SimpleXMLElemet对象转为string字符串
