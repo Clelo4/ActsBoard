@@ -8,6 +8,7 @@ import actPushing from '@/components/actPushing'
 Vue.use(Router)
 
 export default new Router({
+  // mode:'history',
   routes: [
     {
       // 这个逻辑以后可能会有坑，因为以后如果要做成朋友圈转发活动的话，如何将活动id传进来会比较麻烦
@@ -17,8 +18,10 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'activities',
-      component: activities
+      name:'setting',
+      component:setting
+      // name: 'activities',
+      // component: activities
     },
     {
       path:'/setting',

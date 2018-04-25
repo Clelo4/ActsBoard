@@ -7,18 +7,18 @@ export default {
     // console.log(this.a);
     // const code = getUrlParam("code"); //这个getUrlParam需要自己实现
     let code;
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+    var reg = new RegExp("(^|&)code=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
     var r = window.location.search.substr(1).match(reg); //匹配目标参数  
     if (r != null)
       code = unescape(r[2]);
     const local = window.location.href; //拿到当前的url
-    const redirect_uri = "http://web.iamxuyuan.com";
+    const redirect_uri = "http://web.iamxuyuan.com/";
     //检查有没有openid
     console.log('code=' +code);
     let if_open_id = document.cookie.indexOf("openId");
     console.log('此时的openid的位置是' + if_open_id);
     // 没有openid的情况下
-     axios.post('http://web.iamxuyuan.com/sahgaojgh', {
+     axios.post('http://web.iamxuyuan.com/s11111111111/'+this.code, {
              code: this.code //这样写不知道对不对~
            })
            .then(function (response) {
@@ -47,7 +47,7 @@ export default {
         // 这时候把code 发送到后端
         console.log('请求后端')
         axios.post(api.post_code, {
-            code: this.code //这样写不知道对不对~
+            code: code //这样写不知道对不对~
           })
           .then(function (response) {
             console.log(response);
