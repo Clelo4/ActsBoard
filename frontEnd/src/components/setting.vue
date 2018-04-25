@@ -67,10 +67,10 @@ export default {
     }
   },
   mounted: function() {
-    get_user_init_setting();
+    this.get_user_init_setting();
   },
   created:function(){
-    util.getCode();
+    this.util.getCode();
   }
 };
 </script>
