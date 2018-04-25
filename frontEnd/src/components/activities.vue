@@ -96,7 +96,7 @@ export default {
     if (r != null) {
       state = unescape(r[2]);
     }
-    this.$router.push({ path: '/'+state });
+    if (state) {this.$router.push({ path: "/" + state });}
   }
 };
 </script>
