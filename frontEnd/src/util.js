@@ -15,11 +15,7 @@ export default {
     console.log('这是Local' + local);
     const redirect_uri = "http://web.iamxuyuan.com/";
     //检查有没有openid
-<<<<<<< HEAD
     console.log('code=' +code);
-=======
-    console.log('code=' + code);
->>>>>>> 7853099788056cb9a0abb4f90a2d16c1b16be3a4
     let if_open_id = document.cookie.indexOf("openid");
     console.log('此时的openid的位置是' + if_open_id);
     // 没有openid的情况下
