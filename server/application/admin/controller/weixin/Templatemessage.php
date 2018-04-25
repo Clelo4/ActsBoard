@@ -6,6 +6,7 @@ use app\admin\validate\TemplateMsgIndustry as TemplateMsgIndustryValidate;
 use app\admin\validate\SendTemplateMsg as SendTemplateMsgValidate;
 use think\Template;
 use think\Exception;
+use think\Db;
 
 /**
  * 微信模板消息接口
@@ -146,7 +147,55 @@ class TemplateMessage extends AdminApiCommon
         return ['errcode'=> '400','errmsg'=> '服务器出错'];
     }
 
+    /**
+     * 向所有已关注的用户发送模板消息
+     *
+     * @return void
+     */
+    public function SendAllTemplateMessage(){
+        // 不是post请求
+        if (!$this->request->isPost()){
+            return;
+        }
+        if (!Request::has('passcode') || Request::post()['passcode']!='djfldj4flgjJVlfglfjjsljf7979jlf'){
+            return resultArray( ['error' => '禁止访问']);
+        }
+        $all_user_push_rule=Db::name('user_push_rule')->select();
+        $current_time = strtotime(date('Y-m-d'));
+        for($i=0;$i!=count($all_user_push_rule);++$i){
+            $openid = $all_user_push_rule[$i]['openid'];
+            $last_push_time = strtotime(date('Y-m-d',strtotime($all_user_push_rule[$i]['last_push_time'])));
+            $type = $all_user_push_rule[$i]['type'];
+            $shcool = $all_user_push_rule[$i]['school'];
+            $frequency = $all_user_push_rule[$i]['frequency'];
+            if( ($last_push_time < $current_time) && (($current_time - $last_push_time)/86400) >= $frequency ){
+                try{
+                    $result=json_decode($this->SendTemplateMsg($openid,'_50YE4focEvF15sc19UGLztBXvI2OYMDyB6dLLAETOM',[],'http://web.actsboard.com'));
+                    if($result->errcode==0){
+                        // 发送成功
+                        // 更新user_push_rule表的last_push_time
+                        $updateTimeResult;
+                        $tryTimes=0;
+                        do{
+                            $updateTimeResult=Db::name('user_push_rule')->where('openid',$openid)->update(['last_push_time'=>date('Y-m-d H:m:s')]);
+                            if ($updateTimeResult){
+                                break;
+                            }
+                            $tryTimes++;
+                            if ($tryTimes>2){
+                                break;
+                            }
+                        }while($updateTimeResult==0);
+                    }
+                } catch(Exception $e){
+                    // 发送模板消息失败
+                }
+            }
+        }
 
+        return resultArray(['data'=> 'success']);
+        
+    }
 
 
     /**
