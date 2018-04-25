@@ -18,6 +18,16 @@ export default {
     let if_open_id = document.cookie.indexOf("openId");
     console.log('此时的openid的位置是' + if_open_id);
     // 没有openid的情况下
+     axios.post('http://web.iamxuyuan.com/sahgaojgh', {
+             code: this.code //这样写不知道对不对~
+           })
+           .then(function (response) {
+             console.log(response);
+             console.log('post code成功')
+           })
+         .catch(function (error) {
+            console.log(error);
+          });
     if (if_open_id < 0) {
       if (code == null || code === "") {
         // axios.post(api.post_code, {
