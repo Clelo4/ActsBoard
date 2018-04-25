@@ -70,7 +70,7 @@ export default {
     this.get_user_init_setting();
   },
   created:function(){
-    util.getCode();
+    util.getCode('setting');
   }
 };
 </script>

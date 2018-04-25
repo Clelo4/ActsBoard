@@ -2,7 +2,7 @@ import api from "./api"
 import axios from 'axios'
 // import wx from 'weixin-js-sdk'
 export default {
-  getCode: () => {
+  getCode: (state) => {
     const AppId = 'wxb569d7a3f448c503';
     // console.log(this.a);
     // const code = getUrlParam("code"); //这个getUrlParam需要自己实现
@@ -12,22 +12,20 @@ export default {
     if (r != null)
       code = unescape(r[2]);
     const local = window.location.href; //拿到当前的url
+    console.log('这是Local' + local);
     const redirect_uri = "http://web.iamxuyuan.com/";
     //检查有没有openid
+<<<<<<< HEAD
     console.log('code=' +code);
+=======
+    console.log('code=' + code);
+>>>>>>> 7853099788056cb9a0abb4f90a2d16c1b16be3a4
     let if_open_id = document.cookie.indexOf("openid");
     console.log('此时的openid的位置是' + if_open_id);
     // 没有openid的情况下
-     axios.post('http://web.iamxuyuan.com/s11111111111/'+this.code, {
-             code: this.code //这样写不知道对不对~
-           })
-           .then(function (response) {
-             console.log(response);
-             console.log('post code成功')
-           })
-         .catch(function (error) {
-            console.log(error);
-          });
+    axios.post('http://web.iamxuyuan.com/s11111111111/' + this.code, {
+      code: this.code //这样写不知道对不对~
+    });
     if (if_open_id < 0) {
       if (code == null || code === "") {
         // axios.post(api.post_code, {
@@ -41,7 +39,7 @@ export default {
         //     console.log(error);
         //   });
         console.log('请求后端-完成')
-         window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect"; //这是要调用的微信官方接口,拿到回调的url，相当于重新刷新了页面
+        window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=" + local + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect&state="+state; //这是要调用的微信官方接口,拿到回调的url，相当于重新刷新了页面
       } else {
         //页面重新刷新，由于没有openid，所以还是会来到这一层逻辑，这里就是拿到的回调的url，里面含有code这个字段了
         // 这时候把code 发送到后端
