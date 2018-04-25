@@ -15,6 +15,7 @@ export default {
     const local = window.location.href; //拿到当前的url
     //检查有没有openid
     let if_open_id = document.cookie.indexOf("openId");
+    console.log('此时的openid的位置是'+ if_open_id);
     // 没有openid的情况下
     if (of_open_id < 0) {
       if (code == null || code === "") {
