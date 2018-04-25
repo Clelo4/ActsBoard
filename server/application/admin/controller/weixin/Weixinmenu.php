@@ -43,7 +43,7 @@ class WeixinMenu extends AdminApiCommon{
 				array(
 					'type'=>'view',
 					'name'=>'设置',
-					'url'=>'http://web.iamxuyuan.com',
+					'url'=>'http://web.iamxuyuan.com/#/setting',
 					'sub_button'=>[]
 				),		
 			)

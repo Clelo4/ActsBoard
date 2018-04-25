@@ -30,7 +30,7 @@ class Base extends Common{
         $param=Request::post();
 
         // 验证code
-        $validate = Validate::make(['code' => 'require'],['code' => 'code错误']);
+        $validate = Validate::make(['code' => 'require'],['code' => 'code缺失']);
         if (!$validate->check($param)){
             return resultArray(['error' => $validate->getError()]);
         }

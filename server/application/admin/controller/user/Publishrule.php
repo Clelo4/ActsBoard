@@ -8,7 +8,7 @@
  use think\facade\Request;
  use think\facade\Validate;
  use app\admin\controller\WeixinApiCommon;
- use think\Request;
+
 //  use think\Model;
 
 class PublishRule extends WeixinApiCommon{
@@ -44,5 +44,23 @@ class PublishRule extends WeixinApiCommon{
             return resultArray($result);
         }
         return resultArray(['data'=>"success"]);
+     }
+
+     /**
+      * 获取用户推送规则
+      * @author jack <chengjunjie.jack@outlook.com>
+      * @return void
+      */
+     public function getPublishRule(){
+        if(!$this->request->isGet()){
+            return ;
+        }
+        $UserModel=model('user.UserPushRule');
+        $openid = cookie('openid'); // 获取openid
+        $result=$UserModel->getUserPushRule($openid);
+        if(!$result){
+            return resultArray(['error'=>'获取失败']);
+        }
+        return resultArray(['data'=>$result]);
      }
  }

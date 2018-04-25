@@ -13,9 +13,12 @@ class UserPushRule extends Common{
      * 获取用户推送规则
      */
     public function getUserPushRule($openid){
-        $data;
-        
-        return NULL;
+
+        $result=$this->where('openid',$openid)->field("frequency,type,school")->find();
+        if($result){
+            return $result;
+        }
+        return false;
     }
 
     /**
