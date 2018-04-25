@@ -12,7 +12,7 @@ export default {
     if (r != null)
       code = unescape(r[2]);
     const local = window.location.href; //拿到当前的url
-    const redirect_uri = "http://web.iamxuyuan.com";
+    const redirect_uri = "http://web.iamxuyuan.com/#/setting";
     //检查有没有openid
     console.log('code=' +code);
     let if_open_id = document.cookie.indexOf("openId");
@@ -20,16 +20,16 @@ export default {
     // 没有openid的情况下
     if (if_open_id < 0) {
       if (code == null || code === "") {
-        axios.post(api.post_code, {
-            code: this.code //这样写不知道对不对~
-          })
-          .then(function (response) {
-            console.log(response);
-            console.log('post code成功')
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        // axios.post(api.post_code, {
+        //     code: this.code //这样写不知道对不对~
+        //   })
+        //   .then(function (response) {
+        //     console.log(response);
+        //     console.log('post code成功')
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
         console.log('请求后端-完成')
          window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect"; //这是要调用的微信官方接口,拿到回调的url，相当于重新刷新了页面
       } else {
