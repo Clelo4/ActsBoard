@@ -98,7 +98,7 @@ export default {
     }
     if (state) {
       console.log('到了')
-      this.$router.push({ path: "/" + state });
+      //this.$router.push({ path: "/" + state });
     }
   }
 };
