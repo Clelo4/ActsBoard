@@ -12,7 +12,7 @@ export default {
     if (r != null)
       code = unescape(r[2]);
     const local = window.location.href; //拿到当前的url
-    const redirect_uri = "http://web.iamxuyuan.com/#/setting";
+    const redirect_uri = "http://web.iamxuyuan.com";
     //检查有没有openid
     console.log('code=' +code);
     let if_open_id = document.cookie.indexOf("openId");
