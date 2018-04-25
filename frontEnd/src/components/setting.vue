@@ -15,7 +15,7 @@
 import { PopupPicker, Group, XButton } from "vux";
 import axios from "axios";
 import api from "../api";
-import util from '../util'
+import util from "../util"
 
 export default {
   components: {
@@ -70,7 +70,7 @@ export default {
     this.get_user_init_setting();
   },
   created:function(){
-    this.util.getCode();
+    util.getCode();
   }
 };
 </script>
