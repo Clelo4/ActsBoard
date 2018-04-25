@@ -8,7 +8,7 @@ export default {
     return domain_name + "/activities/getacts?days=" + time + "&type=" + type;
   },
   get_recommend_activity: domain_name + '/activities/getacts?recommend=yes',
-  get_user_init_setting: "...",
+  get_user_init_setting: "/user/getrule",
   set_user_setting: domain_name + '/user/setrule',
-  post_code: domain_name+ "user/getuserid"
+  post_code: domain_name+ "/user/getuserid"
 }
