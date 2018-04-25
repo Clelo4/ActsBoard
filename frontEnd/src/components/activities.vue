@@ -23,7 +23,7 @@ export default {
   name: "tab",
   data() {
     return {
-      to_id:0,
+      to_id: 0,
       activities: [
         {
           // id: 1,
@@ -60,7 +60,7 @@ export default {
         });
     },
     get_activities_by_type(time, type) {
-      console.log('这是筛选过的数据' + time + type)
+      console.log("这是筛选过的数据" + time + type);
       var _this = this;
       axios
         .get(api.get_activity_after_select(time, type))
@@ -88,6 +88,15 @@ export default {
   },
   mounted: function() {
     this.get_activities();
+  },
+  created() {
+    let state;
+    var reg = new RegExp("(^|&)state=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg); //匹配目标参数
+    if (r != null) {
+      state = unescape(r[2]);
+    }
+    this.$router.push({ path: '/'+state });
   }
 };
 </script>
