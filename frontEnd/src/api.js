@@ -5,7 +5,7 @@ export default {
     return domain_name + "/activities/getinfo?id=" + id;
   },
   get_activity_after_select: function (time, type) {
-    return domain_name + "/activities/getacts?days=" + time + "?type=" + type;
+    return domain_name + "/activities/getacts?days=" + time + "&type=" + type;
   },
   get_recommend_activity: domain_name + '/activities/getacts?recommend=yes',
   get_user_init_setting: "...",
