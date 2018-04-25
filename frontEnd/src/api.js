@@ -10,5 +10,5 @@ export default {
   get_recommend_activity: domain_name + '/activities/getacts?recommend=yes',
   get_user_init_setting: "...",
   set_user_setting: domain_name + '/user/setrule',
-  post_code: "user/getuserid"
+  post_code: domain_name+ "user/getuserid"
 }
