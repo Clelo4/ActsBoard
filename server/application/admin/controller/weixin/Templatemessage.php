@@ -109,7 +109,7 @@ class TemplateMessage extends AdminApiCommon
      * @param string $url 模板跳转链接
      * @param array $mimiprogram 跳小程序所需数据，不需跳小程序可不用传该数据
      */
-    protected function SendTemplateMsg($touser,$template_id,$data,$url='',$miniprogram=[]){
+    private function SendTemplateMsg($touser,$template_id,$data,$url='',$miniprogram=[]){
         $param = [];
         $param['touser'] = $touser;
         $param['template_id'] = $template_id;
@@ -145,6 +145,9 @@ class TemplateMessage extends AdminApiCommon
         }
         return ['errcode'=> '400','errmsg'=> '服务器出错'];
     }
+
+
+
 
     /**
      * 测试模板消息接口

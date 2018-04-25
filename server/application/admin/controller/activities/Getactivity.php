@@ -7,6 +7,7 @@ namespace app\admin\controller\activities;
 
 use app\admin\controller\ApiCommon;
 use think\facade\Request;
+use think\Db;
 
 class GetActivity extends ApiCommon{
     public function index(){
@@ -71,11 +72,23 @@ class GetActivity extends ApiCommon{
 
         // 根据规则获取列表
         if(Request::has('days')){
-            $search_arr['days']=$this->param['days'];
+            if($this->param['days']!=0){  // 如果days=0则默认返回所有时间的
+                $search_arr['days']=$this->param['days'];
+            }
         }
         if(Request::has('type')){
-            $search_arr['type']=$this->param['type'];
+            if($this->param['type']!='全部类别'){ // 如果type='全部类别'则默认返回所有类别的数据
+                $search_arr['type']=$this->param['type'];
+            }
         }
+
+        // 如果是host为weixin，则通过cookie的openid获取用户设定的type，覆盖原type字段
+        if (cookie('host')=='weixin') {
+            $openid = cookie('openid');
+            $type=Db::name('user_push_rule')->where('openid',$openid)->value('type');
+            $search_arr['type']=$type;
+        }
+
         if(Request::has('school')){
             $search_arr['school']=$this->param['school'];
         }
@@ -88,7 +101,7 @@ class GetActivity extends ApiCommon{
             // 默认status为1
             $search_arr['status']=1;
         }
-        
+
         $ActModel = model('activity.ActivityInfo');
         $data=$ActModel->getActivitiesByRule($search_arr,$nums);
         

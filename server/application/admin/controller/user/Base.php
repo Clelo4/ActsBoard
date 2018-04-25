@@ -5,12 +5,12 @@ namespace app\admin\controller\user;
 use think\facade\Request;
 use think\Db;
 use think\Validate;
-
+use app\common\controller\Common;
 /**
  * 验证微信用户的基础类
  * @author jack <chengjunjie.jack@outlook.com>
  */
-class Base {
+class Base extends Common{
 
     static $appid="wxb569d7a3f448c503";
     static $secret="29938d5779d3dd83b9dab916f6e469d4";
