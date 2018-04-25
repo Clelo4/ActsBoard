@@ -17,6 +17,7 @@ export default {
       } else {
         //页面重新刷新，由于没有openid，所以还是会来到这一层逻辑，这里就是拿到的回调的url，里面含有code这个字段了
         // 这时候把code 发送到后端
+        console.log('请求后端')
         axios.post(api.post_code, {
             code: this.code //这样写不知道对不对~
           })
@@ -27,6 +28,7 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
+          console.log('请求后端-完成')
       }
     }
   },
