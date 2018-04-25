@@ -91,7 +91,7 @@ class ReceiveMsgFromWeixin extends Common{
                         case 'unsubscribe': // 取消订阅事件
                             break;
                         default:
-                            $result = $this->receiveEvent($data);
+                            //$result = $this->receiveEvent($data);
                             break;
                         }
                     break;
@@ -147,4 +147,20 @@ class ReceiveMsgFromWeixin extends Common{
         $CreateTime = intval(time());
         return "<xml><ToUserName><![CDATA[".$ToUserName."]]></ToUserName><FromUserName><![CDATA[".$FromUserName."]]></FromUserName><CreateTime>".$CreateTime."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$content."]]></Content></xml>";
     }
+
+    /**
+     * 事件
+     * @author jack <chengjunjie.jack@outlook.com>
+     * @param SimpleXMLElement $data
+     * @return void
+     */
+    protected function receiveEvent($data){
+        // Tag: 目前不对用户发送的信息进行分析处理，只统一返回相同的数据
+        $ToUserName = $data->FromUserName->__toString();
+        $FromUserName = $data->ToUserName->__tostring();
+        $content = "Hello! Wellcom to ActsBoard\n<a href='https://www.baidu.com'>请完成设置</a>\n联系：chengjunjie.jack@outlook.com";
+        $CreateTime = intval(time());
+        return "<xml><ToUserName><![CDATA[".$ToUserName."]]></ToUserName><FromUserName><![CDATA[".$FromUserName."]]></FromUserName><CreateTime>".$CreateTime."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$content."]]></Content></xml>";
+    }
+    
 }
