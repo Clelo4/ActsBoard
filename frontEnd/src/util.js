@@ -31,7 +31,7 @@ export default {
         //     console.log(error);
         //   });
         console.log('请求后端-完成')
-         window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect"; //这是要调用的微信官方接口,拿到回调的url，相当于重新刷新了页面
+         window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo&connect_redirect=1#wechat_redirect"; //这是要调用的微信官方接口,拿到回调的url，相当于重新刷新了页面
       } else {
         //页面重新刷新，由于没有openid，所以还是会来到这一层逻辑，这里就是拿到的回调的url，里面含有code这个字段了
         // 这时候把code 发送到后端
