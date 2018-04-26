@@ -49,17 +49,17 @@ export default {
           if(response.data.data.frequency == 1){
             console.log('此时此刻的_this.frequency[0]' + _this.frequency[0])
             console.log('是设置成每日一次')
-            _this.frequency[0] = "每日一次"
+            _this.frequency = ["每日一次"]
           }
           if(response.data.data.frequency == 3){
             console.log('此时此刻的_this.frequency[0]' + _this.frequency[0])
             console.log('是设置成每三日一次')
-            _this.frequency[0] = "每三日一次"
+            _this.frequency = ["每三日一次"]
           }
           if(response.data.data.frequency == 7){
             console.log('此时此刻的_this.frequency[0]' + _this.frequency[0])
             console.log('是设置成每周一次')
-            _this.frequency[0] = "每周一次"
+            _this.frequency[0] = ["每周一次"]
           }
           _this.type[0] = response.data.data.type;
         })
@@ -67,6 +67,8 @@ export default {
           console.log('出错了兄弟')
           console.log(error);
         });
+      console.log('axios做完啦！下面是现在的this.frequency')
+      console.log(this.frequency);
     },
     set_user_setting() {
       let temp_frequency;
