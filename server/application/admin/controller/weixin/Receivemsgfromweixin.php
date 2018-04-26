@@ -9,7 +9,7 @@ define('TOKEN','tokenhera');
 class ReceiveMsgFromWeixin extends Common{
 
     /**
-     * 验证参数，已确认信息是否是weixin官方服务器发送的
+     * 验证参数，确认信息是否是weixin官方服务器发送的
      * @param array $param
      * @return boolean
      */

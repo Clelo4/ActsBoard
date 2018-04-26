@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\controller\manage;
+namespace app\admin\controller\weixin;
 
 use app\admin\controller\AdminApiCommon;
 use app\admin\model\weixin\UserManage;
