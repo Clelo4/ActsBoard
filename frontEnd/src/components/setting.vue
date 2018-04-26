@@ -44,7 +44,7 @@ export default {
         .get(api.get_user_init_setting)
         .then(function(response) {
           console.log(response.data);
-          _this.school[0] = response.data.data.school;
+          _this.school = [response.data.data.school];
           // this.frequency = response.data.data.frequency;
           if(response.data.data.frequency == 1){
             console.log('此时此刻的_this.frequency[0]' + _this.frequency[0])
@@ -61,7 +61,7 @@ export default {
             console.log('是设置成每周一次')
             _this.frequency[0] = ["每周一次"]
           }
-          _this.type[0] = response.data.data.type;
+          _this.type = [response.data.data.type];
         })
         .catch(function(error) {
           console.log('出错了兄弟')
