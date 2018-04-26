@@ -42,9 +42,18 @@ export default {
         .get(api.get_user_init_setting)
         .then(function(response) {
           console.log(response.data);
-          this.school = response.data.school;
-          this.frequency = response.data.frequency;
-          this.type = response.data.type;
+          this.school[0] = response.data.data.school;
+          // this.frequency = response.data.data.frequency;
+          if(response.data.data.frequency == 1){
+            this.frequency[0] = "每日一次"
+          }
+          if(response.data.data.frequency == 3){
+            this.frequency[0] = "每三日一次"
+          }
+          if(response.data.data.frequency == 7){
+            this.frequency[0] = "每周一次"
+          }
+          this.type[0] = response.data.data.type;
         })
         .catch(function(error) {
           console.log(error);

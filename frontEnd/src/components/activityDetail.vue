@@ -12,11 +12,11 @@
   <div class="act-apply-way">参与方式：{{act.apply_way}}</div></div>
   <div class="column"><div class="blue-circle"></div>
   <div class="act-school">活动所属学校：  {{act.school}}</div></div>
-  <x-button type="primary" link="/demo" class="button">分享一下！</x-button>
+  <x-button type="primary" link="/demo" class="button" @click.native="to_share">分享一下！</x-button>
 </div></template>
 
 <script>
-import { XButton } from 'vux'
+import { XButton } from "vux";
 import api from "../api.js";
 import axios from "axios";
 export default {
@@ -25,8 +25,8 @@ export default {
   },
   props: {
     id: {
-      type:Number,
-     // require: true,
+      type: Number,
+      // require: true,
       default: 0
     }
   },
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       value: "今天",
-      act_id:0,
+      act_id: 0,
       act: {
         id: 1,
         type: "讲座",
@@ -70,19 +70,24 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    to_share() {
+      //todo
     }
   },
   mounted: function() {
     // console(api.get_activity_by_id(id))
     // console.log(this);
-    console.log("这是已经跳转到活动详情组件的id号码" + this.$route.params.act_id);
+    console.log(
+      "这是已经跳转到活动详情组件的id号码" + this.$route.params.act_id
+    );
     this.act_id = this.$route.params.act_id;
     this.get_activity_by_id(this.act_id);
   }
 };
 </script>
 <style scoped>
-.act-name{
+.act-name {
   font-size: 1.5rem;
   font-weight: bolder;
   margin-left: 2rem;
@@ -90,37 +95,37 @@ export default {
   margin-bottom: 1rem;
   margin-right: 2rem;
 }
-.act-detail{
+.act-detail {
   font-size: 0.8rem;
   margin-left: 2rem;
   margin-top: 1rem;
   margin-bottom: 2rem;
   margin-right: 2rem;
 }
-.img-background{
+.img-background {
   display: -webkit-flex; /* Safari */
   display: flex;
-  justify-content:center;
+  justify-content: center;
 }
-.img{
-  border-radius:1rem;
+.img {
+  border-radius: 1rem;
   height: 40vh;
-  width:70vw;
+  width: 70vw;
 }
-.blue-circle{
+.blue-circle {
   margin-right: 1rem;
   width: 1.4rem;
   height: 1.4rem;
-  background-color: #2298E1;
-  border-radius:1rem;
+  background-color: #2298e1;
+  border-radius: 1rem;
 }
-.column{
+.column {
   margin-left: 20%;
   margin-top: 1rem;
   display: flex;
   justify-content: flex-start;
 }
-.button{
+.button {
   margin-top: 1.3rem;
 }
 </style>
