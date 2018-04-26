@@ -6,7 +6,7 @@
        <group><popup-picker :title="frequency_title" :data="frequency_list" v-model="frequency"></popup-picker></group>
        <group></group>
        <group><popup-picker :title="type_title" :data="type_list" v-model="type"></popup-picker></group>
-       <x-button type="primary" link="/demo" class="button" @click="set_user_setting">完成修改</x-button>
+       <x-button type="primary" link="/demo" class="button" @click.native="set_user_setting">完成修改</x-button>
        
 </div>
 
@@ -76,7 +76,7 @@ export default {
         temp_frequency = 1;
       }
       if(this.frequency[0] == '每三日一次'){
-        temp_frequency = 7;
+        temp_frequency = 3;
       }
       if(this.frequency[0] == '每周一次'){
         temp_frequency = 7;
@@ -85,7 +85,7 @@ export default {
       console.log('准备发送')
       axios
         .post(api.set_user_setting, {
-          school: _thisschool[0],
+          school: _this.school[0],
           frequency: temp_frequency,
           type:_this.type[0]
         })
