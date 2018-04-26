@@ -26,6 +26,8 @@ Route::any('manage/activities/change','admin/activities.ChangeActivity/changeAct
 // 删除某个活动
 Route::any('manage/activities/deleteact','admin/activities.DeleteActivity/deleteAct');
 
+// 清除微信客户端的cookie
+Route::any('manage/deletecookie','admin/manage.Cookie/deleteCookie');
 // #[GET] 获取用户列表
 // Route::get('manage/weixin/getfollower','admin/manage.User/getFollower');
 

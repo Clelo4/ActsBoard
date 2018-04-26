@@ -83,11 +83,11 @@ class GetActivity extends ApiCommon{
         }
 
         // 如果是host为weixin，则通过cookie的openid获取用户设定的type，覆盖原type字段
-        if (cookie('host')=='weixin') {
-            $openid = cookie('openid');
-            $type=Db::name('user_push_rule')->where('openid',$openid)->value('type');
-            $search_arr['type']=$type;
-        }
+        // if (cookie('host')=='weixin') {
+        //     $openid = cookie('openid');
+        //     $type=Db::name('user_push_rule')->where('openid',$openid)->value('type');
+        //     $search_arr['type']=$type;
+        // }
 
         if(Request::has('school')){
             $search_arr['school']=$this->param['school'];
