@@ -6,7 +6,7 @@
        <group><popup-picker :title="frequency_title" :data="frequency_list" v-model="frequency"></popup-picker></group>
        <group></group>
        <group><popup-picker :title="type_title" :data="type_list" v-model="type"></popup-picker></group>
-       <x-button type="primary" link="/demo" class="button" @click.native="set_user_setting">完成修改</x-button>
+       <x-button type="primary" class="button" @click.native="set_user_setting">完成修改</x-button>
        
 </div>
 
@@ -91,12 +91,14 @@ export default {
         })
         .then(function(response) {
           console.log('发送完了')
+          _this.get_user_init_setting();
           console.log(response);
         })
         .catch(function(error) {
           console.log(error);
         });
     }
+    
   },
   mounted: function() {
     this.get_user_init_setting();
