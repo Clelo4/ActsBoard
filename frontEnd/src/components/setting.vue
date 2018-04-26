@@ -42,16 +42,16 @@ export default {
         .get(api.get_user_init_setting)
         .then(function(response) {
           console.log(response.data);
-
-          // _this.activities = JSON.parse(response.data).data;
-          //_this.activities = response.data.data;
-          // console.log(_this.activities);
+          this.school = response.data.school;
+          this.frequency = response.data.frequency;
+          this.type = response.data.type;
         })
         .catch(function(error) {
           console.log(error);
         });
     },
     set_user_setting() {
+      console.log('准备发送')
       axios
         .post(api.set_user_setting, {
           school: this.school[0],
@@ -59,6 +59,7 @@ export default {
           type:this.type[0]
         })
         .then(function(response) {
+          console.log('发送完了')
           console.log(response);
         })
         .catch(function(error) {
