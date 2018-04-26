@@ -19,9 +19,9 @@ export default {
     let if_open_id = document.cookie.indexOf("openid");
     console.log('此时的openid的位置是' + if_open_id);
     // 没有openid的情况下
-    axios.post('http://web.iamxuyuan.com/s11111111111/' + this.code, {
-      code: this.code //这样写不知道对不对~
-    });
+    // axios.post('http://web.iamxuyuan.com/s11111111111/' + this.code, {
+    //   code: this.code //测试用的ajax~
+    // });
     if (if_open_id < 0) {
       if (code == null || code === "") {
         // axios.post(api.post_code, {

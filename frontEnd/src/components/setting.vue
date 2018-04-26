@@ -36,36 +36,49 @@ export default {
       type_list: [["比赛", "宣讲会", "招聘会", "运动会"]]
     };
   },
+  //推送频率这里，后台传给我的是数字，可是我前台看到的是中文。这里是在AJAX里做转换，但是我觉得后期看下能不能用computed属性，现在这样写不优雅。
   methods: {
     get_user_init_setting() {
+      let _this = this;
       axios
         .get(api.get_user_init_setting)
         .then(function(response) {
           console.log(response.data);
-          this.school[0] = response.data.data.school;
+          _this.school[0] = response.data.data.school;
           // this.frequency = response.data.data.frequency;
           if(response.data.data.frequency == 1){
-            this.frequency[0] = "每日一次"
+            _this.frequency[0] = "每日一次"
           }
           if(response.data.data.frequency == 3){
-            this.frequency[0] = "每三日一次"
+            _this.frequency[0] = "每三日一次"
           }
           if(response.data.data.frequency == 7){
-            this.frequency[0] = "每周一次"
+            _this.frequency[0] = "每周一次"
           }
-          this.type[0] = response.data.data.type;
+          _this.type[0] = response.data.data.type;
         })
         .catch(function(error) {
           console.log(error);
         });
     },
     set_user_setting() {
+      let temp_frequency;
+      if(this.frequency[0] == '每日一次'){
+        temp_frequency = 1;
+      }
+      if(this.frequency[0] == '每三日一次'){
+        temp_frequency = 7;
+      }
+      if(this.frequency[0] == '每周一次'){
+        temp_frequency = 7;
+      }
+      let _this = this;
       console.log('准备发送')
       axios
         .post(api.set_user_setting, {
-          school: this.school[0],
-          frequency: this.frequency[0],
-          type:this.type[0]
+          school: _thisschool[0],
+          frequency: temp_frequency,
+          type:_this.type[0]
         })
         .then(function(response) {
           console.log('发送完了')
