@@ -13,6 +13,7 @@ import Select from "./select";
 import activityOutline from "./activityOutline";
 import axios from "axios";
 import api from "../api";
+import util from '../util';
 // import tab from './tab'
 export default {
   components: {
@@ -88,6 +89,7 @@ export default {
   },
   mounted: function() {
     this.get_activities();
+    util.wx_common_share();
   },
   created() {
     let state;

@@ -19,6 +19,7 @@
 import { XButton } from "vux";
 import api from "../api.js";
 import axios from "axios";
+import util from '../util';
 export default {
   components: {
     XButton
@@ -83,6 +84,7 @@ export default {
     );
     this.act_id = this.$route.params.act_id;
     this.get_activity_by_id(this.act_id);
+    util.wx_act_detail_shar(this.act.name,window.location.href);
   }
 };
 </script>

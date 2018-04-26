@@ -14,4 +14,6 @@ export default {
   get_timestamp: domain_name + "/weixin/gettimestamp",
   get_nonceStr: domain_name +"/weixin/getnoncestr",
   get_signature: domain_name+"/weixin/signature",
+  get_wx_config: domain_name+"/weixin/getjsapi",
+  check_if_follow: domain_name+"/weixin/check_if_follow"
 }
