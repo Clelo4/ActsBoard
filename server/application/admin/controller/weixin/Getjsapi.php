@@ -7,12 +7,21 @@ use think\facade\Request;
 use think\Db;
 
 class Getjsapi extends AdminApiCommon{
+
+    /**
+     * 从微信服务器获取jsapi_ticket并存入数据库
+     * @return void
+     */
+    public function getJsApiFromWeixin(){
+        
+    }
+
     /**
      * 从数据库获取getjsapi
      * @author jack <chengjunjie.jack@outlook.com>
      * @return void
      */
-    public function getJsApi(){
+    private function getJsApi(){
         $result = Db::name('jsapi_ticket')->where('type',2)->find();
         if($result){
             return $result['jsapi_ticket'];
@@ -38,7 +47,7 @@ class Getjsapi extends AdminApiCommon{
         $debug = true;
 
         // 请求方post的url(当前网页的URL，不包含#及其后面部分)，目前写死
-        $postUrl='http://web.iamxuyuan.com';
+        $postUrl='http://web.iamxuyuan.com/';
         $jsapi_ticket = $this->getJsApi(); // 获取jsapi_ticket
 
         if (!$jsapi_ticket){
