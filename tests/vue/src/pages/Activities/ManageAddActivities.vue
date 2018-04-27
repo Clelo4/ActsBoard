@@ -51,12 +51,8 @@
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
       </el-upload>
       <br>
-      <h1>Ajax Put 上传</h1>
-      <div>最低兼容到 ie10，支持 onprogress</div>
-
-      <input id="fileSelector" type="file">
-      <input id="submitBtn" type="submit">
-
+      <input id="fileSelector" type="file" size="small">
+      <input id="submitBtn" type="submit" >
       <div id="msg"></div>
       <br>
       <el-form-item>
@@ -68,13 +64,7 @@
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
-    <h1>Ajax Put 上传</h1>
-    <div>最低兼容到 ie10，支持 onprogress</div>
 
-    <input id="fileSelector" type="file">
-    <input id="submitBtn" type="submit">
-
-    <div id="msg"></div>
   </div>
 </template>
 
@@ -153,80 +143,12 @@ export default {
         this.loadingfullscreen=false;
         this.$message('图片上传失败，请重新上传');
     }
-  }
+  },
+
 }
 
 
-(function () {
-        // 请求用到的参数
-        var Bucket = 'actsboard-1253442303';
-        var Region = 'cosgz';
-        var protocol = location.protocol === 'https:' ? 'https:' : 'http:';
-        var prefix = protocol + '//' + 'actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/';
 
-        // 计算签名
-        var getAuthorization = function (options, callback) {
-            var method = (options.Method || 'get').toLowerCase();
-            var key = options.Key || '';
-            var pathname = key.indexOf('/') === 0 ? key : '/' + key;
-
-            var url = '../cos/auth';
-            var xhr = new XMLHttpRequest();
-            var data = {
-                method: method,
-                path: pathname,
-            };
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('content-type', 'application/json');
-            xhr.onload = function (e) {
-                if (e.target.responseText === 'action deny') {
-                    alert('action deny');
-                } else {
-                    callback(e.target.responseText);
-                }
-            };
-            xhr.send(JSON.stringify(data));
-        };
-
-        // 上传文件
-        var uploadFile = function (file, callback) {
-            var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
-            getAuthorization({Method: 'PUT', Key: Key}, function (auth) {
-
-                var url = prefix + Key;
-                var xhr = new XMLHttpRequest();
-                xhr.open('PUT', url, true);
-				console.log(auth);
-                xhr.setRequestHeader('Authorization', auth);
-                xhr.onload = function () {
-                    if (xhr.status === 200 || xhr.status === 206) {
-                        var ETag = xhr.getResponseHeader('etag');
-						console.log("Etag:",ETag);
-                        callback(null, {url: url, ETag: ETag});
-                    } else {
-                        callback('文件 ' + Key + ' 上传失败，状态码：' + xhr.status);
-                    }
-                };
-                xhr.onerror = function () {
-                    callback('文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则');
-                };
-                xhr.send(file);
-            });
-        };
-
-        // 监听表单提交
-        document.getElementById('submitBtn').onclick = function (e) {
-            var file = document.getElementById('fileSelector').files[0];
-            if (!file) {
-                document.getElementById('msg').innerText = '未选择上传文件';
-                return;
-            }
-            file && uploadFile(file, function (err, data) {
-                console.log(err || data);
-                document.getElementById('msg').innerText = err ? err : ('上传成功，ETag=' + data.ETag);
-            });
-        };
-    })();
 
 
 </script>
