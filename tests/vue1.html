@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Hello vue</title>
+        <script src="vue.min.js"></script>
+    </head>
+    <body>
+        <div id='header'></div>
+        <div id='content'>
+            <div>
+                <p>{{message}}</p>
+            </div>
+        </div>
+        <div id='root'>
+            <div v-html='v_html'></div>
+            <button v-bind:style='v_bind' v-on:click="v_on_click" v-if='seen'>button</button>
+        </div>
+        <div id='root1'>
+            <p>{{message | capitalize}}</p>
+            <input v-model='message'>
+            <button  v-on:click='reverseMessage'>反转</button>
+            <div v-for="site in object">{{site}}
+            </div>
+        </div>
+        <div  id='watch1'>
+            <input type='text' v-model='param1'>{{message}}
+            <input type='text' v-model='param2'>
+        </div>
+    </body>
+    <script>
+        var app=new Vue({
+            el:'#content',
+            data:{
+                message:"Hello vue!"
+            }
+        })
+
+        var app2=new Vue({
+            el:"#root",
+            data:{
+                v_html:'<p>This is V_html</p>',
+                v_bind:'display:inline',
+                seen:true
+            },
+            methods:{
+                v_on_click:function(val){
+                    alert('Hello Jack!')
+                }
+            }
+        });
+
+        var app3=new Vue({
+            el:"#root1",
+            data:{
+                message:'v-model',
+                object:{
+                    name:"Vue",
+                    url:"HTTP",
+                    slogan:"学的不仅是技术，更是梦想"
+                }
+            },
+            methods:{
+                reverseMessage:function(){
+                    this.message=this.message.split('').reverse().join('')
+                },
+                
+            },
+            // filters:{
+            //     capitalize:function(value){
+            //         if(!value) return ''
+            //         value = value.toString()
+            //         return value.charAt(0).toUppercase()+value.slice(1)
+            //     }
+            // }
+        });
+
+        var app4 = new Vue({
+            el:'#watch1',
+            data:{
+                message:'hh',
+                param1:"Hello",
+                param2:"Vue",
+            },
+            watch:{
+                param1:function(val){
+                    this.param2=val;
+                },
+                param2:function(val){
+                    this.param1=val;
+                }
+            }
+        });
+    </script>
+</html>
