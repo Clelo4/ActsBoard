@@ -10,8 +10,8 @@ use think\Validate;
 class Auth extends AdminApiCommon{
 
     // cos 控制台 云 API 密钥
-    private $accessKey;           // string: access key.
-    private $secretKey;
+    private $accessKey="AKIDMj9d2WJhbP6pcVELlJhz6hBWgfmpk6Yv";           // string: access key.
+    private $secretKey="rFWgjbiJzDtopljinq076BDBEI1uMtWl";
 
     public function getAuthorization()
     {
@@ -19,12 +19,13 @@ class Auth extends AdminApiCommon{
             return ;
         }
         $param = $this->param;
-        $validate = Validate::make([],[]);
+        $validate = Validate::make(['method'=>'require','path'=>'require'],['method'=>'method缺失','path'=>'path缺失']);
         if(!$validate->check($param)){
             return resultArray(['error' => $validate->getError()]);
         }
         $signTime = (string)(time() - 60) . ';' . (string)(time() + 3600);
-        $httpString = strtolower($param['method'] . "\n" . urldecode($param['path'])) . "\n\nhost=" . $request['Host'] . "\n";
+        $httpString = strtolower($param['method'] . "\n" . urldecode($param['path'])) . "\n\nhost=" . 'actsboard-1253442303.cos.ap-guangzhou.myqcloud.com' . "\n";
+        
         $sha1edHttpString = sha1($httpString);
         $stringToSign = "sha1\n$signTime\n$sha1edHttpString\n"; 
         $signKey = hash_hmac('sha1', $signTime, $this->secretKey);
@@ -32,7 +33,7 @@ class Auth extends AdminApiCommon{
         $authorization = 'q-sign-algorithm=sha1&q-ak='. $this->accessKey .
             "&q-sign-time=$signTime&q-key-time=$signTime&q-header-list=host&q-url-param-list=&" .
             "q-signature=$signature";
-        return resultArray(['data' => $authorization]);
+        return $authorization;
     }
 
     

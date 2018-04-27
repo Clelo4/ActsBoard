@@ -28,8 +28,6 @@ Route::any('manage/activities/deleteact','admin/activities.DeleteActivity/delete
 
 // 清除微信客户端的cookie
 Route::any('manage/deletecookie','admin/manage.Cookie/deleteCookie');
-// #[GET] 获取用户列表
-// Route::get('manage/weixin/getfollower','admin/manage.User/getFollower');
 
-// #[GET] 获取用户信息
-// Route::get('manage/weixin/getuserinfo','admin/manage.User/getUserInfo');
+// 获取用于cos的签名
+Route::post('cos/auth','admin/cos.Auth/getAuthorization');
