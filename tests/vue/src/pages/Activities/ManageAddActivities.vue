@@ -51,6 +51,13 @@
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
       </el-upload>
       <br>
+      <h1>Ajax Put 上传</h1>
+      <div>最低兼容到 ie10，支持 onprogress</div>
+
+      <input id="fileSelector" type="file">
+      <input id="submitBtn" type="submit">
+
+      <div id="msg"></div>
       <br>
       <el-form-item>
         <el-button
