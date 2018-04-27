@@ -19,7 +19,7 @@
 import { XButton } from "vux";
 import api from "../api.js";
 import axios from "axios";
-import util from '../util';
+import util from "../util";
 export default {
   components: {
     XButton
@@ -29,13 +29,19 @@ export default {
       type: Number,
       // require: true,
       default: 0
+    },
+    name: {
+      type: String,
+      // require: true,
+      default: 0
     }
   },
   // name: "tab",
   data() {
     return {
       value: "今天",
-      act_id: 0,
+      actname: "",
+      actid: 0,
       act: {
         id: 1,
         type: "讲座",
@@ -80,11 +86,12 @@ export default {
     // console(api.get_activity_by_id(id))
     // console.log(this);
     console.log(
-      "这是已经跳转到活动详情组件的id号码" + this.$route.params.act_id
+      "这是已经跳转到活动详情组件的id号码" + this.$route.params.actid
     );
-    this.act_id = this.$route.params.act_id;
-    this.get_activity_by_id(this.act_id);
-    util.wx_act_detail_shar(this.act.name,window.location.href);
+    this.actid = this.$route.params.actid;
+    this.actname = this.$route.params.actname;
+    this.get_activity_by_id(this.actid);
+    util.wx_act_detail_share(this.actname,window.location.href);
   }
 };
 </script>

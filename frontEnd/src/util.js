@@ -98,53 +98,53 @@ export default {
     axios.get(api.get_wx_config)
       .then(function (response) {
         console.log('这是获取微信config功能获取的信息')
-        console.log(response)
+        console.log(response.data.data)
         // 这里之后可以简化一下
         t_timestamp = response.data.data.timestamp;
-        t_nonceStr = response.data.data.timestamp;
+        t_nonceStr = response.data.data.nonceStr;
         t_signature = response.data.data.signature;
         wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wxb569d7a3f448c503', // 必填，公众号的唯一标识
           timestamp: t_timestamp, // 必填，生成签名的时间戳
           nonceStr: t_nonceStr, // 必填，生成签名的随机串
           signature: t_signature, // 必填，签名\
           jsApiList: [ // 必填，需要使用的JS接口列表
-            onMenuShareTimeline,
-            onMenuShareAppMessage,
-            onMenuShareQQ,
-            onMenuShareWeibo,
-            onMenuShareQZone,
-            startRecord,
-            stopRecord,
-            onVoiceRecordEnd,
-            playVoice,
-            pauseVoice,
-            stopVoice,
-            onVoicePlayEnd,
-            uploadVoice,
-            downloadVoice,
-            chooseImage,
-            previewImage,
-            uploadImage,
-            downloadImage,
-            translateVoice,
-            getNetworkType,
-            openLocation,
-            getLocation,
-            hideOptionMenu,
-            showOptionMenu,
-            hideMenuItems,
-            showMenuItems,
-            hideAllNonBaseMenuItem,
-            showAllNonBaseMenuItem,
-            closeWindow,
-            scanQRCode,
-            chooseWXPay,
-            openProductSpecificView,
-            addCard,
-            chooseCard,
-            openCard
+            "onMenuShareTimeline",
+            "onMenuShareAppMessage",
+            "onMenuShareQQ",
+            "onMenuShareWeibo",
+            "onMenuShareQZone",
+            "startRecord",
+            "stopRecord",
+            "onVoiceRecordEnd",
+            "playVoice",
+            "pauseVoice",
+            "stopVoice",
+            "onVoicePlayEnd",
+            "uploadVoice",
+            "downloadVoice",
+            "chooseImage",
+            "previewImage",
+            "uploadImage",
+            "downloadImage",
+            "translateVoice",
+            "getNetworkType",
+            "openLocation",
+            "getLocation",
+            "hideOptionMenu",
+            "showOptionMenu",
+            "hideMenuItems",
+            "showMenuItems",
+            "hideAllNonBaseMenuItem",
+            "showAllNonBaseMenuItem",
+            "closeWindow",
+            "scanQRCode",
+            "chooseWXPay",
+            "openProductSpecificView",
+            "addCard",
+            "chooseCard",
+            "openCard"
           ],
         })
       })
@@ -164,6 +164,7 @@ export default {
   },
 
   wx_common_share: () => {
+    console.log('进入wx_common_share的函数')
     // 分享到朋友圈
     wx.onMenuShareTimeline({
       title: '无良老板压榨程序员', // 分享标题
@@ -171,9 +172,11 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        console.log('分享朋友圈成功')
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
+        console.log('取消分享')
       }
     });
 
@@ -187,9 +190,11 @@ export default {
       //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
       success: function () {
         // 用户确认分享后执行的回调函数
+        console.log('分享给微信好友成功')
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
+        console.log('取消分享')
       }
     });
 
@@ -240,6 +245,7 @@ export default {
 
   //在活动详情页的分享设置
   wx_act_detail_share:(act_name,t_link)=>{
+    console.log('进入到wx_act_detail_share的函数啦')
     // 分享到朋友圈
     wx.onMenuShareTimeline({
       title: act_name, // 分享标题

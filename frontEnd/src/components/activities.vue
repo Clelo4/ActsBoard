@@ -1,7 +1,7 @@
 <template>
   <div>
      <Select @select="get_activities_by_type"></Select>
-     <activityOutline :activity="activity" v-for="activity in activities" :key="activity.id" @click.native="to_act_detail(activity.id)">
+     <activityOutline :activity="activity" v-for="activity in activities" :key="activity.id" @click.native="to_act_detail(activity.id,activity.name)">
 
      </activityOutline>
      <!-- <tab></tab> -->
@@ -76,18 +76,20 @@ export default {
           console.log(error);
         });
     },
-    to_act_detail(id) {
+    to_act_detail(id,name) {
       console.log("即将跳转的活动id是" + id);
       // this.to_id = id;
       this.$router.push({
         name: "activityDetail",
         params: {
-          act_id: id
+          actid: id,
+          actname:name
         }
       });
     }
   },
   mounted: function() {
+    util.to_wx_config();
     this.get_activities();
     util.wx_common_share();
   },
