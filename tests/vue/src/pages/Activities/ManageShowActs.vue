@@ -122,7 +122,7 @@ export default {
         }
       }
     ).catch((error)=>{
-      $this.$message = '请求失败,请刷新重试';
+      this.$message = '请求失败,请刷新重试';
     });
     axios.get('/manage/activities/getacts?page='+this.current_change).then(
         (response)=>{

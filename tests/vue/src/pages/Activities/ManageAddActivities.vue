@@ -32,27 +32,11 @@
         :rows="2">
         </el-input>
       </el-form-item>
-      <el-upload
-        class="upload-demo"
-        ref="upload"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-success="handleUploadSuccess"
-        :on-error="handleUploadError"
-        :on-progress="loadingUploadFile"
-        :before-remove="beforeRemove"
-        :limit="1"
-        :on-exceed="handleExceed"
-        :file-list="fileList"
-        :auto-upload="false">
-        <el-button slot="trigger" size="small" type="primary">选取图片</el-button>
-        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">确定上传</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
-      </el-upload>
       <br>
-      <input id="fileSelector" type="file" size="small">
-      <input id="submitBtn" type="submit" >
+      <span class="">
+        <img v-bind:src="lmodel">
+        <input type="file" @change="tirggerFile($event)">
+      </span>
       <div id="msg"></div>
       <br>
       <el-form-item>
@@ -69,6 +53,7 @@
 </template>
 
 <script>
+import uploadFile from '../../uploadFile.js'
 export default {
   name: 'ManageAddActivities',
   components:{},
@@ -81,16 +66,22 @@ export default {
         school : "",
         taglist :[], // 
         location :'',
-        act_detail:''
+        act_detail:'',
+        filepath:'',
       },
       signupResponse:'',
       loadingfullscreen:false,
-      fileList:[]
+      fileList:[],
+      prefix:'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/',
+      lmodel:'',
+      filepathTmp:'',
+      fileUploadResult:false,
     }
   },
   methods: {
     onSubmit() {
       this.loadingfullscreen=true;
+      console.log('filepath:',this.form.filepath);
       axios.post('/manage/activities/publish',this.form).then(
         (response)=>{
           console.log(response.status);
@@ -106,6 +97,7 @@ export default {
               this.form.taglist =[]; // 
               this.form.location ='';
               this.form.act_detail='';
+              this.form.filepath='';
               this.loadingfullscreen=false;
             }
           
@@ -119,13 +111,13 @@ export default {
     // 移除上传文件
     beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
-      },
+    },
     loadingUploadFile(){
       this.loadingfullscreen=true;
     },
-    submitUpload() {
-        this.$refs.upload.submit();
-      },
+    // submitUpload() {
+    //     this.$refs.upload.submit();
+    //   },
     handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -138,11 +130,77 @@ export default {
     handleUploadSuccess(response, file, fileList){
         this.loadingfullscreen=false;
         this.$message('图片上传成功');
-    },
+      },
     handleUploadError(error, file, fileList){
         this.loadingfullscreen=false;
         this.$message('图片上传失败，请重新上传');
+      },
+
+
+    // --------------------------------------------
+      getAuthorization(options,callback){
+        var method = (options.Method || 'get').toLowerCase();
+        var key = options.Key || '';
+        var pathname = key.indexOf('/') === 0 ? key : '/' + key;
+  
+        var url = '../cos/auth.php';
+        var xhr = new XMLHttpRequest();
+        var data = {
+            method: method,
+            pathname: pathname,
+          };
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('content-type', 'application/json');
+        xhr.onload = function (e) {
+            if (e.target.responseText === 'action deny') {
+                alert('action deny');
+            } else {
+                callback(e.target.responseText);
+            }
+        };
+        xhr.send(JSON.stringify(data));
+      },
+  
+      // 上传文件
+    uploadFile(file,callback){
+            var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
+            console.log('here');
+            this.form.filepath=this.filepathTmp;
+            this.getAuthorization({Method: 'PUT', Key: Key}, function (auth) {
+    
+                var url = 'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/' + Key;
+                var xhr = new XMLHttpRequest();
+                xhr.open('PUT', url, true);
+                xhr.setRequestHeader('Authorization', auth);
+                xhr.onload = function () {
+                    if (xhr.status === 200 || xhr.status === 206) {
+                      this.fileUploadResult=true;
+                      var ETag = xhr.getResponseHeader('etag');
+                      callback(null, {url: url, ETag: ETag});
+                    } else {
+                        callback('文件 ' + Key + ' 上传失败，状态码：' + xhr.status);
+                    }
+                };
+                xhr.onerror = function () {
+                    callback('文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则');
+                };
+                xhr.send(file);
+            });
+        },
+    tirggerFile:function(event){
+      var file = event.target.files[0];
+      var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
+      console.log(Key);
+      this.filepathTmp=Key;
+      console.log('uploadFile0:',this.filepathTmp);
+      this.uploadFile(file,function(err,data){
+        console.log(err || data);
+        console.log(data.Etag);
+        });
     }
+
+    // --------------------------------------------
+
   },
 
 }
