@@ -67,7 +67,7 @@ export default {
         taglist :[], // 
         location :'',
         act_detail:'',
-        filepath:'',
+        pic_url:'',
       },
       signupResponse:'',
       loadingfullscreen:false,
@@ -76,12 +76,18 @@ export default {
       lmodel:'',
       filepathTmp:'',
       fileUploadResult:false,
+      fileUploadState:0, // -1正在上传 0没有 1为成功上传
     }
   },
   methods: {
     onSubmit() {
+      if(this.fileUploadState==-1){
+        console.log('this.fileUploadState:',this.fileUploadState);
+        this.$message('图片正在上传，请重新点击提交按钮!');
+        return ;
+      }
       this.loadingfullscreen=true;
-      console.log('filepath:',this.form.filepath);
+      console.log('pic_url:',this.form.pic_url);
       axios.post('/manage/activities/publish',this.form).then(
         (response)=>{
           console.log(response.status);
@@ -97,7 +103,7 @@ export default {
               this.form.taglist =[]; // 
               this.form.location ='';
               this.form.act_detail='';
-              this.form.filepath='';
+              this.form.pic_url='';
               this.loadingfullscreen=false;
             }
           
@@ -165,16 +171,20 @@ export default {
     uploadFile(file,callback){
             var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
             console.log('here');
-            this.form.filepath=this.filepathTmp;
+            this.form.pic_url=this.filepathTmp;
+            var _this=this
             this.getAuthorization({Method: 'PUT', Key: Key}, function (auth) {
-    
+              
                 var url = 'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/' + Key;
                 var xhr = new XMLHttpRequest();
                 xhr.open('PUT', url, true);
                 xhr.setRequestHeader('Authorization', auth);
                 xhr.onload = function () {
                     if (xhr.status === 200 || xhr.status === 206) {
-                      this.fileUploadResult=true;
+                      _this.fileUploadResult=true;
+                      _this.fileUploadState=1;
+                      console.log(_this.fileUploadState);
+                      console.log('okok')
                       var ETag = xhr.getResponseHeader('etag');
                       callback(null, {url: url, ETag: ETag});
                     } else {
@@ -192,6 +202,7 @@ export default {
       var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
       console.log(Key);
       this.filepathTmp=Key;
+      this.fileUploadState=-1;
       console.log('uploadFile0:',this.filepathTmp);
       this.uploadFile(file,function(err,data){
         console.log(err || data);

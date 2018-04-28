@@ -38,10 +38,18 @@ class GetActivity extends ApiCommon{
         return resultArray($result0);
     }
     
+    
     /**
      * 获取活动列表
+     * @author jack <chengjunjie.jack@outlook.com>
+     * @return void
      */
     public function getActs(){
+
+        if (!$this->request->isPost()){
+            return ;
+        }
+
         $result;
         $search_arr=[];
         $nums=10;     // 每页默认数据条数
@@ -111,28 +119,23 @@ class GetActivity extends ApiCommon{
 
 
     /**
-	 * 通过限定活动类型和活动时间范围获取所有活动信息
-	 * @param $days   int    最近几天，
-	 * 时间精确度：日
-	 */
-    public function getActivitiesByTimeRange(){
-        $result;
-        $ActModel = model('activity.ActivityInfo');
-        if(isset($this->param['days'])){
-            $days=$this->param['days'];
-            $act_type=$this->param['act_type'];
-            //$current_time=date('Y-m-d H:i:s');       // 获取当前时间
-            // $change='+'.$days.' day';
-            // $end_time=date('Y-m-d',strtotime($change));
-            $current_time='2018-04-02 00:0:00';
-            $end_time='2018-04-20 00:24:02';
-            $data=$ActModel->getActivitiesByTimeRange($act_type,$current_time,$end_time);
-            $result['data']=$data;
-            return resultArray($result);
-        } else{
-            $result['error']='参数错误';
-            return resultArray($result);
+     * 获取用户推荐列表
+     *
+     * @return void
+     */
+    public function getActsByRecommend()
+    {
+        # code...
+        // 获取用户openid
+        $openid = cookie('openid');
+        $PushRuleModel = model('user.UserPushRule');
+        $taglist = $PushRuleModel->getUserPushRule($openid);
+        if(!$taglist){
+            // 用户没有设定推送规则
         }
+
+
+
     }
 
 

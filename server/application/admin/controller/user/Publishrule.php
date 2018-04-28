@@ -23,22 +23,22 @@ class PublishRule extends WeixinApiCommon{
         }
         // school:学校(必选)
         // frequency:频率(必选)
-        // type:活动类型(必选)
+        // tag:兴趣标签(可选) array (默认全部)
         $result0;
-        $param = Request::post();
-        $validate = Validate::make(['school'=>'require','frequency'=>'require|number','type'=>'require']);
+        $param = $this->param;
+        $validate = Validate::make(['school'=>'require','frequency'=>'require|number','taglist'=>'array']);
         if (!$validate->check($param)){
             return resultArray(['error' => "设置出错！"]);
         }
         // 获取用户openid
-        $openid = cookie('openid');
-
-        $school=Request::post('school');
-        $frequency=Request::post('frequency');
-        $type=Request::post('type');
+        // $openid = cookie('openid');
+        $openid = 'oKvv71Ur9gf7ikUZNv0ifRbRrMBQ';
+        $school=$param['school'];
+        $frequency=$param['frequency'];
+        $taglist=$param['taglist'];
 
         $UserModel=model('user.UserPushRule');
-        $result0=$UserModel->setUserPushRule($openid,$school,$frequency,$type);
+        $result0=$UserModel->setUserPushRule($openid,$school,$frequency,$taglist);
         if(!$result0){
             $result['error']='插入失败';
             return resultArray($result);
@@ -57,6 +57,7 @@ class PublishRule extends WeixinApiCommon{
         }
         $UserModel=model('user.UserPushRule');
         $openid = cookie('openid'); // 获取openid
+        // $openid = 'oKvv71Ur9gf7ikUZNv0ifRbRrMBQ';
         $result=$UserModel->getUserPushRule($openid);
         if(!$result){
             return resultArray(['error'=>'获取失败']);

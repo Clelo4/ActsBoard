@@ -15,6 +15,7 @@ class AddAct extends Validate{
         'location' => 'require',
         'school' => 'require',
         'act_detail' => 'require',
+        'taglist' => 'array',
         '' => '',
     ];
     protected $message = [
@@ -25,5 +26,6 @@ class AddAct extends Validate{
         'school.require' => '请填写学校',
         'location.require' => '请填写地点',
         'act_detail.require' => '请填写内容',
+        'taglist' => 'taglist必须为数组',
     ];
 }

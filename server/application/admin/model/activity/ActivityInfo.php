@@ -6,7 +6,7 @@ namespace app\admin\model\activity;
 
 use app\admin\model\Common;
 use think\Validate;
-
+use think\Db;
 /**
  * 验证数据是否有空格
  * 有返回 true
@@ -159,26 +159,30 @@ class ActivityInfo extends Common{
 		// 检查必要的key是否存在；
 
 		// '20181022001' (11位)
-		$param['create_time']=date('Y-m-d H:i:s');
+		$create_time = date('Y-m-d H:i:s');
+		$param['create_time']=$create_time;
 		$param['status']=1; // 1为合法
+		$type = $param['type'];
 
 		// 验证valid_date的合法性
-		$param['valid_date']=date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
+		$valid_date = date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
+		$param['valid_date']= $valid_date;
 
 		$data=[];
-		$key=['type','name','valid_date','school','create_user','create_time','status','apply_way','location','act_detail','taglist','url'];
+		$taglist=$param['taglist']; // 标签列表
+		$key=['type','name','valid_date','school','create_time','status','apply_way','location','act_detail','pic_url','litimg_url'];
 		for($i=0;$i!=count($key);$i++){
 			if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
 			else { $data[$key[$i]]=NULL; }
 		}
 
-		//
-		$data['act_id']=generateId();
-
+		// 生成活动id
+		$act_id = generateId();
+		$data['act_id']=$act_id;
 		// -------------------------
 		$authKey = cookie('authKey'); // 获取cookie中的authKey
 		$data['create_user'] = cache('Auth_'.$authKey)['userInfo']['auth_id'];
-		$data['create_user']='test';
+		$data['create_user'] = 11;
 		// -------------------------
 		try{
 			$result=$this->insert($data);
@@ -187,6 +191,9 @@ class ActivityInfo extends Common{
 		}
 
 		if($result==1) {
+			for($i=0;$i!=count($taglist);$i++){
+				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date ]);
+			}
 			return true;
 		}
         
