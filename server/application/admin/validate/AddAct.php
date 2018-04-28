@@ -12,10 +12,10 @@ class AddAct extends Validate{
         'name' => 'require',
         'type' => 'require',
         'valid_date' => 'require|date',
-        'location' => 'require',
         'school' => 'require',
         'act_detail' => 'require',
-        '' => '',
+        'pic_url' => 'url',
+        'litimg_url' => 'url',
     ];
     protected $message = [
         'name.require' => '请填写活动名称',
@@ -25,5 +25,7 @@ class AddAct extends Validate{
         'school.require' => '请填写学校',
         'location.require' => '请填写地点',
         'act_detail.require' => '请填写内容',
+        'pic_url' => 'url错误',
+        'litimg_url' => 'url错误',
     ];
 }

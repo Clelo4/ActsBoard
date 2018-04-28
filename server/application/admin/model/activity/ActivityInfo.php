@@ -162,11 +162,11 @@ class ActivityInfo extends Common{
 		$param['create_time']=date('Y-m-d H:i:s');
 		$param['status']=1; // 1为合法
 
-		// 验证valid_date的合法性
+		// 修改valid_date
 		$param['valid_date']=date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
 
 		$data=[];
-		$key=['type','name','valid_date','school','create_user','create_time','status','apply_way','location','act_detail','taglist','url'];
+		$key=['type','name','valid_date','school','create_user','create_time','status','apply_way','location','act_detail','taglist','pic_url','litimg_url'];
 		for($i=0;$i!=count($key);$i++){
 			if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
 			else { $data[$key[$i]]=NULL; }

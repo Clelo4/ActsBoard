@@ -34,6 +34,7 @@
       </el-form-item>
       <br>
       <span class="">
+        <span>上传图片</span>
         <img v-bind:src="lmodel">
         <input type="file" @change="tirggerFile($event)">
       </span>
@@ -53,7 +54,6 @@
 </template>
 
 <script>
-import uploadFile from '../../uploadFile.js'
 export default {
   name: 'ManageAddActivities',
   components:{},
@@ -67,21 +67,38 @@ export default {
         taglist :[], // 
         location :'',
         act_detail:'',
-        filepath:'',
+        pic_url:'',
+        litimg_url:'',
       },
       signupResponse:'',
       loadingfullscreen:false,
       fileList:[],
       prefix:'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/',
       lmodel:'',
-      filepathTmp:'',
-      fileUploadResult:false,
+      pic_url_tmp:'',
+      fileUploadState:0, // -1为图片上传中,0为没上传图片,1为成功上传了一张图片,2为成功上传了2张图片
+      newFile:{},
+      filePath:'',
     }
   },
   methods: {
+
+    sleep(numberMillis) {  
+    let now = new Date();  
+    let exitTime = now.getTime() + numberMillis;  
+    while (true) {  
+        now = new Date();  
+        if (now.getTime() > exitTime)  
+        return;  
+        }  
+    },
     onSubmit() {
+      if(this.fileUploadState==-1){
+        this.$message('图片正在上传中！请再次点击提交按钮');
+        return ;
+      }
       this.loadingfullscreen=true;
-      console.log('filepath:',this.form.filepath);
+      console.log('pic_url:',this.form.pic_url);
       axios.post('/manage/activities/publish',this.form).then(
         (response)=>{
           console.log(response.status);
@@ -97,7 +114,7 @@ export default {
               this.form.taglist =[]; // 
               this.form.location ='';
               this.form.act_detail='';
-              this.form.filepath='';
+              this.form.pic_url='';
               this.loadingfullscreen=false;
             }
           
@@ -163,9 +180,11 @@ export default {
   
       // 上传文件
     uploadFile(file,callback){
-            var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
+            console.log(file);
+            var Key = this.filePath + file.name; // 这里指定上传目录和文件名
             console.log('here');
-            this.form.filepath=this.filepathTmp;
+            this.form.pic_url=this.pic_url_tmp;
+            this.form.litimg_url=this.pic_url_tmp;
             this.getAuthorization({Method: 'PUT', Key: Key}, function (auth) {
     
                 var url = 'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/' + Key;
@@ -174,7 +193,7 @@ export default {
                 xhr.setRequestHeader('Authorization', auth);
                 xhr.onload = function () {
                     if (xhr.status === 200 || xhr.status === 206) {
-                      this.fileUploadResult=true;
+                      this.fileUploadState=1; // 文件上传成功的标志
                       var ETag = xhr.getResponseHeader('etag');
                       callback(null, {url: url, ETag: ETag});
                     } else {
@@ -184,20 +203,41 @@ export default {
                 xhr.onerror = function () {
                     callback('文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则');
                 };
+                
+                // console.log('1',file);
                 xhr.send(file);
+                // console.log('2',newFile);
             });
         },
     tirggerFile:function(event){
       var file = event.target.files[0];
-      var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
-      console.log(Key);
-      this.filepathTmp=Key;
-      console.log('uploadFile0:',this.filepathTmp);
+      // var newFileName=this.randomString(5)+"/"; //+'.'+file.name.split('.')[1];
+      // var newFile = new File([file],newFileName,{type:file.type})
+      // this.newFile =newFile;
+      this.filePath='';
+      this.filePath = this.randomString(5)+"/";
+      this.pic_url_tmp='http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/'+this.filePath+file.name; // 缓存文件在cos的绝对路径
+      this.fileUploadState=-1; // 文件正在上传
+      console.log(file);
+      console.log('uploadFile0:',this.pic_url_tmp);
       this.uploadFile(file,function(err,data){
         console.log(err || data);
         console.log(data.Etag);
         });
+    },
+    randomString:function(len) {
+    　　len = len || 32;
+    　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+    　　var maxPos = $chars.length;
+    　　var pwd = '';
+        var i=0;
+    　　for (i = 0; i < len; i++) {
+    　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    　　}
+        var timestamp1 = Date.parse( new Date()) // 当前时间戳
+    　　return pwd+timestamp1;
     }
+
 
     // --------------------------------------------
 
