@@ -31,8 +31,8 @@ class PublishRule extends WeixinApiCommon{
             return resultArray(['error' => "设置出错！"]);
         }
         // 获取用户openid
-        // $openid = cookie('openid');
-        $openid = 'oKvv71Ur9gf7ikUZNv0ifRbRrMBQ';
+        $openid = cookie('openid');
+        // $openid = 'oKvv71Ur9gf7ikUZNv0ifRbRrMBQ';
         $school=$param['school'];
         $frequency=$param['frequency'];
         $taglist=$param['taglist'];

@@ -182,7 +182,7 @@ class ActivityInfo extends Common{
 		// -------------------------
 		$authKey = cookie('authKey'); // 获取cookie中的authKey
 		$data['create_user'] = cache('Auth_'.$authKey)['userInfo']['auth_id'];
-		$data['create_user'] = 11;
+		// $data['create_user'] = 11;
 		// -------------------------
 		try{
 			$result=$this->insert($data);
