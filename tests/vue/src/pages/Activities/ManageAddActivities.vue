@@ -34,6 +34,7 @@
       </el-form-item>
       <br>
       <span class="">
+        <span>上传图片</span>
         <img v-bind:src="lmodel">
         <input type="file" @change="tirggerFile($event)">
       </span>
@@ -53,7 +54,6 @@
 </template>
 
 <script>
-import uploadFile from '../../uploadFile.js'
 export default {
   name: 'ManageAddActivities',
   components:{},
@@ -68,6 +68,8 @@ export default {
         location :'',
         act_detail:'',
         pic_url:'',
+        litimg_url:'',
+
       },
       signupResponse:'',
       loadingfullscreen:false,
@@ -77,13 +79,25 @@ export default {
       filepathTmp:'',
       fileUploadResult:false,
       fileUploadState:0, // -1正在上传 0没有 1为成功上传
+
     }
   },
   methods: {
+
+    sleep(numberMillis) {  
+    let now = new Date();  
+    let exitTime = now.getTime() + numberMillis;  
+    while (true) {  
+        now = new Date();  
+        if (now.getTime() > exitTime)  
+        return;  
+        }  
+    },
     onSubmit() {
       if(this.fileUploadState==-1){
         console.log('this.fileUploadState:',this.fileUploadState);
         this.$message('图片正在上传，请重新点击提交按钮!');
+
         return ;
       }
       this.loadingfullscreen=true;
@@ -169,10 +183,12 @@ export default {
   
       // 上传文件
     uploadFile(file,callback){
-            var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
+            console.log(file);
+            var Key = this.filePath + file.name; // 这里指定上传目录和文件名
             console.log('here');
             this.form.pic_url=this.filepathTmp;
             var _this=this
+
             this.getAuthorization({Method: 'PUT', Key: Key}, function (auth) {
               
                 var url = 'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/' + Key;
@@ -185,6 +201,7 @@ export default {
                       _this.fileUploadState=1;
                       console.log(_this.fileUploadState);
                       console.log('okok')
+
                       var ETag = xhr.getResponseHeader('etag');
                       callback(null, {url: url, ETag: ETag});
                     } else {
@@ -194,7 +211,10 @@ export default {
                 xhr.onerror = function () {
                     callback('文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则');
                 };
+                
+                // console.log('1',file);
                 xhr.send(file);
+                // console.log('2',newFile);
             });
         },
     tirggerFile:function(event){
@@ -204,11 +224,25 @@ export default {
       this.filepathTmp=Key;
       this.fileUploadState=-1;
       console.log('uploadFile0:',this.filepathTmp);
+
       this.uploadFile(file,function(err,data){
         console.log(err || data);
         console.log(data.Etag);
         });
+    },
+    randomString:function(len) {
+    　　len = len || 32;
+    　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+    　　var maxPos = $chars.length;
+    　　var pwd = '';
+        var i=0;
+    　　for (i = 0; i < len; i++) {
+    　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    　　}
+        var timestamp1 = Date.parse( new Date()) // 当前时间戳
+    　　return pwd+timestamp1;
     }
+
 
     // --------------------------------------------
 
