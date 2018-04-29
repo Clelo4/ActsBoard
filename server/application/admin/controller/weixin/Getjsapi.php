@@ -66,9 +66,10 @@ class Getjsapi extends AdminApiCommon{
         }
 
         $debug = true;
-
+        $postUrl = $param['url'];
+        $postUrl = $postUrl.split('#')[0];
         // 请求方post的url(当前网页的URL，不包含#及其后面部分)，目前写死
-        $postUrl='http://web.iamxuyuan.com/';
+        // $postUrl='http://web.iamxuyuan.com/';
         $jsapi_ticket = $this->getJsApi(); // 获取jsapi_ticket
 
         if (!$jsapi_ticket){
