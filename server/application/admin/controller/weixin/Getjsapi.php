@@ -2,7 +2,7 @@
 namespace app\admin\controller\weixin;
 
 use app\admin\controller\AdminApiCommon;
-use app\admin\model\weixin\UserManage;
+// use app\admin\model\weixin\UserManage;
 use think\facade\Request;
 use think\Db;
 use think\Exception;
@@ -61,13 +61,13 @@ class Getjsapi extends AdminApiCommon{
         # code...
         
         // 如果不为get请求
-        if (!$this->request->isGet()){
+        if (!$this->request->isPost()){
             return ;
         }
 
-        $debug = true;
-        $postUrl = $param['url'];
-        $postUrl = $postUrl.split('#')[0];
+        // $debug = true;
+        $postUrl = $this->param['url'];
+        $postUrl = explode('#',$postUrl)[0];
         // 请求方post的url(当前网页的URL，不包含#及其后面部分)，目前写死
         // $postUrl='http://web.iamxuyuan.com/';
         $jsapi_ticket = $this->getJsApi(); // 获取jsapi_ticket

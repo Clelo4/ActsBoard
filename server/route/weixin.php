@@ -13,7 +13,7 @@ Route::get('wx','admin/weixin.ReceiveMsgFromWeixin/checkSever');
 Route::any('sendalltemplatemessage','admin/weixin.TemplateMessage/SendAllTemplateMessage');
 
 // 获取jsapi签名
-Route::get('weixin/getjsapi','admin/weixin.GetJsApi/getSignature');
+Route::any('weixin/getjsapi','admin/weixin.GetJsApi/getSignature');
 
 // 刷新jsapi签名
 Route::get('weixin/flashjsapi','admin/weixin.GetJsApi/getJsApiFromWeixin');

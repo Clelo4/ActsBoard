@@ -34,7 +34,7 @@ class GetUserInfo extends ApiCommon{
         }
 
         $model = Model('weixin.UserManage');
-        $userInfo = $model->userInfo($openid);
+        $userInfo = $model->getUserInfo($openid); // 从微信服务器获取用户信息
         if(!$userInfo){
             return resultArray(['error'=>$model->getError()]);
         }
@@ -43,6 +43,7 @@ class GetUserInfo extends ApiCommon{
             cookie('subscribe',0); // 关注字段   
         }
         cookie('subscribe',1); // 关注字段
+        cookie('openid',$openid);
         // 返回用户的详细信息
         return resultArray(['data' => $userInfo]);
     }

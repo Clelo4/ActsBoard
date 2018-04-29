@@ -116,7 +116,8 @@ class ActivityInfo extends Common{
 			array_push($array,$tmp);
 		}
 		// 如果分页
-		if(isset($search_arr['page'])){
+		//if(isset($search_arr['page'])){
+		if (false){ // 此段代码不会执行
 			$page=$search_arr['page'];
 			unset($search_arr['page']);
 
@@ -129,13 +130,13 @@ class ActivityInfo extends Common{
 			
 		} else {
 		// 没有分页
-
+			// 永远会执行此段代码
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->where($array)->order('valid_date',$sort)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			$data=$this->where($array)->order('valid_date',$sort)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
 		}
 
 		return $data;
@@ -208,6 +209,7 @@ class ActivityInfo extends Common{
 	public function deleteActivity($act_id){
 		try{
 			$data = $this->where('act_id',$act_id)->update(['status'=>0]);
+			Db::name('act_tag_type')->where(['act_id'=>$act_id])->update((['status' => 0]));
 			return true;
 		} catch(Exception $e){
 			$this->error = $e->getMessage();
