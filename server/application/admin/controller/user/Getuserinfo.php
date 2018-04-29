@@ -34,13 +34,13 @@ class GetUserInfo extends ApiCommon{
         }
 
         $model = Model('weixin.UserManage');
-        $userInfo = $model->getUserInfo($openid); // 从微信服务器获取用户信息
+        $userInfo = json_decode($model->getUserInfo($openid),true); // 从微信服务器获取用户信息 string to json
         if(!$userInfo){
             return resultArray(['error'=>$model->getError()]);
         }
 
         if ($userInfo['subscribe'] != 1){
-            cookie('subscribe',0); // 关注字段   
+            cookie('subscribe',0); // 关注字段
         }
         cookie('subscribe',1); // 关注字段
         cookie('openid',$openid);
