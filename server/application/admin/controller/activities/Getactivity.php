@@ -23,10 +23,13 @@ class GetActivity extends ApiCommon{
         $result;
         $result0;
         $ActModel = model('activity.ActivityInfo');
+        $actTagModel = model('activity.GetActTags');
         if(isset($this->param['id'])){
             $id=$this->param['id'];
             $act_data=$ActModel->getActivitiesById($id);
+            $act_tag = $actTagModel->getTagById($id);
             if($act_data){
+                $act_data['taglist']=$act_tag;
                 $result0['data']=$act_data;
                 return resultArray($result0);
             } else{
@@ -46,9 +49,9 @@ class GetActivity extends ApiCommon{
      */
     public function getActs(){
 
-        if (!$this->request->isPost()){
-            return ;
-        }
+        // if (!$this->request->isPost()){
+        //     return ;
+        // }
 
         $result;
         $search_arr=[];
@@ -129,7 +132,7 @@ class GetActivity extends ApiCommon{
         // 获取用户openid
         $openid = cookie('openid');
         $PushRuleModel = model('user.UserPushRule');
-        $taglist = $PushRuleModel->getUserPushRule($openid);
+        $taglist = $PushRuleModel->getUserPushRule($openid)['taglist'];
         if(!$taglist){
             // 用户没有设定推送规则
         }

@@ -52,6 +52,7 @@ class Base extends Common{
                 // 设置cookie
                 cookie('openid',$openid,3600*24*30); // 有效期一个月
                 cookie('authKey',$authKey,3600*24*30); // 有效期一个月
+                cookie('subscribe',1,3600*24*30); // 关注字段
                 cookie("_access",1,3600*24*30);
                 cookie("host","weixin",3600*24*30);
                 $result['data']=$data;

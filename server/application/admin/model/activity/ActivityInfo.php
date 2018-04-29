@@ -232,18 +232,28 @@ class ActivityInfo extends Common{
         ) {
 			$dateFormat_Type=array('Y-m-d');
 			$param['valid_date']=date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
-
-			$data=[];
+			$create_time = date('Y-m-d H:i:s');
+			$data=["create_time" => $create_time];
 			$key=['type','name','valid_date','school','apply_way','location','act_detail'];
 			for($i=0;$i!=count($key);$i++){
 				if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
 			}
 
 			// -------------------------
+			$act_id = $param['id'];
+			$valid_date = $param['valid_date'];
+			$type = $param['type'];
 			$result=$this->where('act_id',$param['id'])->update($data);
 			if($result==1) {
+				$taglist = $param['taglist']; // 复制taglist数组
+				$result = Db::name('act_tag_type')->where('act_id',$act_id)->delete();
+				for($i=0;$i!=count($taglist);$i++){
+					Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date ]);	
+				}
 				return true;
 			}
+
+			
 		}
 		$this->error = '修改失败';
     	return false;

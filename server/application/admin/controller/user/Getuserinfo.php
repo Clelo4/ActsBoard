@@ -16,9 +16,9 @@ class GetUserInfo extends ApiCommon{
      * @author jack <chengjunjie.jack@outlook.com>
      */
     public function getUserInfo(){
-        if (!$this->request->isPost()){
-            return ;
-        }
+        // if (!$this->request->isPost()){
+        //     return ;
+        // }
 
         $param = $this->param;
         // 验证参数
@@ -30,7 +30,7 @@ class GetUserInfo extends ApiCommon{
         // 获取openid
         $openid=$this->getAccessToken($param['code']);
         if(!$openid){
-            return resultArray(['error' =>'服务器超时']);
+            return resultArray(['error' =>'获取openid超时']);
         }
 
         $model = Model('weixin.UserManage');
@@ -39,6 +39,10 @@ class GetUserInfo extends ApiCommon{
             return resultArray(['error'=>$model->getError()]);
         }
 
+        if ($userInfo['subscribe'] != 1){
+            cookie('subscribe',0); // 关注字段   
+        }
+        cookie('subscribe',1); // 关注字段
         // 返回用户的详细信息
         return resultArray(['data' => $userInfo]);
     }

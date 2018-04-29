@@ -5,6 +5,7 @@ use app\admin\controller\AdminApiCommon;
 use app\admin\model\weixin\UserManage;
 use think\facade\Request;
 use think\Db;
+use think\Exception;
 
 class Getjsapi extends AdminApiCommon{
 
@@ -13,7 +14,27 @@ class Getjsapi extends AdminApiCommon{
      * @return void
      */
     public function getJsApiFromWeixin(){
-        
+        if (!$this->request->isGet()){
+            return ;
+        }
+        $param = $this->param;
+        if (!isset($param['jackhellofucksfjsgjlrjlfjld']) || $param['jackhellofucksfjsgjlrjlfjld'] != 'dfjdlfjdljfdl'){
+            return ;
+        }
+        try{
+            $ACCESS_TOKEN = get_access_token();
+            $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$ACCESS_TOKEN.'&type=jsapi';
+            $result = json_decode(get_https($url));
+            if (isset($result->errcode) && $result->errcode== 0){
+                $jsapi_ticket = $result->ticket;
+                $data = date('Y-m-d H:m:s');
+                $result = Db::name('jsapi_ticket')->where('type',2)->update(['jsapi_ticket' => $jsapi_ticket,'create_time' => $data]);
+                return 1;
+            }
+        } catch(Exception $e){
+            return (string)$e->getMessage();
+        }
+        return 0;
     }
 
     /**

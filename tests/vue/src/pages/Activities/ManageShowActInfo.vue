@@ -16,8 +16,12 @@
           <el-form-item label='地点'>
             <el-input v-model='actinfo.location' value='actinfo.location'></el-input>
           </el-form-item>
-          <el-form-item label='标签'>
-            <el-input v-model='actinfo.taglist' value='actinfo.taglist'></el-input>
+          <el-form-item label='活动标签'>
+              <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
+              <el-checkbox-group v-model="taglist" >
+                <p>{{taglist}}</p>
+                <el-checkbox-button v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
+              </el-checkbox-group>
           </el-form-item>
           <el-form-item label='活动内容'>
             <el-input v-model='actinfo.act_detail' value='actinfo.act_detail' type="textarea" :rows="3">></el-input>
@@ -42,33 +46,59 @@
 </template>
 
 <script>
+// const cityOptions = ['上海', '北京', '广州', '深圳'];
 export default {
   name:'ManageShowActInfo',
   data() {
     return {
       actinfo:{},
       dialogVisible: false,
+      dialogFormVisible:false,
+      checkAll: false,
+      tags: [],
+      taglist:[],
     }
   },
   created:function(){
+    this.tags=[1,2];
     var act_id = this.$route.query['id'];
-    axios.get("/manage/activities/getinfo?id="+act_id).then(
+    axios.get("http://web.iamxuyuan.com/util/gettaglist").then(
+      (response)=>{
+        console.log("获取标签成功");
+        if (response.status == 200 && response.data['errcode'] == 0){
+          this.tags = response.data['data'];
+          console.log('this.tags:',this.tags);
+        }
+      }
+    ).catch((error)=>{
+      console.log("获取标签失败");
+    });
+    axios.get("http://web.iamxuyuan.com/manage/activities/getinfo?id="+act_id).then(
         (response)=>{
-          console.log(response.status);
-          if (response.data['errcode']!=0){
-              this.$message("请求失败");  //response.data['errmsg']);
+          console.log(response.data);
+          console.log(response.data.errcode);
+          if (response.data.errcode != 0){
+              this.$message("请求失败11");  //response.data['errmsg']);
           } else {
               // 成功
               this.actinfo=response.data['data'];
+              this.taglist=this.actinfo.taglist;
+              console.log(this.actinfo['taglist']);
+              console.log(this.actinfo);
               console.log('success');
           }
         }).catch((error) => {
+          console.log(error);
+          console.log('11');
           this.$message('请求失败');
         });
+    
   },
   methods:{
     onSubmit() {
-      axios.post('/manage/activities/change',this.actinfo).then(
+      console.log(this.taglist);
+      this.actinfo.taglist = this.taglist;
+      axios.post('http://web.iamxuyuan.com/manage/activities/change',this.actinfo).then(
               (response)=>{
                 console.log(response.data);
                 if (response.data['errcode']!=0){
@@ -81,6 +111,15 @@ export default {
         });
             console.log('submit!');
     },
+    handleCheckAllChange(val) {
+      this.actinfo.taglist = val ? this.tags : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedTagsChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.tags.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.tags.length;
+    }
   }
 }
 </script>

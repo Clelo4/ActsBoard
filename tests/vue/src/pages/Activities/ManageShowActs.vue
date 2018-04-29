@@ -112,7 +112,7 @@ export default {
   },
   created:function(){
     // 获取活动的总数
-    axios.get('/activities/getallnum').then(
+    axios.get('http://web.iamxuyuan.com/activities/getallnum').then(
       (response)=>{
         if(response.data.errcode != 0){
           this.$message = response.data['errmsg'];
@@ -124,7 +124,7 @@ export default {
     ).catch((error)=>{
       this.$message = '请求失败,请刷新重试';
     });
-    axios.get('/manage/activities/getacts?page='+this.current_change).then(
+    axios.post('http://web.iamxuyuan.com/manage/activities/getacts?page='+this.current_change).then(
         (response)=>{
           console.log(response.status);
           if (response.data['errcode']!=0){
@@ -165,7 +165,7 @@ export default {
       deleteact(){
         let index;
         index = this.selectindex;
-        axios.post("/manage/activities/deleteact",{'act_id':this.selectActId}).then(
+        axios.post("http://web.iamxuyuan.com/manage/activities/deleteact",{'act_id':this.selectActId}).then(
           (response)=>{
           console.log(response.status);
           if (response.data['errcode']!=0){
@@ -179,8 +179,8 @@ export default {
         })
       },
 
-      getActs(){
-        axios.get('/manage/activities/getacts?page='+this.currentPage).then(
+      getActs(){ // 获取活动列表
+        axios.post('http://web.iamxuyuan.com/manage/activities/getacts?page='+this.currentPage).then(
         (response)=>{
           console.log(response.status);
           if (response.data['errcode']!=0){
