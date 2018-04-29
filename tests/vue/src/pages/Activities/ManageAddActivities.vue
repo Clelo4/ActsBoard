@@ -221,7 +221,7 @@ export default {
       var file = event.target.files[0];
       var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
       console.log(Key);
-      this.filepathTmp=Key;
+      this.filepathTmp=this.prefix+Key;
       this.fileUploadState=-1;
       console.log('uploadFile0:',this.filepathTmp);
 

@@ -15,7 +15,7 @@ Route::any('manage/admin/logout','admin/base/logout');
 Route::any('manage/activities/publish','admin/activities.AddActivity/addActivityInfo');
 
 #[GET] 获取活动列表： 
-Route::get('manage/activities/getacts','admin/activities.GetActivity/getActs');
+Route::any('manage/activities/getacts','admin/activities.GetActivity/getActs');
 
 #[GET] 获取活动的详细信息
 Route::get('manage/activities/getinfo','admin/activities.GetActivity/getActById');
