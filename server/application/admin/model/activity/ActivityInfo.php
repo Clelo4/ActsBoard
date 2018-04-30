@@ -107,7 +107,7 @@ class ActivityInfo extends Common{
 		$tmp=[];
 		array_push($tmp,'valid_date','>',$preTime);
 		array_push($array,$tmp);
-
+		// 特定类型的活动id
 		if(isset($search_arr['sort'])){
 			// $sort=$search_arr['sort'];  // 默认asc,后期再改
 			unset($search_arr['sort']);
@@ -117,6 +117,22 @@ class ActivityInfo extends Common{
 			array_push($tmp,'status','=',$search_arr['status']);
 			array_push($array,$tmp);
 			unset($search_arr['status']);
+		}
+		if(isset($search_arr['type'])){
+			// $tmp=[];
+			// array_push($tmp,'type','=',$search_arr['type']);
+			// array_push($array,$tmp);
+			// unset($search_arr['type']);
+			// 从act_tag_type中获取活动id
+			$tag_to_number = ["比赛"=>7,
+            "文娱"=>8,
+            "公益"=>9,
+            "运动"=>10,
+            "社团招新"=>11,
+            "讲座"=>12,
+            "企业宣讲"=>13,
+            "其他"=>14];
+			$allActList = Db::name('act_tag_type')->where('tag',$tag_to_number[$search_arr['type']])->select();
 		}
 		if(isset($search_arr['days'])){
 			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));

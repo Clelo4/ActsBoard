@@ -61,9 +61,9 @@ class GetActivity extends ApiCommon{
     public function getActs(){
 
         // 如果不为post请求放回
-        if (!$this->request->isPost()){
-            return ;
-        }
+        // if (!$this->request->isPost()){
+        //     return ;
+        // }
         // 查询条件的列表
         $search_arr=[];
         // 每页默认数据条数
