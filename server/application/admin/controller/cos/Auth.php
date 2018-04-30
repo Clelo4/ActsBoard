@@ -24,7 +24,7 @@ class Auth extends AdminApiCommon{
             return resultArray(['error' => $validate->getError()]);
         }
         $signTime = (string)(time() - 60) . ';' . (string)(time() + 3600);
-        $httpString = strtolower($param['method'] . "\n" . urldecode($param['pathname'])) . "\n\nhost=" . 'actsboard-1253442303.cos.ap-guangzhou.myqcloud.com' . "\n";
+        $httpString = strtolower($param['method']) . "\n" . urldecode($param['pathname']) . "\n\nhost=" . 'actsboard-1253442303.cos.ap-guangzhou.myqcloud.com' . "\n";
         
         $sha1edHttpString = sha1($httpString);
         $stringToSign = "sha1\n$signTime\n$sha1edHttpString\n"; 

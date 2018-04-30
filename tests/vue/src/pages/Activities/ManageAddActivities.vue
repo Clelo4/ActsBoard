@@ -17,6 +17,11 @@
       <el-form-item label='学校'>
         <el-input v-model='form.school'></el-input>
       </el-form-item>
+      <el-form-item label='活动标签'>
+        <el-checkbox-group v-model="form.taglist" >
+          <el-checkbox-button v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
+        </el-checkbox-group>
+      </el-form-item>
       <el-form-item label='活动内容'>
         <el-input
         v-model='form.act_detail'
@@ -40,7 +45,7 @@
         @click="onSubmit"
         v-loading.fullscreen.lock="loadingfullscreen"
         >提交</el-button>
-        <el-button>取消</el-button>
+        <el-button @click="goToHome">取消</el-button>
       </el-form-item>
     </el-form>
 
@@ -48,6 +53,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'ManageAddActivities',
   components:{},
@@ -61,21 +67,21 @@ export default {
         act_detail:'',
         pic_url:'',
         litimg_url:'',
-
       },
       signupResponse:'',
       loadingfullscreen:false,
       fileList:[],
-      prefix:'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/',
       lmodel:'',
-      filepathTmp:'',
       fileUploadResult:false,
       fileUploadState:0, // -1正在上传 0没有 1为成功上传
-
+      tags:[]
     }
   },
+  created:function(){
+    this.tags=["比赛","文娱","公益","运动","社团招新","讲座","企业宣讲","其他"]; // 活动标签
+  },
   methods: {
-
+    
     onSubmit() {
       if(this.fileUploadState==-1){
         console.log('this.fileUploadState:',this.fileUploadState);
@@ -84,7 +90,7 @@ export default {
       }
       this.loadingfullscreen=true; // 全屏loading
       console.log('pic_url:',this.form.pic_url);
-      axios.post('/manage/activities/publish',this.form).then(
+      axios.post('http://web.iamxuyuan.com/manage/activities/publish',this.form).then(
         (response)=>{
           console.log(response.status);
           if (response.data['errcode']!=0){
@@ -107,56 +113,55 @@ export default {
       console.log('submit!');
     },
 
+    goToHome(){
+      this.$router.push({path:'/'});
+    },
+
     // 移除上传文件
     beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
     },
 
-    // --------------------------------------------
-      getAuthorization(options,callback){
-        var method = (options.Method || 'get').toLowerCase();
-        var key = options.Key || '';
-        var pathname = key.indexOf('/') === 0 ? key : '/' + key;
-  
-        var url = '../cos/auth.php';
-        var xhr = new XMLHttpRequest();
-        var data = {
-            method: method,
-            pathname: pathname,
-          };
-        xhr.open('POST', url, true);
-        xhr.setRequestHeader('content-type', 'application/json');
-        xhr.onload = function (e) {
-            if (e.target.responseText === 'action deny') {
-                alert('action deny');
-            } else {
-                callback(e.target.responseText);
-            }
+    // --------------上文件到腾讯云cos------------------------------
+    
+    // 获取签名
+    getAuthorization(options,callback){
+      var method = (options.Method || 'get').toLowerCase(); // 获取
+      var Key = options.Key || '';
+      console.log('in getAuthorization');
+      var xhr = new XMLHttpRequest();
+      var data = {
+          method: method,
+          pathname: Key,
         };
-        xhr.send(JSON.stringify(data));
-      },
+      xhr.open('POST', window.cosAuthUrl, true);
+      xhr.setRequestHeader('content-type', 'application/json');
+      xhr.onload = function (e) {
+          if (e.target.responseText === 'action deny') {
+              alert('action deny');
+          } else {
+              callback(e.target.responseText);
+          }
+      };
+      xhr.send(JSON.stringify(data));
+    },
   
       // 上传文件
     uploadFile(file,callback){
-            console.log(file);
-            var Key = this.filePath + file.name; // 这里指定上传目录和文件名
-            console.log('here');
-            this.form.pic_url=this.filepathTmp;
-            var _this=this
+            var Key = '/'+window.cosFilePath+'/' + window.cosFileName;
+            console.log('here');  
+            var _this = this;
 
-            this.getAuthorization({Method: 'PUT', Key: Key}, function (auth) {
-              
-                var url = 'http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com/' + Key;
+            this.getAuthorization({Method: window.cosMethod, Key: Key}, function (auth) {
+                console.log('getAuthorization');
+                var url = window.cosUrl+'/'+window.cosFilePath+'/' + window.cosFileName; // 文件的绝对保存路径
                 var xhr = new XMLHttpRequest();
-                xhr.open('PUT', url, true);
+                xhr.open(window.cosMethod, url, true);
                 xhr.setRequestHeader('Authorization', auth);
                 xhr.onload = function () {
                     if (xhr.status === 200 || xhr.status === 206) {
                       _this.fileUploadResult=true;
-                      _this.fileUploadState=1;
-                      console.log(_this.fileUploadState);
-                      console.log('okok')
-
+                      _this.fileUploadState=1; // 图片上传的标志
                       var ETag = xhr.getResponseHeader('etag');
                       callback(null, {url: url, ETag: ETag});
                     } else {
@@ -166,36 +171,36 @@ export default {
                 xhr.onerror = function () {
                     callback('文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则');
                 };
-                
-                // console.log('1',file);
                 xhr.send(file);
-                // console.log('2',newFile);
             });
         },
     tirggerFile:function(event){
-      var file = event.target.files[0];
-      var Key = 'dir/' + file.name; // 这里指定上传目录和文件名
-      console.log(Key);
-      this.filepathTmp=this.prefix+Key;
+      var file = event.target.files[0]; // 获取要上传文件
+      window.cosMethod = 'PUT'; // 必须大写
+      window.cosFilePath = 'act_pic'; // cos文件夹名
+      window.cosUrl = "http://actsboard-1253442303.cos.ap-guangzhou.myqcloud.com"; // cos Bucket桶域名
+      window.cosFileName = this.randomString(3,"HD")+"."+file.name.split('.')[1]; // 新文件的文件名
+      window.cosAuthUrl = "http://web.iamxuyuan.com/cos/auth.php"; // 获取签名的接口
+      // 使用window对象保存复制文件，用于全局操作
+      window.newFile = new File([file],window.cosFileName,{type:file.type});
       this.fileUploadState=-1;
-      console.log('uploadFile0:',this.filepathTmp);
-
-      this.uploadFile(file,function(err,data){
-        console.log(err || data);
-        console.log(data.Etag);
+      this.uploadFile(window.newFile,function(err,data){
+        console.log('4:',err);
+        console.log('5:',data);
         });
     },
-    randomString:function(len) {
+    // 生成随机字符串，
+    randomString:function(len,type='') {
     　　len = len || 32;
-    　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+    　　var $chars = 'DEFGHIJKLNOPQRSdefhijkmnprswxyz';
     　　var maxPos = $chars.length;
     　　var pwd = '';
         var i=0;
     　　for (i = 0; i < len; i++) {
     　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
     　　}
-        var timestamp1 = Date.parse( new Date()) // 当前时间戳
-    　　return pwd+timestamp1;
+        var timestamp1 = new Date().getTime() // 当前时间戳
+    　　return 'ACT_'+pwd+"_"+type+timestamp1;
     }
 
 

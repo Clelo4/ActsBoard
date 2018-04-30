@@ -8,8 +8,7 @@
             <el-input v-model='actinfo.school' value='actinfo.school'></el-input>
           </el-form-item>
           <el-form-item label='活动标签'>
-              <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
-              <el-checkbox-group v-model="taglist" >
+             <el-checkbox-group v-model="taglist" >
                 <el-checkbox-button v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
               </el-checkbox-group>
           </el-form-item>
@@ -36,7 +35,7 @@
 </template>
 
 <script>
-// const cityOptions = ['上海', '北京', '广州', '深圳'];
+
 export default {
   name:'ManageShowActInfo',
   data() {
@@ -44,13 +43,12 @@ export default {
       actinfo:{},
       dialogVisible: false,
       dialogFormVisible:false,
-      checkAll: false,
       tags: [],
       taglist:[],
     }
   },
   created:function(){
-    this.tags=[1,2];
+    this.tags=["比赛","文娱","公益","运动","社团招新","讲座","企业宣讲","其他"]; // 活动标签
     var act_id = this.$route.query['id'];
     axios.get("http://web.iamxuyuan.com/util/gettaglist").then(
       (response)=>{
@@ -101,15 +99,6 @@ export default {
         });
             console.log('submit!');
     },
-    handleCheckAllChange(val) {
-      this.actinfo.taglist = val ? this.tags : [];
-      this.isIndeterminate = false;
-    },
-    handleCheckedTagsChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.tags.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.tags.length;
-    }
   }
 }
 </script>
