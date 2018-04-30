@@ -1,4 +1,5 @@
 <template><div class="background">
+  <alert v-model="alert_show" :title="share_title">记得关注一下我们公众号嘛~QAQ</alert>
   <div class="act-name">{{act.name}}</div>
   <div class="act-detail">{{act.act_detail}}</div>
   <div class="img-background"><img :src="act.url" class="img"></div>
@@ -12,17 +13,18 @@
   <div class="act-apply-way">参与方式：{{act.apply_way}}</div></div>
   <div class="column"><div class="blue-circle"></div>
   <div class="act-school">活动所属学校：  {{act.school}}</div></div>
-  <x-button type="primary" link="/demo" class="button" @click.native="to_share">分享一下！</x-button>
+  <x-button type="primary" class="button" @click.native="to_share">分享一下！</x-button>
 </div></template>
 
 <script>
-import { XButton } from "vux";
+import { XButton,Alert } from "vux";
 import api from "../api.js";
 import axios from "axios";
 import util from "../util";
 export default {
   components: {
-    XButton
+    XButton,
+    Alert
   },
   props: {
     id: {
@@ -39,6 +41,8 @@ export default {
   // name: "tab",
   data() {
     return {
+      share_title:'分享一下',
+      alert_show:false,
       value: "今天",
       actname: "",
       actid: 0,
@@ -79,12 +83,15 @@ export default {
         });
     },
     to_share() {
-      //todo
+      this.alert_show = true;
+      setTimeout(() => {
+        this.alert_show = false;
+      }, 3000)
     }
   },
   mounted: function() {
     // console(api.get_activity_by_id(id))
-    // console.log(this);
+    // console.log(this); 
     console.log(
       "这是已经跳转到活动详情组件的id号码" + this.$route.params.actid
     );
@@ -92,7 +99,11 @@ export default {
     this.actname = this.$route.params.actname;
     this.get_activity_by_id(this.actid);
     util.wx_act_detail_share(this.actname,window.location.href);
+  },
+  beforeCreate(){
+    // util.check_if_follow();
   }
+
 };
 </script>
 <style scoped>

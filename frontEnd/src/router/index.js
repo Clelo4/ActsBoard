@@ -11,7 +11,7 @@ export default new Router({
   // mode:'history',
   routes: [
     {
-      // 这个逻辑以后可能会有坑，因为以后如果要做成朋友圈转发活动的话，如何将活动id传进来会比较麻烦
+      
       path: '/activityDetail/:actid',
       name: 'activityDetail',
       component: activityDetail
@@ -34,8 +34,8 @@ export default new Router({
       component:selectSchool
     },
     {
-      path:'/actPushing',
-      name:'actPushing',
+      path:'/actpushing',
+      name:'actpushing',
       component:actPushing
     }
   ]

@@ -7,15 +7,18 @@
        <group></group>
        <group>
          <!-- <popup-picker :title="type_title" :data="type_list" v-model="type"></popup-picker> -->
-         <cell :title="type_title" :value="type[0]" @click.native="show_picker">
-           <popup v-model="show">
-            <div class="popup0">
-              <group>
-                <checklist required="if_required" :options="commonList" v-model="type"></checklist>
-              </group>
-            </div>
-          </popup>
+         <cell :title="type_title" :value="type_computed" @click.native="change_picker_state" :is-link="is_link">
          </cell>
+         
+          <popup v-model="show">
+            
+            <div class="popup0">
+
+                <popup-header title="最多pick三个标签噢"></popup-header>
+                <checklist :options="type_list" v-model="type" :max="max_num"></checklist>
+
+            </div>
+          </popup>                                                                                                                                                                                                                                                                                                                                                                                                                                           
          </group>
        <x-button type="primary" class="button" @click.native="set_user_setting">完成修改</x-button>
        
@@ -23,7 +26,15 @@
 
 </template>
 <script>
-import { PopupPicker, Group, XButton, Cell, Popup } from "vux";
+import {
+  PopupPicker,
+  Group,
+  XButton,
+  Cell,
+  Popup,
+  Checklist,
+  PopupHeader
+} from "vux";
 import axios from "axios";
 import api from "../api";
 import util from "../util";
@@ -34,24 +45,40 @@ export default {
     Group,
     XButton,
     Cell,
-    Popup
+    Popup,
+    Checklist,
+    PopupHeader
   },
   data() {
     return {
-      
       school: ["华南理工大学"],
       school_title: "活动圈子",
-      school_list: [["华南理工大学", "其他区域待开放"]], //这他妈要怎么实现这个不可选
+      school_list: [["","华南理工大学", "其他区域待开放"]], //这他妈要怎么实现这个不可选
       frequency: ["每日一次"],
       frequency_title: "推送频率",
       frequency_list: [["每日一次", "每三日一次", "每周一次"]],
-      type: ["全部"],
+      type: [],
       type_title: "推送类别",
-      type_list: ["比赛", "宣讲会", "招聘会", "运动会"],
+      type_list: [
+        "文娱",
+        "公益",
+        "运动",
+        "社团招新",
+        "讲座",
+        "企业宣讲",
+        "其他"
+      ],
       show: false,
-      if_required:true
-      
+      if_required: true,
+      position: "left",
+      is_link: true,
+      max_num: 3
     };
+  },
+  computed: {
+    type_computed: function() {
+      return this.type.join(",");
+    }
   },
   //推送频率这里，后台传给我的是数字，可是我前台看到的是中文。这里是在AJAX里做转换，但是我觉得后期看下能不能用computed属性，现在这样写不优雅。
   methods: {
@@ -61,8 +88,17 @@ export default {
         .get(api.get_user_init_setting)
         .then(function(response) {
           console.log(response.data);
-          _this.school = [response.data.data.school];
+          if (response.data.data.school == null) {
+            _this.school = [""]
+            
+          }else{
+            _this.school = [response.data.data.school];
+          }
+
           // this.frequency = response.data.data.frequency;
+          if(!response.data.data.frequency){
+            _this.frequency == ["未设置"]
+          }
           if (response.data.data.frequency == 1) {
             console.log("此时此刻的_this.frequency[0]" + _this.frequency[0]);
             console.log("是设置成每日一次");
@@ -78,7 +114,7 @@ export default {
             console.log("是设置成每周一次");
             _this.frequency[0] = ["每周一次"];
           }
-          _this.type = [response.data.data.type];
+          _this.type = response.data.data.taglist;
         })
         .catch(function(error) {
           console.log("出错了兄弟");
@@ -88,6 +124,8 @@ export default {
       console.log(this.frequency);
     },
     set_user_setting() {
+      let _this = this;
+      let temp_taglist = this.type;
       let temp_frequency;
       if (this.frequency[0] == "每日一次") {
         temp_frequency = 1;
@@ -98,13 +136,16 @@ export default {
       if (this.frequency[0] == "每周一次") {
         temp_frequency = 7;
       }
-      let _this = this;
-      console.log("准备发送");
+      if(this.type == null){
+        temp_taglist = [];
+      }
+      console.log("准备发送的type是");
+      console.log(this.type);
       axios
         .post(api.set_user_setting, {
           school: _this.school[0],
           frequency: temp_frequency,
-          type: _this.type[0]
+          taglist: temp_taglist
         })
         .then(function(response) {
           console.log("发送完了");
@@ -118,14 +159,21 @@ export default {
 
     // 弹出picker
     change_picker_state() {
-      this.show = !this.show;
+      console.log(this.type);
+      this.show = true;
+    },
+    close_picker_and_save() {
+      this.show = false;
+    },
+    close_picker_and_exit(){
+
     }
   },
   mounted: function() {
     this.get_user_init_setting();
-    util.wx_common_share();
+     util.wx_common_share();
   },
-  created: function() {
+  beforeCreate() {
     util.getCode("setting");
   }
 };
