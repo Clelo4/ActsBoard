@@ -7,6 +7,7 @@ namespace app\admin\model\activity;
 use app\admin\model\Common;
 use think\Validate;
 use think\Db;
+
 /**
  * 验证数据是否有空格
  * 有返回 true
@@ -91,14 +92,18 @@ class ActivityInfo extends Common{
 	 * @return NULL     错误
 	 * @return result   mysql 查询结果
 	 */
-	public function getActivitiesByRule($search_arr,$nums){
+	public function getActivitiesByRule($search_arr,$nums=1000){ // nums最大为1000
 		$data;
 		// 分页
 		$sort='asc';
+		// 当前时间
 		$currentTime=date('Y-m-d');
+		// 开始时间
 		$preTime=date('Y-m-d');
 		$preTime=$preTime.' 00:00:00';
-		$array=[]; // 查询条件
+		// 查询条件
+		$array=[];
+		// 缓存array
 		$tmp=[];
 		array_push($tmp,'valid_date','>',$preTime);
 		array_push($array,$tmp);
@@ -106,6 +111,12 @@ class ActivityInfo extends Common{
 		if(isset($search_arr['sort'])){
 			// $sort=$search_arr['sort'];  // 默认asc,后期再改
 			unset($search_arr['sort']);
+		}
+		if(isset($search_arr['status'])){
+			$tmp=[];
+			array_push($tmp,'status','=',$search_arr['status']);
+			array_push($array,$tmp);
+			unset($search_arr['status']);
 		}
 		if(isset($search_arr['days'])){
 			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));
@@ -116,21 +127,17 @@ class ActivityInfo extends Common{
 			array_push($array,$tmp);
 		}
 		// 如果分页
-		//if(isset($search_arr['page'])){
-		if (false){ // 此段代码不会执行
+		if(isset($search_arr['page']) && $search_arr['page']){
 			$page=$search_arr['page'];
 			unset($search_arr['page']);
-
+			// 添加查询条件
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->where($array)->where('status',1)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
-			
-		} else {
-		// 没有分页
-			// 永远会执行此段代码
+			$data=$this->where($array)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+		} else { // 没有分页
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
@@ -143,12 +150,46 @@ class ActivityInfo extends Common{
 		
 	}
 
-	// // 获取默认列表
-	// public function getActivities($nums){
-	// 	$data;
-	// 	$data=$this->where('status',0)->order('valid_date','asc')->limit($nums)->select();
-	// 	return $data;
-	// }
+	/**
+	 * 获取用户推荐活动
+	 * @author jack <chengjunjie.jack@outlook.com>
+	 * @param array $taglist
+	 * @return void
+	 */
+	public function getRecommendAcitities($taglist)
+	{
+
+		// 排序方式
+		$sort='asc';
+		// 开始时间
+		$preTime=date('Y-m-d');
+		$preTime=$preTime.' 00:00:00';
+		// 查询条件
+		$array=[];
+		// 缓存array
+		$tmp=[];
+		array_push($tmp,'valid_date','>',$preTime);
+		array_push($array,$tmp);
+		$tmp = [];
+		array_push($tmp,'status','=',1);
+		array_push($array,$tmp);
+
+		$tagActsList = []; // 活动id列表
+		for($i = 0;$i != count($taglist);$i++){
+			$tmp = [];
+			array_push($tmp,'tag','=',$taglist[$i]);
+			// 从act_tag_type中获取符合条件的所有活动
+			$tagActs = Db::name('act_tag_type')->where($array)->where('tag',$taglist[$i])->order('valid_date',$sort)->field('act_id')->select();
+			if($tagActs){
+				for($j = 0;$j != count($tagActs);$j++){
+					$tagActsList[$tagActs[$j]['act_id']] = true;
+				}
+			}
+		}
+
+		// 返回活动id列表
+		return $tagActsList;
+	}
 
 
 	/**
@@ -193,7 +234,7 @@ class ActivityInfo extends Common{
 
 		if($result==1) {
 			for($i=0;$i!=count($taglist);$i++){
-				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date ]);
+				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date,'status' => 1 ]);
 			}
 			return true;
 		}
@@ -209,7 +250,8 @@ class ActivityInfo extends Common{
 	public function deleteActivity($act_id){
 		try{
 			$data = $this->where('act_id',$act_id)->update(['status'=>0]);
-			Db::name('act_tag_type')->where(['act_id'=>$act_id])->update((['status' => 0]));
+			Db::name('activities')->where(['act_id'=>$act_id])->update(['status' => 0]);
+			$result = Db::name('act_tag_type')->where('act_id',$act_id)->update(['status' => 0]);
 			return true;
 		} catch(Exception $e){
 			$this->error = $e->getMessage();
@@ -224,40 +266,36 @@ class ActivityInfo extends Common{
 	 */
 	public function changeActivityInfo($param){
 
-		// 检查必要的key是否存在；
-		if(array_key_exists('type',$param)
-           &&array_key_exists('name',$param)
-           &&array_key_exists('valid_date',$param)
-           &&array_key_exists('location',$param)
-           &&array_key_exists('school',$param)
-           &&array_key_exists('id',$param)
-        ) {
-			$dateFormat_Type=array('Y-m-d');
-			$param['valid_date']=date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
-			$create_time = date('Y-m-d H:i:s');
-			$data=["create_time" => $create_time];
-			$key=['type','name','valid_date','school','apply_way','location','act_detail'];
-			for($i=0;$i!=count($key);$i++){
-				if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
-			}
-
-			// -------------------------
-			$act_id = $param['id'];
-			$valid_date = $param['valid_date'];
-			$type = $param['type'];
-			$result=$this->where('act_id',$param['id'])->update($data);
-			if($result==1) {
-				$taglist = $param['taglist']; // 复制taglist数组
-				$result = Db::name('act_tag_type')->where('act_id',$act_id)->delete();
-				for($i=0;$i!=count($taglist);$i++){
-					Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date ]);	
-				}
-				return true;
-			}
-
-			
+		$validate = Validate::make(['name'=>'require','valid_date'=>'require|date','school'=>'require','id'=>'require|length:11'],
+								   ['name'=>'活动名称没有设置','valid_date'=>'非法日期','school'=>'学校错误','id'=>'id错误']);
+		if (!$validate->check($param)){
+			$this->error=$validate->getError();
+			return false;
 		}
-		$this->error = '修改失败';
-    	return false;
+		
+		$param['valid_date']=date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
+		$create_time = date('Y-m-d H:i:s');
+		$data=["create_time" => $create_time];
+		$key=['type','name','valid_date','school','apply_way','location','act_detail'];
+		for($i=0;$i!=count($key);$i++){
+			if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
+		}
+
+		// -------------------------
+		$act_id = $param['id'];
+		$valid_date = $param['valid_date'];
+		$type = $param['type'];
+		try{
+			$result=$this->where('act_id',$param['id'])->update($data);
+			$taglist = $param['taglist']; // 复制taglist数组
+			$result = Db::name('act_tag_type')->where('act_id',$act_id)->delete();
+			for($i=0;$i!=count($taglist);$i++){
+				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date ,'status' => 1]);	
+			}
+			return true;
+		} catch(Exceptionv $e){
+			$this->error='服务器操作数据库失败';
+			return false;
+		}
 	}
 }

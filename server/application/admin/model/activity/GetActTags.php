@@ -8,7 +8,7 @@ class GetActTags extends Common{
     protected $name = 'act_tag_type';
 
     /**
-     * 通过活动id获取活动的标签列表
+     * 通过活动id获取活动的标签列表(int型数组)
      *
      * @param string $act_id
      * @return array
