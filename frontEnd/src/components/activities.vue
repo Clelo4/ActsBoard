@@ -51,9 +51,12 @@ export default {
         .post(api.get_acts)
         .then(function(response) {
           console.log(response.data);
-
+          for(let i = 0;i < response.data.data.length;i++){
+            response.data.data[i].valid_date = response.data.data[i].valid_date.split(' ')[0];
+          }
           // _this.activities = JSON.parse(response.data).data;
           _this.activities = response.data.data;
+          
           // console.log(_this.activities);
         })
         .catch(function(error) {
@@ -67,7 +70,9 @@ export default {
         .get(api.get_activity_after_select(time, type))
         .then(function(response) {
           console.log(response.data);
-
+         for(let i = 0;i < response.data.data.length;i++){
+            response.data.data[i].valid_date = response.data.data[i].valid_date.split(" ")[0];
+          }
           // _this.activities = JSON.parse(response.data).data;
           _this.activities = response.data.data;
           // console.log(_this.activities);

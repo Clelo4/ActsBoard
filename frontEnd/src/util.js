@@ -3,7 +3,7 @@ import axios from 'axios'
 import wx from 'weixin-js-sdk'
 // import wx from 'weixin-js-sdk'
 export default {
-  getCode: (state) => {
+  getCode: (state,callback) => {
     const AppId = 'wxb569d7a3f448c503';
     // console.log(this.a);
     // const code = getUrlParam("code"); //这个getUrlParam需要自己实现
@@ -19,6 +19,7 @@ export default {
     console.log('code=' + code);
     let if_open_id = document.cookie.indexOf("openid");
     console.log('此时的openid的位置是' + if_open_id);
+    // alert('code!' + code);
     if (if_open_id < 0) {
       // alert('没有open_id')
       if (code == null || code === "") {
@@ -33,13 +34,18 @@ export default {
           .then(function (response) {
             console.log(response);
             console.log('post code成功')
+            // alert('!!!!!!!');
+            callback()
           })
           .catch(function (error) {
             console.log(error);
           });
         console.log('请求后端-完成')
       }
+    
     }
+    
+    
   },
 
   //检查用户是否关注了该公众号
