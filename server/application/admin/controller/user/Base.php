@@ -6,15 +6,13 @@ use think\facade\Request;
 use think\Db;
 use think\Validate;
 use app\common\controller\Common;
+use think\Config;
 /**
  * 验证微信用户的基础类
  * @author jack <chengjunjie.jack@outlook.com>
  */
 class Base extends Common{
-
-    static $appid="wxb569d7a3f448c503";
-    static $secret="29938d5779d3dd83b9dab916f6e469d4";
-
+    
     /** 
      * 服务器接收来自微信用户客户端的code，调用getAccessToken函数获得用户的openid
      * 服务器为微信用户设置永久cookie以保存openid
@@ -72,7 +70,9 @@ class Base extends Common{
      * @param $code string 微信客户端传回的code
      */
     private function getAccessToken($code){
-        $getAccessToken="https://api.weixin.qq.com/sns/oauth2/access_token?appid=".self::$appid."&secret=".self::$secret."&code=".$code."&grant_type=authorization_code";
+        $appid = Config::get('appid');
+        $secret = Config::get('secret');
+        $getAccessToken="https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$code."&grant_type=authorization_code";
         // 发起https的get请求
         $resultData=get_https($getAccessToken);
         $resultData=json_decode($resultData, true);

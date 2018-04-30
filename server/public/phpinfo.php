@@ -1,5 +1,6 @@
 <?php
-	phpinfo();
+	require('./config.php');
+	echo $r['hello'];
 ?>
 
 	
