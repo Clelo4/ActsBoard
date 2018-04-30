@@ -23,10 +23,24 @@ class GetActivity extends ApiCommon{
         $result;
         $result0;
         $ActModel = model('activity.ActivityInfo');
+        $actTagModel = model('activity.GetActTags');
         if(isset($this->param['id'])){
             $id=$this->param['id'];
             $act_data=$ActModel->getActivitiesById($id);
+            $act_tag = $actTagModel->getTagById($id); // 获取活动的标签
             if($act_data){
+                $number_to_tag = [7=>"比赛",
+                8=>"文娱",
+                9=>"公益",
+                10=>"运动",
+                11=>"社团招新",
+                12=>"讲座",
+                13=>"企业宣讲",
+                14=>"其他"];
+                for($i = 0;$i != count($act_tag);$i++){
+                    $act_tag[$i] = $number_to_tag[$act_tag[$i]]; // tag从int转为string
+                }
+                $act_data['taglist']=$act_tag;
                 $result0['data']=$act_data;
                 return resultArray($result0);
             } else{
@@ -38,38 +52,26 @@ class GetActivity extends ApiCommon{
         return resultArray($result0);
     }
     
+    
     /**
      * 获取活动列表
+     * @author jack <chengjunjie.jack@outlook.com>
+     * @return void
      */
     public function getActs(){
-        $result;
-        $search_arr=[];
-        $nums=10;     // 每页默认数据条数
 
+        // 如果不为post请求放回
+        if (!$this->request->isPost()){
+            return ;
+        }
+        // 查询条件的列表
+        $search_arr=[];
+        // 每页默认数据条数
+        $nums=50;     
         // page字段可选
         if(Request::has('page')){
             $search_arr['page']=$this->param['page'];
         }
-
-        /**
-         * 获取用户推荐列表
-         * 此代码未写完
-         * author: jack
-         * email: jack0000davis@gmail.com
-         */
-        if(Request::has('recommend')){
-            $openid=Request::cache('openid');  // 微信用户id
-
-            // if($this->param['recommend']=='yes' && Request::has('user_id')){
-            //     //
-            //     // CODE 
-            // } else {
-            //     // type字段出错
-            //     $result['error']='参数设置出错或缺失1002';
-            //     return resultArray($result);
-            // }
-        }
-
         // 根据规则获取列表
         if(Request::has('days')){
             if($this->param['days']!=0){  // 如果days=0则默认返回所有时间的
@@ -81,20 +83,15 @@ class GetActivity extends ApiCommon{
                 $search_arr['type']=$this->param['type'];
             }
         }
-
-        // 如果是host为weixin，则通过cookie的openid获取用户设定的type，覆盖原type字段
-        // if (cookie('host')=='weixin') {
-        //     $openid = cookie('openid');
-        //     $type=Db::name('user_push_rule')->where('openid',$openid)->value('type');
-        //     $search_arr['type']=$type;
-        // }
-
+        // 学校
         if(Request::has('school')){
             $search_arr['school']=$this->param['school'];
         }
+        // 排序方式
         if(Request::has('sort')){
             $search_arr['sort']=$this->param['sort'];
         }
+        // 活动状态
         if(Request::has('status')){
             $search_arr['status']=$this->param['status'];
         } else{
@@ -103,35 +100,54 @@ class GetActivity extends ApiCommon{
         }
 
         $ActModel = model('activity.ActivityInfo');
-        $data=$ActModel->getActivitiesByRule($search_arr,$nums);
-        
-        $result['data']=$data;
-        return resultArray($result);
+        $result=$ActModel->getActivitiesByRule($search_arr,$nums);
+        if (!$result){
+            return resultArray(['error' => $ActModel->getError()]);
+        }
+        return resultArray(['data' => $result]);
     }
 
 
     /**
-	 * 通过限定活动类型和活动时间范围获取所有活动信息
-	 * @param $days   int    最近几天，
-	 * 时间精确度：日
-	 */
-    public function getActivitiesByTimeRange(){
-        $result;
-        $ActModel = model('activity.ActivityInfo');
-        if(isset($this->param['days'])){
-            $days=$this->param['days'];
-            $act_type=$this->param['act_type'];
-            //$current_time=date('Y-m-d H:i:s');       // 获取当前时间
-            // $change='+'.$days.' day';
-            // $end_time=date('Y-m-d',strtotime($change));
-            $current_time='2018-04-02 00:0:00';
-            $end_time='2018-04-20 00:24:02';
-            $data=$ActModel->getActivitiesByTimeRange($act_type,$current_time,$end_time);
-            $result['data']=$data;
-            return resultArray($result);
-        } else{
-            $result['error']='参数错误';
-            return resultArray($result);
+     * 获取用户推荐列表
+     *
+     * @return void
+     */
+    public function getActsByRecommend()
+    {
+        # code...
+        // 获取用户openid
+        $openid = cookie('openid');
+        $pushRuleModel = model('user.UserPushRule');
+        $actModel = model('activity.ActivityInfo');
+        $taglist = $pushRuleModel->getUserPushRule($openid)['taglist'];
+        if (!$taglist){
+            // 用户没有设定推送规则
+            $search_arr=[];
+            $search_arr['status'] = 1;
+            $result = $actModel->getActivitiesByRule($search_arr);
+            return resultArray(['data' => $result]);
+        }
+        else { // 获取推荐活动列表
+            $tag_to_number = ["比赛"=>7,
+            "文娱"=>8,
+            "公益"=>9,
+            "运动"=>10,
+            "社团招新"=>11,
+            "讲座"=>12,
+            "企业宣讲"=>13,
+            "其他"=>14];
+            for($i = 0;$i != count($taglist);$i++){
+                $taglist[$i] = $tag_to_number[$taglist[$i]];
+            }
+            $result = $actModel->getRecommendAcitities($taglist);
+            $result = array_keys($result);
+            $allActsList = [];
+            for($i = 0;$i != count($result);$i++){
+                $data=Db::name('activities')->where('act_id',$result[$i])->where('status',1)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->find();
+                $allActsList[$i] = $data;
+            }
+            return resultArray(['data' => $allActsList]);
         }
     }
 

@@ -15,7 +15,7 @@ Route::any('manage/admin/logout','admin/base/logout');
 Route::any('manage/activities/publish','admin/activities.AddActivity/addActivityInfo');
 
 #[GET] 获取活动列表： 
-Route::get('manage/activities/getacts','admin/activities.GetActivity/getActs');
+Route::any('manage/activities/getacts','admin/activities.GetActivity/getActs');
 
 #[GET] 获取活动的详细信息
 Route::get('manage/activities/getinfo','admin/activities.GetActivity/getActById');
@@ -28,8 +28,6 @@ Route::any('manage/activities/deleteact','admin/activities.DeleteActivity/delete
 
 // 清除微信客户端的cookie
 Route::any('manage/deletecookie','admin/manage.Cookie/deleteCookie');
-// #[GET] 获取用户列表
-// Route::get('manage/weixin/getfollower','admin/manage.User/getFollower');
 
-// #[GET] 获取用户信息
-// Route::get('manage/weixin/getuserinfo','admin/manage.User/getUserInfo');
+// 获取用于cos的签名
+Route::post('cos/auth','admin/cos.Auth/getAuthorization');

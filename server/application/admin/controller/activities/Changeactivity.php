@@ -24,7 +24,20 @@ class ChangeActivity extends AdminApiCommon{
         }
         $result;
         $param=Request::post();
-
+        if ($param['taglist'] && is_array($param['taglist'])){
+            //
+            $tag_to_number = ["比赛"=>7,
+            "文娱"=>8,
+            "公益"=>9,
+            "运动"=>10,
+            "社团招新"=>11,
+            "讲座"=>12,
+            "企业宣讲"=>13,
+            "其他"=>14];
+            for ($i = 0;$i != count($param['taglist']);$i++){
+                $param['taglist'][$i] = $tag_to_number[$param['taglist'][$i]];
+            }
+        }
         $ActModel = model('activity.ActivityInfo');
 
         if($ActModel->changeActivityInfo($param)){

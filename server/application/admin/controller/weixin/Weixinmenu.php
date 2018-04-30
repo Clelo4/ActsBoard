@@ -37,7 +37,7 @@ class WeixinMenu extends AdminApiCommon{
 				array(
 					'type'=>'view',
 					'name'=>'推荐',
-					'url'=>'http://web.iamxuyuan.com',
+					'url'=>'http://web.iamxuyuan.com/#/actpushing',
 					'sub_button'=>[]
 				),
 				array(
