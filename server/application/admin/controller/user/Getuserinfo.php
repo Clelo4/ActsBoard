@@ -35,8 +35,13 @@ class GetUserInfo extends ApiCommon{
             return resultArray(['error'=>$model->getError()]);
         }
 
+        if (!isset($userInfo['subscribe'])){
+            return resultArray(['error' => '非法openid']);
+        }
         if ($userInfo['subscribe'] != 1){
             cookie('subscribe',0); // 关注字段
+            cookie('openid',$openid);
+            return resultArray(['data' => $userInfo]);
         }
         cookie('subscribe',1); // 关注字段
         cookie('openid',$openid);

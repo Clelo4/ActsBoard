@@ -15,7 +15,7 @@ return [
     // 服务器地址
     'hostname'        => '123.207.35.163',
     // 数据库名
-    'database'        => 'actsboard',
+    'database'        => 'actsboard_test',
     // 用户名
     'username'        => 'root',
     // 密码

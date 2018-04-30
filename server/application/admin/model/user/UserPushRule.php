@@ -90,6 +90,7 @@ class UserPushRule extends Common{
         if(!$this->where('openid',$openid)->find()){
             $result=$this->insert($data);
         } else{
+            $this->where("openid",$openid)->delete();
             $result=$this->where('openid',$openid)->update($data);
         }
 
