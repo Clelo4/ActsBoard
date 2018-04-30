@@ -48,7 +48,7 @@ export default {
       // console.log(api.get_acts);
       var _this = this;
       axios
-        .get(api.get_acts)
+        .post(api.get_acts)
         .then(function(response) {
           console.log(response.data);
 
@@ -94,16 +94,23 @@ export default {
     util.wx_common_share();
   },
   created() {
+   // alert(state)
+   // alert(document.cookie)
     let state;
     var reg = new RegExp("(^|&)state=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
     var r = window.location.search.substr(1).match(reg); //匹配目标参数
     if (r != null) {
       state = unescape(r[2]);
     }
+    // console('这是state')
+    // console(state);
     if (state) {
-      console.log('到了')
+      console.log(state)
       this.$router.push({ path: "/" + state });
     }
+  },
+  beforeCreate(){
+    // util.check_if_follow();
   }
 };
 </script>

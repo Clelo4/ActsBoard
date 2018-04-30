@@ -21,10 +21,12 @@ new Vue({
   template: '<App/>'
 })
 
-//判断用户有没有关注,但是这个不生效啊！不知道是几个意思，等待后期维护
+
 t_router.beforeEach((to, from, next) => {
   // util.check_if_follow();
   console.log('进入路由守卫')
   util.to_wx_config();
+  console.log('完成wx_config - 路由守卫')
   next();
+  console.log('完成next() - 路由守卫')
 })

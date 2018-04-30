@@ -20,12 +20,14 @@ export default {
     let if_open_id = document.cookie.indexOf("openid");
     console.log('此时的openid的位置是' + if_open_id);
     if (if_open_id < 0) {
+      // alert('没有open_id')
       if (code == null || code === "") {
         console.log('请求后端-完成')
+        // alert('diu!这是'+state);
         window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=http://web.iamxuyuan.com&response_type=code&scope=snsapi_base&state=" + state + "#wechat_redirect"; //这是要调用的微信官方接口,拿到回调的url，相当于重新刷新了页面
       } else {
         console.log('请求后端')
-        axios.post(api.post_code, {
+        axios.post(api.get_user_info, {
             code: code //这样写不知道对不对~
           })
           .then(function (response) {
@@ -42,43 +44,61 @@ export default {
 
   //检查用户是否关注了该公众号
   check_if_follow: () => {
-    const AppId = 'wxb569d7a3f448c503';
-    // console.log(this.a);
-    // const code = getUrlParam("code"); //这个getUrlParam需要自己实现
-    let code;
-    var reg = new RegExp("(^|&)code=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
-    var r = window.location.search.substr(1).match(reg); //匹配目标参数  
-    if (r != null)
-      code = unescape(r[2]);
-    const local = window.location.href; //拿到当前的url
-    console.log('这是Local' + local);
-    const redirect_uri = "http://web.iamxuyuan.com/";
-    //检查有没有openid
-    console.log('code=' + code);
-    let if_open_id = document.cookie.indexOf("openid");
-    console.log('此时的openid的位置是' + if_open_id);
-    if (if_open_id < 0) {
+    console.log('进入到检查是否关注啦！')
+    
+    // 检查用户有没有关注
+    let if_follow
+    let cookie = document.cookie.split(";");
+    alert(document.cookie)
+    for(let i = 0;i<cookie.length;i++){
+      let cookie_item = cookie[i].split("=");
+      alert(cookie_item)
+      if(cookie_item[0] == "subscribe"){
+        if_follow = cookie_item[1];
+        alert(if_follow)
+      }
+    }
+    console.log(if_follow);
+    if (if_follow != "1") {
+      alert('进入到check_if_folloow')
+      const AppId = 'wxb569d7a3f448c503';
+      // console.log(this.a);
+      // const code = getUrlParam("code"); //这个getUrlParam需要自己实现
+      let code, subscribe;
+      var reg = new RegExp("(^|&)code=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+      var r = window.location.search.substr(1).match(reg); //匹配目标参数  
+      if (r != null)
+        code = unescape(r[2]);
+      const local = window.location.href; //拿到当前的url
+      console.log('这是Local' + local);
+      const redirect_uri = "http://web.iamxuyuan.com/";
+      //检查有没有openid
+      console.log('code=' + code);
+      // let if_open_id = document.cookie.indexOf("openid");
+      // console.log('此时的openid的位置是' + if_open_id);
+      //if (if_open_id < 0) {
       if (code == null || code === "") {
-        console.log('请求后端-完成')
+        //    console.log('请求后端-完成')
         window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=http://web.iamxuyuan.com&response_type=code&scope=snsapi_base#wechat_redirect"; //这是要调用的微信官方接口,拿到回调的url，相当于重新刷新了页面
+        //  } else {
+        //    console.log('请求后端')
       } else {
-        console.log('请求后端')
-        axios.post(api.check_if_follow, {
+        axios.post(api.get_user_info, {
             code: code //这样写不知道对不对~
           })
           .then(function (response) {
-            console.log(response);
             console.log('post code成功')
-            if (!response.data.followed) {
-              window.location.href = "www.baidu.com" //这里会跳转到我们服务号的历史消息，让它关注
+            if (!response.data.data.subscribe) {
+              console.log('跳转')
+              //window.location.href = 'https://www.baidu.com' //这里会跳转到我们服务号的历史消息，让它关注
             }
           })
           .catch(function (error) {
             console.log(error);
           });
-        console.log('请求后端-完成')
       }
     }
+
   },
 
 
@@ -95,7 +115,10 @@ export default {
     console.log('进入到微信config功能啦')
     let t_timestamp, t_nonceStr, t_signature;
     //拿到wx.config需要的东西
-    axios.get(api.get_wx_config)
+    console.log(window.location.href)
+    axios.post(api.get_wx_config,{
+      url:window.location.href
+    })
       .then(function (response) {
         console.log('这是获取微信config功能获取的信息')
         console.log(response.data.data)
@@ -244,7 +267,7 @@ export default {
   },
 
   //在活动详情页的分享设置
-  wx_act_detail_share:(act_name,t_link)=>{
+  wx_act_detail_share: (act_name, t_link) => {
     console.log('进入到wx_act_detail_share的函数啦')
     // 分享到朋友圈
     wx.onMenuShareTimeline({
@@ -262,7 +285,7 @@ export default {
     //分享给微信好友
     wx.onMenuShareAppMessage({
       title: act_name, // 分享标题
-      desc: '快来参与' +act_name+'！我等你噢！', // 分享描述
+      desc: '快来参与' + act_name + '！我等你噢！', // 分享描述
       link: t_link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       //type: '', // 分享类型,music、video或link，不填默认为link
@@ -279,7 +302,7 @@ export default {
     //分享到QQ
     wx.onMenuShareQQ({
       title: act_name, // 分享标题
-      desc:'快来参与' +act_name+'！我等你噢！', // 分享描述
+      desc: '快来参与' + act_name + '！我等你噢！', // 分享描述
       link: t_link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       success: function () {
@@ -294,7 +317,7 @@ export default {
     //分享到QQ空间
     wx.onMenuShareQZone({
       title: act_name, // 分享标题
-      desc: '快来参与' +act_name+'！我等你噢！', // 分享描述
+      desc: '快来参与' + act_name + '！我等你噢！', // 分享描述
       link: t_link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       success: function () {
@@ -308,7 +331,7 @@ export default {
     // 分享到腾讯微博
     wx.onMenuShareWeibo({
       title: act_name, // 分享标题
-      desc: '快来参与' +act_name+'！我等你噢！', // 分享描述
+      desc: '快来参与' + act_name + '！我等你噢！', // 分享描述
       link: t_link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       success: function () {

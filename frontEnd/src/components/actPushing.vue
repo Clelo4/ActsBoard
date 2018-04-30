@@ -10,7 +10,7 @@
       </flexbox-item>
     </flexbox>
     </div>
-     <activityOutline :activity="activity" v-for="activity in activities" :key="activity.id">
+     <activityOutline :activity="activity" v-for="activity in activities" :key="activity.id" @click.native="to_act_detail(activity.id,activity.name)">
 
      </activityOutline>
      <!-- <tab></tab> -->
@@ -56,7 +56,7 @@ export default {
       // console.log(api.get_acts);
       var _this = this;
       axios
-        .get(api.get_acts) //这个api没换成推荐的API
+        .get(api.get_recommend_activity) //这个api没换成推荐的API
         .then(function(response) {
           console.log(response.data);
 
@@ -73,14 +73,30 @@ export default {
     },
     to_setting() {
       this.$router.push({ path: "/setting" });
+    },
+    to_act_detail(id,name) {
+      console.log("即将跳转的活动id是" + id);
+      // this.to_id = id;
+      this.$router.push({
+        name: "activityDetail",
+        params: {
+          actid: id,
+          actname:name
+        }
+      });
     }
   },
   mounted: function() {
     this.get_activities();
     util.wx_common_share();
   },
-  created: function() {
-    util.getCode();
+
+
+  beforeCreate(){
+    console.log('beforeCreate')
+    console.log(document.cookie)
+    util.getCode("actpushing");
+    // util.check_if_follow();
   }
 };
 </script>
