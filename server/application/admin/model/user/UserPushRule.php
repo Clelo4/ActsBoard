@@ -40,14 +40,15 @@ class UserPushRule extends Common{
         $result=$this->where('openid',$openid)->find();
         if($result){ // 存在推送规则
             $tmp = [];
-            if (isset($result['interest_tag_1'])){
-                $tmp[0] = $number_to_tag[$result['interest_tag_1']];
-            }
-            if (isset($result['interest_tag_2'])){
-                $tmp[1] = $number_to_tag[$result['interest_tag_2']];
-            }
-            if (isset($result['interest_tag_3'])){
-                $tmp[2] = $number_to_tag[$result['interest_tag_3']];
+            $i = 0;
+            $j = 0;
+            for ($i = 0;$i!=3;){
+                $i++;
+                if($result['interest_tag_'.$i]){
+                    $tmp[$j] = $number_to_tag[$result[('interest_tag_'.$i)]];
+                    $j++;
+                }
+
             }
             $result['taglist'] = $tmp;
 
@@ -91,7 +92,7 @@ class UserPushRule extends Common{
             $result=$this->insert($data);
         } else{
             $this->where("openid",$openid)->delete();
-            $result=$this->where('openid',$openid)->update($data);
+            $result=$this->where('openid',$openid)->insert($data);
         }
 
         return true;

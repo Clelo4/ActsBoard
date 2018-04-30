@@ -26,7 +26,7 @@ class PublishRule extends WeixinApiCommon{
         // tag:兴趣标签(可选) 只有三个
         $result0;
         $param = $this->param;
-        $validate = Validate::make(['school'=>'require','frequency'=>'require|number','taglist'=>'require|array']);
+        $validate = Validate::make(['school'=>'require','frequency'=>'require|number','taglist'=>'array']);
         if (!$validate->check($param)){
             return resultArray(['error' => "设置出错！"]);
         }
