@@ -4,9 +4,6 @@
       <el-form-item label='活动名称'>
         <el-input v-model='form.name'></el-input>
       </el-form-item>
-      <el-form-item label='活动类型'>
-        <el-input v-model='form.type'></el-input>
-      </el-form-item>
       <el-form-item label='信息时间'>
         <el-date-picker
         v-model="form.valid_date"
@@ -19,9 +16,6 @@
       </el-form-item>
       <el-form-item label='学校'>
         <el-input v-model='form.school'></el-input>
-      </el-form-item>
-      <el-form-item label='活动地点'>
-        <el-input v-model='form.location'></el-input>
       </el-form-item>
       <el-form-item label='活动内容'>
         <el-input
@@ -61,11 +55,9 @@ export default {
     return {
       form: {
         name:"",
-        type :"",
         valid_date : "",
         school : "",
         taglist :[], // 
-        location :'',
         act_detail:'',
         pic_url:'',
         litimg_url:'',
@@ -84,23 +76,13 @@ export default {
   },
   methods: {
 
-    sleep(numberMillis) {  
-    let now = new Date();  
-    let exitTime = now.getTime() + numberMillis;  
-    while (true) {  
-        now = new Date();  
-        if (now.getTime() > exitTime)  
-        return;  
-        }  
-    },
     onSubmit() {
       if(this.fileUploadState==-1){
         console.log('this.fileUploadState:',this.fileUploadState);
         this.$message('图片正在上传，请重新点击提交按钮!');
-
         return ;
       }
-      this.loadingfullscreen=true;
+      this.loadingfullscreen=true; // 全屏loading
       console.log('pic_url:',this.form.pic_url);
       axios.post('/manage/activities/publish',this.form).then(
         (response)=>{
@@ -111,16 +93,13 @@ export default {
             } else {
               this.$message(response.data['data']);
               this.form.name="";
-              this.form.type ="";
               this.form.valid_date = "";
               this.form.school = "";
               this.form.taglist =[]; // 
-              this.form.location ='';
               this.form.act_detail='';
               this.form.pic_url='';
               this.loadingfullscreen=false;
             }
-          
         }).catch((error) => {
           this.$message('添加失败');
           this.loadingfullscreen=false;
@@ -132,30 +111,6 @@ export default {
     beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
     },
-    loadingUploadFile(){
-      this.loadingfullscreen=true;
-    },
-    // submitUpload() {
-    //     this.$refs.upload.submit();
-    //   },
-    handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-    handlePreview(file) {
-        console.log(file);
-      },
-    handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，请移除旧文件`);
-      },
-    handleUploadSuccess(response, file, fileList){
-        this.loadingfullscreen=false;
-        this.$message('图片上传成功');
-      },
-    handleUploadError(error, file, fileList){
-        this.loadingfullscreen=false;
-        this.$message('图片上传失败，请重新上传');
-      },
-
 
     // --------------------------------------------
       getAuthorization(options,callback){

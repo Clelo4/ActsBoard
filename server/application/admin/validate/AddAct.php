@@ -10,7 +10,6 @@ use think\Validate;
 class AddAct extends Validate{
     protected $rule = [
         'name' => 'require',
-        'type' => 'require',
         'valid_date' => 'require|date',
         'school' => 'require',
         'act_detail' => 'require',
@@ -21,11 +20,9 @@ class AddAct extends Validate{
     ];
     protected $message = [
         'name.require' => '请填写活动名称',
-        'type.require' => '请填写活动类型',
         'valid_date.require' => '缺少信息有效期截至时间',
         'valid_date.date' => '日期格式错误',
         'school.require' => '请填写学校',
-        'location.require' => '请填写地点',
         'act_detail.require' => '请填写内容',
         'taglist' => 'taglist必须为数组',
         'pic_url' => 'url错误',

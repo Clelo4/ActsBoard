@@ -19,34 +19,18 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="type"
-        label="类别"
-        align="center">
-      </el-table-column>
-          <el-table-column
         prop="school"
         label="学校"
         width="180"
         align="center">
       </el-table-column>
-      <el-table-column
-        prop="apply_way"
-        label="申请方式"
-        align="center"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="location"
-        align="center"
-        label="地点">
-      </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="taglist"
         label="标签"
         align="center"
         :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
         :filter-method="filterTag">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         fixed='right'
         label="操作"
@@ -101,7 +85,7 @@ export default {
   components:{},
   data() {
     return {
-      totalnums:10,
+      totalnums:50,
       tableD: [],
       dialogVisible: false,
       dialogFormVisible:false,

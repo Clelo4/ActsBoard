@@ -204,7 +204,6 @@ class ActivityInfo extends Common{
 		$create_time = date('Y-m-d H:i:s');
 		$param['create_time']=$create_time;
 		$param['status']=1; // 1为合法
-		$type = $param['type'];
 
 		// 验证valid_date的合法性
 		$valid_date = date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
@@ -212,7 +211,7 @@ class ActivityInfo extends Common{
 
 		$data=[];
 		$taglist=$param['taglist']; // 标签列表
-		$key=['type','name','valid_date','school','create_time','status','apply_way','location','act_detail','pic_url','litimg_url'];
+		$key=['name','valid_date','school','create_time','status','apply_way','location','act_detail','pic_url','litimg_url'];
 		for($i=0;$i!=count($key);$i++){
 			if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
 			else { $data[$key[$i]]=NULL; }
@@ -234,7 +233,7 @@ class ActivityInfo extends Common{
 
 		if($result==1) {
 			for($i=0;$i!=count($taglist);$i++){
-				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date,'status' => 1 ]);
+				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'tag' => $taglist[$i], 'valid_date' => $valid_date,'status' => 1 ]);
 			}
 			return true;
 		}
@@ -276,7 +275,7 @@ class ActivityInfo extends Common{
 		$param['valid_date']=date('Y-m-d',strtotime($param['valid_date'])).' 23:59:59';
 		$create_time = date('Y-m-d H:i:s');
 		$data=["create_time" => $create_time];
-		$key=['type','name','valid_date','school','apply_way','location','act_detail'];
+		$key=['name','valid_date','school','apply_way','location','act_detail'];
 		for($i=0;$i!=count($key);$i++){
 			if(array_key_exists($key[$i],$param)) { $data[$key[$i]]=$param[$key[$i]]; }
 		}
@@ -284,13 +283,12 @@ class ActivityInfo extends Common{
 		// -------------------------
 		$act_id = $param['id'];
 		$valid_date = $param['valid_date'];
-		$type = $param['type'];
 		try{
 			$result=$this->where('act_id',$param['id'])->update($data);
 			$taglist = $param['taglist']; // 复制taglist数组
 			$result = Db::name('act_tag_type')->where('act_id',$act_id)->delete();
 			for($i=0;$i!=count($taglist);$i++){
-				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'type' => $type,'tag' => $taglist[$i], 'valid_date' => $valid_date ,'status' => 1]);	
+				Db::name('act_tag_type')->insert(['act_id'=>$act_id,'tag' => $taglist[$i], 'valid_date' => $valid_date ,'status' => 1]);	
 			}
 			return true;
 		} catch(Exceptionv $e){

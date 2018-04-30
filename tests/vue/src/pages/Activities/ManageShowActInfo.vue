@@ -4,22 +4,12 @@
           <el-form-item label='活动名称'>
             <el-input v-model='actinfo.name' value='actinfo.name'></el-input>
           </el-form-item>
-          <el-form-item label='类别'>
-            <el-input v-model='actinfo.type' value='actinfo.type'></el-input>
-          </el-form-item>
           <el-form-item label='学校'>
             <el-input v-model='actinfo.school' value='actinfo.school'></el-input>
-          </el-form-item>
-          <el-form-item label='申请方式'>
-            <el-input v-model='actinfo.apply_way' value='actinfo.apply_way'></el-input>
-          </el-form-item>
-          <el-form-item label='地点'>
-            <el-input v-model='actinfo.location' value='actinfo.location'></el-input>
           </el-form-item>
           <el-form-item label='活动标签'>
               <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
               <el-checkbox-group v-model="taglist" >
-                <p>{{taglist}}</p>
                 <el-checkbox-button v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
               </el-checkbox-group>
           </el-form-item>
