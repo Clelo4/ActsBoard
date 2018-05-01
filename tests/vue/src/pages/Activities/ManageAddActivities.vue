@@ -163,6 +163,8 @@ export default {
                       _this.fileUploadResult=true;
                       _this.fileUploadState=1; // 图片上传的标志
                       var ETag = xhr.getResponseHeader('etag');
+                      _this.form.pic_url = window.cosUrl+'/'+window.cosFilePath+'/' + window.cosFileName;
+                      alert(_this.form.pic_url);
                       callback(null, {url: url, ETag: ETag});
                     } else {
                         callback('文件 ' + Key + ' 上传失败，状态码：' + xhr.status);

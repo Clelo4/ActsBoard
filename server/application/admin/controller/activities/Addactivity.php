@@ -35,7 +35,8 @@ class AddActivity extends AdminApiCommon{
 
         if ($param['taglist']){
             // tag从stirng转为int
-            $tag_to_number = ["比赛"=>7,
+            $tag_to_number = [
+            "比赛"=>7,
             "文娱"=>8,
             "公益"=>9,
             "运动"=>10,
