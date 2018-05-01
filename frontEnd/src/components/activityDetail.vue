@@ -1,5 +1,6 @@
-<template><div class="background">
-  <alert v-model="alert_show" :title="share_title">记得关注一下我们公众号嘛~QAQ</alert>
+<template><div id="temp">
+  <div class="background">
+  <alert v-model="alert_show" :title="share_title">点击右上角就可以分享啦！<br>记得关注一下我们公众号嘛~QAQ</alert>
   <div class="act-name">{{act.name}}</div>
   <div class="act-detail">{{act.act_detail}}</div>
   <div class="img-background" v-if="have_pic"><img :src="act.pic_url" class="img"></div>
@@ -8,11 +9,8 @@
   <div class="column"><div class="blue-circle"></div>
   <div class="act-type">活动类型： {{act.type}}</div></div>
   <div class="column"><div class="blue-circle"></div>
-  <div class="act-location">活动地点：  {{act.location}}</div></div>
-  <div class="column"><div class="blue-circle"></div>
-  <div class="act-apply-way">参与方式：{{act.apply_way}}</div></div>
-  <div class="column"><div class="blue-circle"></div>
   <div class="act-school">活动所属学校：  {{act.school}}</div></div>
+  </div>
   <x-button type="primary" class="button" @click.native="to_share">分享一下！</x-button>
 </div></template>
 
@@ -102,6 +100,7 @@ export default {
     );
     this.actid = this.$route.params.actid;
     this.actname = this.$route.params.actname;
+    console.log(this.actid);
     this.get_activity_by_id(this.actid);
     util.wx_act_detail_share(this.actname,window.location.href);
   },
@@ -151,10 +150,14 @@ export default {
   justify-content: flex-start;
 }
 .button {
-  position: fixed;
-  bottom:0;
+  margin-top:-11vw;
 }
 .background{
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#temp{
   height: 100%;
 }
 </style>

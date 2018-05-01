@@ -41,11 +41,11 @@ export default {
             console.log(error);
           });
         console.log('请求后端-完成')
+        return
       }
-    
     }
-    
-    
+    callback()
+    return
   },
 
   //检查用户是否关注了该公众号

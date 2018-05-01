@@ -1,5 +1,6 @@
 <template>
 <div>
+  <alert v-model="alert_show" :title="share_title">设置成功！</alert>
      <group></group>
        <group><popup-picker :title="school_title" :data="school_list" v-model="school"></popup-picker></group>
        <group></group>
@@ -33,7 +34,8 @@ import {
   Cell,
   Popup,
   Checklist,
-  PopupHeader
+  PopupHeader,
+  Alert
 } from "vux";
 import axios from "axios";
 import api from "../api";
@@ -47,7 +49,8 @@ export default {
     Cell,
     Popup,
     Checklist,
-    PopupHeader
+    PopupHeader,
+    Alert
   },
   data() {
     return {
@@ -63,6 +66,7 @@ export default {
         "文娱",
         "公益",
         "运动",
+        "比赛",
         "社团招新",
         "讲座",
         "企业宣讲",
@@ -72,7 +76,8 @@ export default {
       if_required: true,
       position: "left",
       is_link: true,
-      max_num: 3
+      max_num: 3,
+      alert_show:false
     };
   },
   computed: {
@@ -155,27 +160,28 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      this.alert_show = true;
+      setTimeout(() => {
+        this.alert_show = false;
+      }, 3000)
     },
 
     // 弹出picker
     change_picker_state() {
       console.log(this.type);
       this.show = true;
-    },
-    close_picker_and_save() {
-      this.show = false;
-    },
-    close_picker_and_exit(){
-
     }
+    
   },
   mounted: function() {
     // this.get_user_init_setting();
+    let that = this
+     util.getCode("setting",that.get_user_init_setting());
     util.wx_common_share();
   },
   created() {
-    let that = this
-    util.getCode("setting",that.get_user_init_setting());
+   // let that = this
+    //util.getCode("setting",that.get_user_init_setting());
   }
 };
 </script>

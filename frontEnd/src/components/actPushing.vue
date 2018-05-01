@@ -60,10 +60,9 @@ export default {
         .get(api.get_recommend_activity) //这个api没换成推荐的API
         .then(function(response) {
           console.log(response.data);
-          // for(let i = 0;i < response.data.data.length;i++){
-          //   response.data.data[i].valid_date = response.data.data[i].valid_date.split(" ")[0];
-          // }
-          // _this.activities = JSON.parse(response.data).data;
+           for(let i = 0;i < response.data.data.length;i++){
+             response.data.data[i].valid_date = response.data.data[i].valid_date.split(" ")[0];
+           }
           _this.activities = response.data.data;
           // console.log(_this.activities);
         })
@@ -91,14 +90,17 @@ export default {
   },
   mounted: function() {
     util.wx_common_share();
+    var that = this;
+    util.getCode("actpushing",that.get_activities_t);
+    // this.get_activities_t(); // 这里居然不能加（），我也不知道为什么
   },
 
 
   created(){
     // alert('做了一次')
-    var that = this;
+    //var that = this;
     //console.log(document.cookie)
-    util.getCode("actpushing",that.get_activities_t); // 这里居然不能加（），我也不知道为什么
+    
     // util.check_if_follow();
   }
 };
