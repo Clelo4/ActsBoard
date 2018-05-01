@@ -18,8 +18,8 @@
         <el-input v-model='form.school'></el-input>
       </el-form-item>
       <el-form-item label='活动标签'>
-        <el-checkbox-group v-model="form.taglist" >
-          <el-checkbox-button v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
+        <el-checkbox-group v-model="form.taglist"  :min="1" :max="3" >
+          <el-checkbox-button  v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label='活动内容'>
@@ -86,6 +86,10 @@ export default {
       if(this.fileUploadState==-1){
         console.log('this.fileUploadState:',this.fileUploadState);
         this.$message('图片正在上传，请重新点击提交按钮!');
+        return ;
+      }
+      if(this.form.taglist.length==0 || this.form.taglist.length > 3){
+        this.$message('标签数量1~3');
         return ;
       }
       this.loadingfullscreen=true; // 全屏loading
