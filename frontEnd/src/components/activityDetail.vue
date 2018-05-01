@@ -71,7 +71,9 @@ export default {
         .get(api.get_activity_by_id(id))
         .then(function(response) {
           console.log(response.data);
-
+          
+            response.data.data.valid_date = response.data.data.valid_date.split(' ')[0];
+          
           // _this.activities = JSON.parse(response.data).data;
           //console.log(_this.act);
           _this.act = response.data.data;
@@ -79,6 +81,7 @@ export default {
             console.log('改了')
             _this.have_pic = false;
           }
+          util.wx_act_detail_share(response.data.data.name,window.location.href)
           //console.log(_this.act);
         })
         .catch(function(error) {
@@ -93,6 +96,7 @@ export default {
     }
   },
   mounted: function() {
+    
     // console(api.get_activity_by_id(id))
     // console.log(this); 
     console.log(
@@ -100,9 +104,11 @@ export default {
     );
     this.actid = this.$route.params.actid;
     this.actname = this.$route.params.actname;
+    util.to_wx_config();
     console.log(this.actid);
+    var that = this;
     this.get_activity_by_id(this.actid);
-    util.wx_act_detail_share(this.actname,window.location.href);
+    // util.wx_act_detail_share(this.actname,window.location.href);
   },
   beforeCreate(){
     // util.check_if_follow();
@@ -150,14 +156,15 @@ export default {
   justify-content: flex-start;
 }
 .button {
-  margin-top:-11vw;
+  flex:1;
 }
 .background{
-  min-height: 100%;
+  min-height: 93%;
   display: flex;
   flex-direction: column;
 }
 #temp{
   height: 100%;
 }
+
 </style>

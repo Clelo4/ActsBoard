@@ -59,11 +59,16 @@ export default {
       axios
         .get(api.get_recommend_activity) //这个api没换成推荐的API
         .then(function(response) {
+          if(response.data.errmsg == 2001){
+            alert('您没有设置推送规则,请先设置推送规则')
+            _this.$router.push({ path: "/setting" });
+          }
           console.log(response.data);
            for(let i = 0;i < response.data.data.length;i++){
              response.data.data[i].valid_date = response.data.data[i].valid_date.split(" ")[0];
            }
           _this.activities = response.data.data;
+          util.wx_common_share();
           // console.log(_this.activities);
         })
         .catch(function(error) {
@@ -89,7 +94,7 @@ export default {
     }
   },
   mounted: function() {
-    util.wx_common_share();
+    util.to_wx_config();
     var that = this;
     util.getCode("actpushing",that.get_activities_t);
     // this.get_activities_t(); // 这里居然不能加（），我也不知道为什么

@@ -56,7 +56,7 @@ export default {
     return {
       school: ["华南理工大学"],
       school_title: "活动圈子",
-      school_list: [["","华南理工大学", "其他区域待开放"]], //这他妈要怎么实现这个不可选
+      school_list: [["","华南理工大学"]], //这他妈要怎么实现这个不可选
       frequency: ["每日一次"],
       frequency_title: "推送频率",
       frequency_list: [["每日一次", "每三日一次", "每周一次"]],
@@ -120,6 +120,7 @@ export default {
             _this.frequency[0] = ["每周一次"];
           }
           _this.type = response.data.data.taglist;
+          util.wx_common_share();
         })
         .catch(function(error) {
           console.log("出错了兄弟");
@@ -163,7 +164,7 @@ export default {
       this.alert_show = true;
       setTimeout(() => {
         this.alert_show = false;
-      }, 3000)
+      }, 6000)
     },
 
     // 弹出picker
@@ -174,12 +175,14 @@ export default {
     
   },
   mounted: function() {
+    util.to_wx_config();
     // this.get_user_init_setting();
     let that = this
-     util.getCode("setting",that.get_user_init_setting());
-    util.wx_common_share();
+    util.getCode("setting",that.get_user_init_setting());
+   // util.wx_common_share();
   },
   created() {
+    
    // let that = this
     //util.getCode("setting",that.get_user_init_setting());
   }
