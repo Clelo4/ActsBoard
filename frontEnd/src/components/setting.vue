@@ -170,11 +170,12 @@ export default {
     }
   },
   mounted: function() {
-    this.get_user_init_setting();
-     util.wx_common_share();
+    // this.get_user_init_setting();
+    util.wx_common_share();
   },
-  beforeCreate() {
-    util.getCode("setting");
+  created() {
+    let that = this
+    util.getCode("setting",that.get_user_init_setting());
   }
 };
 </script>

@@ -52,14 +52,17 @@ export default {
     };
   },
   methods: {
-    get_activities() {
+    get_activities_t() {
       // console.log(api.get_acts);
+      // alert('朕要开始做爱了')
       var _this = this;
       axios
         .get(api.get_recommend_activity) //这个api没换成推荐的API
         .then(function(response) {
           console.log(response.data);
-
+          // for(let i = 0;i < response.data.data.length;i++){
+          //   response.data.data[i].valid_date = response.data.data[i].valid_date.split(" ")[0];
+          // }
           // _this.activities = JSON.parse(response.data).data;
           _this.activities = response.data.data;
           // console.log(_this.activities);
@@ -87,15 +90,15 @@ export default {
     }
   },
   mounted: function() {
-    this.get_activities();
     util.wx_common_share();
   },
 
 
-  beforeCreate(){
-    console.log('beforeCreate')
-    console.log(document.cookie)
-    util.getCode("actpushing");
+  created(){
+    // alert('做了一次')
+    var that = this;
+    //console.log(document.cookie)
+    util.getCode("actpushing",that.get_activities_t); // 这里居然不能加（），我也不知道为什么
     // util.check_if_follow();
   }
 };

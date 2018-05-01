@@ -2,7 +2,7 @@
   <alert v-model="alert_show" :title="share_title">记得关注一下我们公众号嘛~QAQ</alert>
   <div class="act-name">{{act.name}}</div>
   <div class="act-detail">{{act.act_detail}}</div>
-  <div class="img-background"><img :src="act.url" class="img"></div>
+  <div class="img-background" v-if="have_pic"><img :src="act.pic_url" class="img"></div>
   <div class="column"><div class="blue-circle"></div>
   <div class="act-valid-date">截止至： {{act.valid_date}}</div></div>
   <div class="column"><div class="blue-circle"></div>
@@ -59,7 +59,8 @@ export default {
         pic_url: "http://www.scut.edu.cn",
         location: "华南理工大学",
         act_detail: "ActsBoard是一家五百强企业，融资400个亿..."
-      }
+      },
+      have_pic:true
     };
   },
   methods: {
@@ -76,6 +77,10 @@ export default {
           // _this.activities = JSON.parse(response.data).data;
           //console.log(_this.act);
           _this.act = response.data.data;
+          if(response.data.data.pic_url.length == 0){
+            console.log('改了')
+            _this.have_pic = false;
+          }
           //console.log(_this.act);
         })
         .catch(function(error) {
@@ -146,6 +151,10 @@ export default {
   justify-content: flex-start;
 }
 .button {
-  margin-top: 1.3rem;
+  position: fixed;
+  bottom:0;
+}
+.background{
+  height: 100%;
 }
 </style>
