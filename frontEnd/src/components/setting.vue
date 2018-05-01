@@ -16,7 +16,7 @@
             <div class="popup0">
 
                 <popup-header title="最多pick三个标签噢"></popup-header>
-                <checklist :options="type_list" v-model="type" :max="max_num"></checklist>
+                <checklist :options="type_list" v-model="type"></checklist>
 
             </div>
           </popup>                                                                                                                                                                                                                                                                                                                                                                                                                                           
