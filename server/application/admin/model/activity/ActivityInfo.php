@@ -105,6 +105,7 @@ class ActivityInfo extends Common{
 		$array=[];
 		// 缓存array
 		$tmp=[];
+		$allActId = [];
 		array_push($tmp,'valid_date','>',$preTime);
 		array_push($array,$tmp);
 		// 特定类型的活动id
@@ -117,6 +118,14 @@ class ActivityInfo extends Common{
 			array_push($tmp,'status','=',$search_arr['status']);
 			array_push($array,$tmp);
 			unset($search_arr['status']);
+		}
+		if(isset($search_arr['days'])){
+			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));
+			$endTime=$endTime.' 23:59:59';
+			unset($search_arr['days']);
+			$tmp=[];
+			array_push($tmp,'valid_date','<=',$endTime);
+			array_push($array,$tmp);
 		}
 		if(isset($search_arr['type'])){
 			// $tmp=[];
@@ -131,16 +140,18 @@ class ActivityInfo extends Common{
             "社团招新"=>11,
             "讲座"=>12,
             "企业宣讲"=>13,
-            "其他"=>14];
-			$allActList = Db::name('act_tag_type')->where('tag',$tag_to_number[$search_arr['type']])->select();
-		}
-		if(isset($search_arr['days'])){
-			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));
-			$endTime=$endTime.' 23:59:59';
-			unset($search_arr['days']);
-			$tmp=[];
-			array_push($tmp,'valid_date','<=',$endTime);
-			array_push($array,$tmp);
+			"其他"=>14];
+			$searchByTag = [];
+			array_push($searchByTag,['valid_date','>',$preTime]);
+			array_push($searchByTag,['tag','=',$tag_to_number[$search_arr['type']]]);
+			$allActList = Db::name('act_tag_type')->where($searchByTag)->field('act_id')->select();
+			for($i = 0;$i != count($allActList);$i++){
+				$tmp=[];
+				array_push($tmp,'act_id','=',$allActList[$i]['act_id']);
+				array_push($allActId,$tmp);
+			}
+			array_push($allActId,['act_id','=',12345678901]); // 当上面的查询结果为零时，会导致下面的查询返回所有数据(实际应该不返回活动数据)，添加一条不存在的act_id可解决这种问题
+			unset($search_arr['type']);
 		}
 		// 如果分页
 		if(isset($search_arr['page']) && $search_arr['page']){
@@ -152,14 +163,14 @@ class ActivityInfo extends Common{
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->where($array)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			$data=$this->whereOr($allActId)->where($array)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
 		} else { // 没有分页
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->where($array)->order('valid_date',$sort)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			$data=$this->whereOr($allActId)->where($array)->order('valid_date',$sort)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
 		}
 
 		return $data;
