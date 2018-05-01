@@ -1,13 +1,13 @@
 <?php
 namespace app\admin\controller\weixin;
 
-use app\admin\controller\AdminApiCommon;
+use app\admin\controller\WeixinApiCommon;
 // use app\admin\model\weixin\UserManage;
 use think\facade\Request;
 use think\Db;
 use think\Exception;
 
-class Getjsapi extends AdminApiCommon{
+class Getjsapi extends WeixinApiCommon{
 
     /**
      * 从微信服务器获取jsapi_ticket并存入数据库

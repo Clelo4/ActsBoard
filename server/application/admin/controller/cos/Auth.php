@@ -1,6 +1,6 @@
 <?php
 /**
- * 微信对象存储服务
+ * 微信对象存储服务cos签名验证类
  */
 namespace app\admin\controller\cos;
 
@@ -10,7 +10,7 @@ use think\Validate;
 class Auth extends AdminApiCommon{
 
     // cos 控制台 云 API 密钥
-    private $accessKey="AKIDMj9d2WJhbP6pcVELlJhz6hBWgfmpk6Yv";           // string: access key.
+    private $accessKey="AKIDMj9d2WJhbP6pcVELlJhz6hBWgfmpk6Yv"; // string: access key.
     private $secretKey="rFWgjbiJzDtopljinq076BDBEI1uMtWl";
 
     public function getAuthorization()

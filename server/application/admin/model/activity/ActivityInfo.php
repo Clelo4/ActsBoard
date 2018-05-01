@@ -101,11 +101,13 @@ class ActivityInfo extends Common{
 		// 开始时间
 		$preTime=date('Y-m-d');
 		$preTime=$preTime.' 00:00:00';
+		$endTime=0;
 		// 查询条件
 		$array=[];
 		// 缓存array
 		$tmp=[];
 		$allActId = [];
+		$hasType = false;
 		array_push($tmp,'valid_date','>',$preTime);
 		array_push($array,$tmp);
 		// 特定类型的活动id
@@ -119,7 +121,7 @@ class ActivityInfo extends Common{
 			array_push($array,$tmp);
 			unset($search_arr['status']);
 		}
-		if(isset($search_arr['days'])){
+		if(isset($search_arr['days']) && $search_arr['days']!=0 ){
 			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));
 			$endTime=$endTime.' 23:59:59';
 			unset($search_arr['days']);
@@ -133,6 +135,7 @@ class ActivityInfo extends Common{
 			// array_push($array,$tmp);
 			// unset($search_arr['type']);
 			// 从act_tag_type中获取活动id
+			$hasType = true;
 			$tag_to_number = ["比赛"=>7,
             "文娱"=>8,
             "公益"=>9,
@@ -143,6 +146,9 @@ class ActivityInfo extends Common{
 			"其他"=>14];
 			$searchByTag = [];
 			array_push($searchByTag,['valid_date','>',$preTime]);
+			if($endTime){
+				array_push($searchByTag,['valid_date','<=',$endTime]);
+			}
 			array_push($searchByTag,['tag','=',$tag_to_number[$search_arr['type']]]);
 			$allActList = Db::name('act_tag_type')->where($searchByTag)->field('act_id')->select();
 			for($i = 0;$i != count($allActList);$i++){
@@ -163,14 +169,22 @@ class ActivityInfo extends Common{
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->whereOr($allActId)->where($array)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			if($hasType){
+				$data=$this->whereOr($allActId)->where($array)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			} else{
+				$data=$this->where($array)->order('valid_date',$sort)->page($page)->limit($nums)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			}
 		} else { // 没有分页
 			for($i = 0;$i != count($search_arr);$i++){
 				$tmp=[];
 				array_push($tmp,array_keys($search_arr)[$i],'=',$search_arr[array_keys($search_arr)[$i]]);
 				array_push($array,$tmp);
 			}
-			$data=$this->whereOr($allActId)->where($array)->order('valid_date',$sort)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			if($hasType){
+				$data=$this->whereOr($allActId)->where($array)->order('valid_date',$sort)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			} else{
+				$data=$this->where($array)->order('valid_date',$sort)->field('id,act_id,create_time,status,create_user',true)->field(['act_id'=>'id'])->select();
+			}
 		}
 
 		return $data;

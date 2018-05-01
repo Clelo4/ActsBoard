@@ -1,5 +1,6 @@
 <?php
 /**
+ * 用户推送给规则类
  * author: jack
  * email:clelo4@qq.com
  */

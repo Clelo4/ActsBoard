@@ -70,6 +70,45 @@ class UserManage extends Common {
     }
 
     /**
+     * 存储或更新用户的微信基本信息
+     *
+     * @param array $param
+     * @return boolean
+     */
+    public function saveUserInfo($param)
+    {
+        try{    
+            $result=$this->where('openid',$param['openid'])->find();
+            if(!$result){
+                // 用户不存在，在数据库创建微信用户
+                // $userdata=$this->getUserInfo($openid);
+                try{
+                    $insertResult=$this->insert($param);
+                    if(!$insertResult){
+                        $this->error = '数据库错误';
+                        return false;
+                    }
+                } catch(Exception $e){
+                    $this->error = $e->getMessage();
+                    return false;
+                } 
+            }
+            else{
+                try{
+                    $updateResult = $this->where('openid',$param['openid'])->update($param);
+                    return true;
+                } catch(Exception $e){
+                    $this->error = $e->getMessage();
+                    return false;
+                }
+            }
+        } catch(Exception $e){
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
      * 获取关注者列表
      * @param $next_opendid  string  获取关注用户列表偏移量，不填默认从头开始拉取 (可选参数)
      * @return mixed 操作失败返回false，成功返回data(json);

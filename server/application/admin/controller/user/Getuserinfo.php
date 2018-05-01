@@ -1,12 +1,12 @@
 <?php
 namespace app\admin\controller\user;
-use app\admin\controller\ApiCommon;
+use app\admin\controller\WeixinApiCommon;
 use app\admin\model\weixin\UserManage;
 use think\facade\Request;
 use think\Validate;
 use think\facade\Config;
 
-class GetUserInfo extends ApiCommon{
+class GetUserInfo extends WeixinApiCommon{
     /**
      * 从微信服务器获取用户的详细信息
      * @author jack <chengjunjie.jack@outlook.com>
@@ -17,7 +17,7 @@ class GetUserInfo extends ApiCommon{
         // }
 
         $param = $this->param;
-        // 验证参数
+        // 验证参数有没有code
         $validate = Validate::make(['code'=>'require'],['code'=>'code缺失']);
         if (!$validate->check($param)){
             return resultArray(['error' => $validate->getError()]);
@@ -29,10 +29,10 @@ class GetUserInfo extends ApiCommon{
             return resultArray(['error' =>'获取openid超时']);
         }
 
-        $model = Model('weixin.UserManage');
-        $userInfo = json_decode($model->getUserInfo($openid),true); // 从微信服务器获取用户信息 string to json
+        $userManageModel = Model('weixin.UserManage');
+        $userInfo = json_decode($userManageModel->getUserInfo($openid),true); // 从微信服务器获取用户信息 string to json
         if(!$userInfo){
-            return resultArray(['error'=>$model->getError()]);
+            return resultArray(['error'=>$userManageModel->getError()]);
         }
 
         if (!isset($userInfo['subscribe'])){
@@ -45,6 +45,14 @@ class GetUserInfo extends ApiCommon{
         }
         cookie('subscribe',1); // 关注字段
         cookie('openid',$openid);
+        
+        //存储或更新用户的微信信息
+        try{
+            $userManageModel->saveUserInfo($userInfo);
+        } catch(Exception $e){
+            //
+            $tmp = $userManageModel->getError();
+        }
         // 返回用户的详细信息
         return resultArray(['data' => $userInfo]);
     }
