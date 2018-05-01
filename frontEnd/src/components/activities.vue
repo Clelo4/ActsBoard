@@ -56,7 +56,7 @@ export default {
           }
           // _this.activities = JSON.parse(response.data).data;
           _this.activities = response.data.data;
-          
+          util.wx_common_share();
           // console.log(_this.activities);
         })
         .catch(function(error) {
@@ -75,6 +75,7 @@ export default {
           }
           // _this.activities = JSON.parse(response.data).data;
           _this.activities = response.data.data;
+          
           // console.log(_this.activities);
         })
         .catch(function(error) {
@@ -96,7 +97,7 @@ export default {
   mounted: function() {
     util.to_wx_config();
     this.get_activities();
-    util.wx_common_share();
+    // util.wx_common_share();
   },
   created() {
    // alert(state)

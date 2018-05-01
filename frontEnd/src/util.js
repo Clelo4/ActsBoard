@@ -118,7 +118,7 @@ export default {
 
   //微信config功能
   to_wx_config: () => {
-    console.log('进入到微信config功能啦')
+    //alert('进入到微信config功能啦')
     let t_timestamp, t_nonceStr, t_signature;
     //拿到wx.config需要的东西
     console.log(window.location.href)
@@ -193,11 +193,11 @@ export default {
   },
 
   wx_common_share: () => {
-    console.log('进入wx_common_share的函数')
+    //alert('进入wx_common_share的函数')
     // 分享到朋友圈
     wx.onMenuShareTimeline({
-      title: '无良老板压榨程序员', // 分享标题
-      link: 'web.iamxuyuan.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      title: 'Acts-Board,你的专属活动管家', // 分享标题
+      link: 'http://web.iamxuyuan.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
@@ -211,9 +211,9 @@ export default {
 
     //分享给微信好友
     wx.onMenuShareAppMessage({
-      title: '无良老板压榨程序员', // 分享标题
+      title: 'Acts-Board,你的专属活动管家', // 分享标题
       desc: '华工最大的同性交友平台', // 分享描述
-      link: 'web.iamxuyuan.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      link: 'http://web.iamxuyuan.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       //type: '', // 分享类型,music、video或link，不填默认为link
       //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -230,9 +230,9 @@ export default {
 
     //分享到QQ
     wx.onMenuShareQQ({
-      title: '无良老板压榨程序员', // 分享标题
+      title: 'Acts-Board,你的专属活动管家', // 分享标题
       desc: '华工最大的同性交友平台', // 分享描述
-      link: 'web.iamxuyuan.com', // 分享链接
+      link: 'http://web.iamxuyuan.com', // 分享链接
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
@@ -245,9 +245,9 @@ export default {
 
     //分享到QQ空间
     wx.onMenuShareQZone({
-      title: '无良老板压榨程序员', // 分享标题
+      title: 'Acts-Board,你的专属活动管家', // 分享标题
       desc: '华工最大的同性交友平台', // 分享描述
-      link: 'web.iamxuyuan.com', // 分享链接
+      link: 'http://web.iamxuyuan.com', // 分享链接
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
@@ -259,9 +259,9 @@ export default {
 
     // 分享到腾讯微博
     wx.onMenuShareWeibo({
-      title: '无良老板压榨程序员', // 分享标题
+      title: 'Acts-Board,你的专属活动管家', // 分享标题
       desc: '华工最大的同性交友平台', // 分享描述
-      link: 'web.iamxuyuan.com', // 分享链接
+      link: 'http://web.iamxuyuan.com', // 分享链接
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
@@ -275,6 +275,8 @@ export default {
   //在活动详情页的分享设置
   wx_act_detail_share: (act_name, t_link) => {
     console.log('进入到wx_act_detail_share的函数啦')
+    //alert(act_name);
+    //alert(t_link)
     // 分享到朋友圈
     wx.onMenuShareTimeline({
       title: act_name, // 分享标题
