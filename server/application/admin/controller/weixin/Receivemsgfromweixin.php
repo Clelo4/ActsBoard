@@ -128,7 +128,7 @@ class ReceiveMsgFromWeixin extends Common{
         // Tag: 目前不对用户发送的信息进行分析处理，只统一返回相同的数据
         $ToUserName = $data->FromUserName->__toString();
         $FromUserName = $data->ToUserName->__tostring();
-        $content = "Hello! Wellcom to ActsBoard\n<a href='https://www.baidu.com'>请完成设置</a>\n联系：chengjunjie.jack@outlook.com";
+        $content = "Hello!\nWellcom to ActsBoard.\n查看精彩信息请点击<a href='http://web.iamxuyuan.com'>活动大厅</a>\n";
         $CreateTime = intval(time());
         return "<xml><ToUserName><![CDATA[".$ToUserName."]]></ToUserName><FromUserName><![CDATA[".$FromUserName."]]></FromUserName><CreateTime>".$CreateTime."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$content."]]></Content></xml>";
     }
@@ -143,7 +143,7 @@ class ReceiveMsgFromWeixin extends Common{
         // Tag: 目前不对用户发送的信息进行分析处理，只统一返回相同的数据
         $ToUserName = $data->FromUserName->__toString();
         $FromUserName = $data->ToUserName->__tostring();
-        $content = "Hello! Wellcom to ActsBoard\n<a href='https://www.baidu.com'>请完成设置</a>\n联系：chengjunjie.jack@outlook.com";
+        $content = "Hello! Wellcom to ActsBoard.\n<a href='http://web.iamxuyuan.com/#/setting'>请完成推送规则设置</a>";
         $CreateTime = intval(time());
         return "<xml><ToUserName><![CDATA[".$ToUserName."]]></ToUserName><FromUserName><![CDATA[".$FromUserName."]]></FromUserName><CreateTime>".$CreateTime."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$content."]]></Content></xml>";
     }

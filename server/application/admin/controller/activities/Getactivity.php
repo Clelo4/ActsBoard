@@ -123,10 +123,10 @@ class GetActivity extends ApiCommon{
         $taglist = $pushRuleModel->getUserPushRule($openid)['taglist'];
         if (!$taglist){
             // 用户没有设定推送规则
-            $search_arr=[];
-            $search_arr['status'] = 1;
-            $result = $actModel->getActivitiesByRule($search_arr);
-            return resultArray(['data' => $result]);
+            // $search_arr=[];
+            // $search_arr['status'] = 1;
+            // $result = $actModel->getActivitiesByRule($search_arr);
+            return resultArray(['error' => 2001]); // 用户没有设定推送规则
         }
         else { // 获取推荐活动列表
             $tag_to_number = ["比赛"=>7,

@@ -101,7 +101,7 @@ class ActivityInfo extends Common{
 		// 开始时间
 		$preTime=date('Y-m-d');
 		$preTime=$preTime.' 00:00:00';
-		$endTime;
+		$endTime=0;
 		// 查询条件
 		$array=[];
 		// 缓存array
@@ -121,7 +121,7 @@ class ActivityInfo extends Common{
 			array_push($array,$tmp);
 			unset($search_arr['status']);
 		}
-		if(isset($search_arr['days'])){
+		if(isset($search_arr['days']) && $search_arr['days']!=0 ){
 			$endTime=date('Y-m-d',strtotime('+'.$search_arr['days'].' day'));
 			$endTime=$endTime.' 23:59:59';
 			unset($search_arr['days']);
@@ -146,7 +146,9 @@ class ActivityInfo extends Common{
 			"其他"=>14];
 			$searchByTag = [];
 			array_push($searchByTag,['valid_date','>',$preTime]);
-			array_push($searchByTag,['valid_date','<=',$endTime]);
+			if($endTime){
+				array_push($searchByTag,['valid_date','<=',$endTime]);
+			}
 			array_push($searchByTag,['tag','=',$tag_to_number[$search_arr['type']]]);
 			$allActList = Db::name('act_tag_type')->where($searchByTag)->field('act_id')->select();
 			for($i = 0;$i != count($allActList);$i++){
