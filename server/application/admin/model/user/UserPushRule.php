@@ -42,20 +42,15 @@ class UserPushRule extends Common{
             $tmp = [];
             $i = 0;
             $j = 0;
-            for ($i = 0;$i!=3;){
+            for ($i = 0;$i!=15;){
                 $i++;
                 if($result['interest_tag_'.$i]){
                     $tmp[$j] = $number_to_tag[$result[('interest_tag_'.$i)]];
+                    unset($result['interest_tag_'.$i]);
                     $j++;
                 }
-
             }
             $result['taglist'] = $tmp;
-
-            // 删除interest_tag_ key
-            unset($result['interest_tag_1']);
-            unset($result['interest_tag_2']);
-            unset($result['interest_tag_3']);
             return $result;
         } else{ // 不存在推送规则
             return ['id'=>null,'openid'=>$openid,'school'=>null,'frequency'=>null,'taglist'=>[],'type'=>null,'last_push_time'=>null];
@@ -77,14 +72,11 @@ class UserPushRule extends Common{
         "企业宣讲"=>13,
         "其他"=>14];
         $data=['openid'=>$openid,'school'=>$school,'frequency'=>$frequency]; 
-        if (isset($taglist[0])){
-            $data['interest_tag_1'] = $tag_to_number[$taglist[0]];
-        }
-        if (isset($taglist[1])){
-            $data['interest_tag_2'] =  $tag_to_number[$taglist[1]];
-        }
-        if (isset($taglist[2])){
-            $data['interest_tag_3'] =  $tag_to_number[$taglist[2]];
+        for($i = 0;$i!=count($taglist);$i++){
+            if($i==15){
+                break;
+            }
+            $data['interest_tag_'.($i+1)] = $tag_to_number[$taglist[$i]];
         }
         // 如果不存在openid则新增一条新的记录，否则只更新记录
         $result;
@@ -94,7 +86,6 @@ class UserPushRule extends Common{
             $this->where("openid",$openid)->delete();
             $result=$this->where('openid',$openid)->insert($data);
         }
-
         return true;
 
     }

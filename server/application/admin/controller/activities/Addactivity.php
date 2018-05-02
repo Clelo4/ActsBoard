@@ -27,7 +27,7 @@ class AddActivity extends AdminApiCommon{
         }
         $result;
         $param=Request::post();
-
+        $taglist=[];
         $validate = new AddActValidate();
 		if (!$validate->check($param)){
 			return resultArray(['error' => ($validate->getError())]);
@@ -45,9 +45,13 @@ class AddActivity extends AdminApiCommon{
             "企业宣讲"=>13,
             "其他"=>14];
             for($i = 0;$i != count($param['taglist']);$i++){
-                $param['taglist'][$i] = $tag_to_number[$param['taglist'][$i]];
+                if($i==3){
+                    break;
+                }
+                $taglist[$i] = $tag_to_number[$param['taglist'][$i]];
             }
         }
+        $param['taglist'] = $taglist;
         $ActModel = model('activity.ActivityInfo');
         if($ActModel->addActivityInfo($param)){
             $result['data']='success';
