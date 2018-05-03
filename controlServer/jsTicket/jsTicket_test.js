@@ -1,17 +1,15 @@
-var config=require('../config').wechat;  // 配置文件
+var config=require('../config').wechat_test;  // 配置文件
 var crypto = require('crypto');
 const https=require("https");
 const http = require('http');
 var   type=2;
-var   update_time=60*10;
+var   update_time=3600*1.5;
 var   host = config.host;
+
 // 创建数据池
 
 
-/**
- * 第一次获取accessToken
- * 
- */
+// 获取指定长度的随机字符串
 function randomString(len) {
 　　len = len || 32;
 　　var $chars = 'DhghEFGH461686662325IJKLNOPQRSdhjhjefhijkm534nprswxyz';
@@ -36,17 +34,7 @@ function getSignature(){
 }
 
 function sendTemplateMessage(){
-	var nowTime = new Date();
-	var nowTimeStamp = Date.parse(new Date(nowTime));
-	var PushTime = nowTime.toLocaleDateString()+" 22:00:00";
-	var PushTimeStamp = Date.parse(new Date(PushTime));
-	if(PushTimeStamp > nowTimeStamp){
-		console.log("The PushTime is ",PushTimeStamp);
-		console.log("Now is ",nowTimeStamp);
-		return ;
-	}
-	console.log(PushTime);
-	var url="http://"+host+"/manage/weixin/sendalltemplatemessage"+getSignature();
+	var url="http://"+host+"/manage/weixin/flashjsapi"+getSignature();
 	console.log(url);
 	try{
 		http.get(url,(res)=>{

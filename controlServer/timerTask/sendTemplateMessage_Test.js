@@ -1,4 +1,4 @@
-var config=require('../config').wechat;  // 配置文件
+var config=require('../config').wechat_test;  // 配置文件
 var crypto = require('crypto');
 const https=require("https");
 const http = require('http');
@@ -8,10 +8,7 @@ var   host = config.host;
 // 创建数据池
 
 
-/**
- * 第一次获取accessToken
- * 
- */
+// 获取指定长度的随机字符串
 function randomString(len) {
 　　len = len || 32;
 　　var $chars = 'DhghEFGH461686662325IJKLNOPQRSdhjhjefhijkm534nprswxyz';

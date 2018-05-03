@@ -1,4 +1,4 @@
-var config=require('./config').wechat;  // 配置文件
+var config=require('../config').wechat;  // 配置文件
 const mysql=require("mysql");
 const https=require("https");
 const http = require('http');
@@ -44,9 +44,7 @@ function firstGetAccessToken(){
 				saveResult(result);
 			});
 		});
-		http.get("http://web.iamxuyuan.com/weixin/flashjsapi?jackhellofucksfjsgjlrjlfjld=dfjdlfjdljfdl",(res)=>{
-
-		});
+		
 		console.log('第一次结束');
     }
     catch (e){ 
@@ -68,8 +66,6 @@ setInterval(function(){
 				var result=JSON.parse(data).access_token;
 				saveResult(result);
 			});
-		});
-		http.get("http://web.iamxuyuan.com/weixin/flashjsapi?jackhellofucksfjsgjlrjlfjld=dfjdlfjdljfdl",(res)=>{
 		});
 		console.log("ok");
     }

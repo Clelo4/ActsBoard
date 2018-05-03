@@ -6,6 +6,7 @@ use app\admin\controller\WeixinApiCommon;
 use think\facade\Request;
 use think\Db;
 use think\Exception;
+use think\Validate;
 
 class Getjsapi extends WeixinApiCommon{
 
@@ -17,10 +18,29 @@ class Getjsapi extends WeixinApiCommon{
         if (!$this->request->isGet()){
             return ;
         }
+        
+        //---------------------------------------------------
+        date_default_timezone_set('PRC');
         $param = $this->param;
-        if (!isset($param['jackhellofucksfjsgjlrjlfjld']) || $param['jackhellofucksfjsgjlrjlfjld'] != 'dfjdlfjdljfdl'){
-            return ;
+        $validate = Validate::make(['noncestr'=>'require|length:20','timestamp' => 'require','signature' => 'require']);
+        if(!$validate->check($param)){
+            return resultArray(['error' => '禁止访问']);
         }
+        $noncestr = $param['noncestr'];
+        $timestamp = $param['timestamp'];
+        $signature = $param['signature'];
+        $nowTimeStamp = strtotime('now');
+        if(($nowTimeStamp-60) > $param['timestamp'] || $param['timestamp'] > ($nowTimeStamp+60) ){ // signature时间限制
+            return resultArray( ['error' => '禁止访问']);
+        }
+        $string1 = $param['timestamp'].'passcode=d2wenvldj45fhgjJVlfglfstfgdjjslys2gjf7979jlf&timestamp='.$param['noncestr'];
+        $newsignature = sha1($string1);
+        if($signature != $newsignature){ // 判断签名的正确性
+            return resultArray( ['error' => '禁止访问']);
+        }
+        // -----------------------------------------------------
+
+
         try{
             $ACCESS_TOKEN = get_access_token();
             $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$ACCESS_TOKEN.'&type=jsapi';

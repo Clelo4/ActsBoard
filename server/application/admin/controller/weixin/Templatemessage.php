@@ -1,25 +1,27 @@
 <?php
 namespace app\admin\controller\weixin;
-use app\admin\controller\AdminApiCommon;
+// use app\admin\controller\AdminApiCommon;
+use app\admin\controller\ApiCommon;
 use think\facade\Request;
 use app\admin\validate\TemplateMsgIndustry as TemplateMsgIndustryValidate;
 use app\admin\validate\SendTemplateMsg as SendTemplateMsgValidate;
 use think\Template;
 use think\Exception;
 use think\Db;
+use think\Validate;
 
 /**
  * 微信模板消息接口
  * @author jack <chengjunjie.jack@outlook.com>
  */
-class TemplateMessage extends AdminApiCommon
+class TemplateMessage extends ApiCommon
 {
     /**
      * 设置所属的行业
      * @author jack <chengjunjie.jack@outlook.com>
      * @return json
      */
-    public function setIndustry(){
+    private function setIndustry(){
         // 若不为post请求，直接返回，防止OPTION的空数据请求
         if ($this->request->isPost()){
             return ;
@@ -68,7 +70,7 @@ class TemplateMessage extends AdminApiCommon
      * @author jack <chengjunjie.jack@outlook.com>
      * @return json
      */
-    public function getIndustry(){
+    private function getIndustry(){
         // 若不为get请求，直接返回      
         if (!$this->request->isGet()){
             return ;
@@ -153,20 +155,35 @@ class TemplateMessage extends AdminApiCommon
      * @return void
      */
     public function SendAllTemplateMessage(){
-        // 不是post请求
-        if (!$this->request->isPost()){
-            return;
+        // // 不是post请求
+        // if (!$this->request->isPost()){
+        //     return;
+        // }
+        $intervalTime = 86400; // 间隔时间（默认天)
+        date_default_timezone_set('PRC');
+        $param = $this->param;
+        $validate = Validate::make(['noncestr'=>'require|length:20','timestamp' => 'require','signature' => 'require']);
+        if(!$validate->check($param)){
+            return resultArray(['error' => '禁止访问']);
         }
-        if (!Request::has('passcode') || Request::post()['passcode']!='djfldj4flgjJVlfglfjjsljf7979jlf'){
+        $noncestr = $param['noncestr'];
+        $timestamp = $param['timestamp'];
+        $signature = $param['signature'];
+        $nowTimeStamp = strtotime('now');
+        if(($nowTimeStamp-60) > $param['timestamp'] || $param['timestamp'] > ($nowTimeStamp+60) ){ // signature时间限制
             return resultArray( ['error' => '禁止访问']);
         }
-        // $intervalTime = 86400; // 间隔时间（默认天)
-        $intervalTime = 600; // 间隔时间（默认天)
+        $string1 = $param['timestamp'].'passcode=d2wenvldj45fhgjJVlfglfstfgdjjslys2gjf7979jlf&timestamp='.$param['noncestr'];
+        $newsignature = sha1($string1);
+        if($signature != $newsignature){ // 判断签名的正确性
+            return resultArray( ['error' => '禁止访问']);
+        }
+        // -----------------------------------------------------
         $all_user_push_rule=Db::name('user_push_rule')->select();
-        $current_time = strtotime(date('Y-m-d'));
+        $current_time = strtotime('now');
         for($i=0;$i!=count($all_user_push_rule);++$i){
             $openid = $all_user_push_rule[$i]['openid'];
-            $last_push_time = strtotime(date('Y-m-d',strtotime($all_user_push_rule[$i]['last_push_time'])));
+            $last_push_time = strtotime(date('Y-m-d H:m:s',strtotime($all_user_push_rule[$i]['last_push_time'])));
             $type = $all_user_push_rule[$i]['type'];
             $shcool = $all_user_push_rule[$i]['school'];
             $subscribe = $all_user_push_rule[$i]['subscribe'] || 0;
@@ -180,7 +197,7 @@ class TemplateMessage extends AdminApiCommon
                         $updateTimeResult;
                         $tryTimes=0;
                         do{
-                            $updateTimeResult=Db::name('user_push_rule')->where('openid',$openid)->update(['last_push_time'=>date('Y-m-d H:m:s')]);
+                            $updateTimeResult=Db::name('user_push_rule')->where('openid',$openid)->update(['last_push_time'=>date('Y-m-d H:i:s',strtotime('now'))]);
                             if ($updateTimeResult){
                                 break;
                             }
@@ -195,9 +212,7 @@ class TemplateMessage extends AdminApiCommon
                 }
             }
         }
-
         return resultArray(['data'=> 'success']);
-        
     }
 
 
