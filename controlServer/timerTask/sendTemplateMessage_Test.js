@@ -1,4 +1,4 @@
-var config=require('../config').wechat_test;  // 配置文件
+var config=require('../serverConfig').wechat_test;  // 配置文件
 var crypto = require('crypto');
 const https=require("https");
 const http = require('http');
