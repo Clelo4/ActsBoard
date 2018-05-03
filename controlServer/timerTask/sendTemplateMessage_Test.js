@@ -35,7 +35,7 @@ function getSignature(){
 function sendTemplateMessage(){
 	var nowTime = new Date();
 	var nowTimeStamp = Date.parse(new Date(nowTime));
-	var PushTime = nowTime.toLocaleDateString()+" 22:00:00";
+	var PushTime = nowTime.toLocaleDateString()+" 21:30:00";
 	var PushTimeStamp = Date.parse(new Date(PushTime));
 	if(PushTimeStamp > nowTimeStamp){
 		console.log("The PushTime is ",PushTimeStamp);
