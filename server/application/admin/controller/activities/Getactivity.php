@@ -38,7 +38,9 @@ class GetActivity extends ApiCommon{
                 13=>"企业宣讲",
                 14=>"其他"];
                 for($i = 0;$i != count($act_tag);$i++){
-                    $act_tag[$i] = $number_to_tag[$act_tag[$i]]; // tag从int转为string
+                    if($act_tag[$i] != 0){
+                        $act_tag[$i] = $number_to_tag[$act_tag[$i]]; // tag从int转为string
+                    }
                 }
                 $act_data['taglist']=$act_tag;
                 $result0['data']=$act_data;
