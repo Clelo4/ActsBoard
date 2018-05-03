@@ -22,9 +22,6 @@ class PublishRule extends WeixinApiCommon{
         if (!$this->request->isPost()){
             return ;
         }
-        // school:学校(必选)
-        // frequency:频率(必选)
-        // tag:兴趣标签(可选) 只有三个
         $result0;
         $param = $this->param;
         $validate = Validate::make(['school'=>'require','frequency'=>'require|number','taglist'=>'array']);

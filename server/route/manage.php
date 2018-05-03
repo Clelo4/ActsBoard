@@ -27,7 +27,7 @@ Route::any('manage/activities/change','admin/activities.ChangeActivity/changeAct
 Route::any('manage/activities/deleteact','admin/activities.DeleteActivity/deleteAct');
 
 // 清除微信客户端的cookie
-Route::any('manage/deletecookie','admin/manage.Cookie/deleteCookie');
+Route::any('manage/weixin/deletecookie','admin/manage.Cookie/deleteCookie');
 
 // 获取用于cos的签名
 Route::post('cos/auth','admin/cos.Auth/getAuthorization');

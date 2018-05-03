@@ -1,5 +1,6 @@
 <?php
 /**
+ * 用户推送规则基础类
  * author: jack
  */
 namespace app\admin\model\user;
@@ -71,7 +72,7 @@ class UserPushRule extends Common{
         "讲座"=>12,
         "企业宣讲"=>13,
         "其他"=>14];
-        $data=['openid'=>$openid,'school'=>$school,'frequency'=>$frequency]; 
+        $data=['openid'=>$openid,'subscribe' => 1,'school'=>$school,'frequency'=>$frequency]; 
         for($i = 0;$i!=count($taglist);$i++){
             if($i==15){
                 break;

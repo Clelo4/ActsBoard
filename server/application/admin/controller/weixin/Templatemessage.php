@@ -160,6 +160,8 @@ class TemplateMessage extends AdminApiCommon
         if (!Request::has('passcode') || Request::post()['passcode']!='djfldj4flgjJVlfglfjjsljf7979jlf'){
             return resultArray( ['error' => '禁止访问']);
         }
+        // $intervalTime = 86400; // 间隔时间（默认天)
+        $intervalTime = 600; // 间隔时间（默认天)
         $all_user_push_rule=Db::name('user_push_rule')->select();
         $current_time = strtotime(date('Y-m-d'));
         for($i=0;$i!=count($all_user_push_rule);++$i){
@@ -167,8 +169,9 @@ class TemplateMessage extends AdminApiCommon
             $last_push_time = strtotime(date('Y-m-d',strtotime($all_user_push_rule[$i]['last_push_time'])));
             $type = $all_user_push_rule[$i]['type'];
             $shcool = $all_user_push_rule[$i]['school'];
+            $subscribe = $all_user_push_rule[$i]['subscribe'] || 0;
             $frequency = $all_user_push_rule[$i]['frequency'];
-            if( ($last_push_time < $current_time) && (($current_time - $last_push_time)/86400) >= $frequency ){
+            if( ($last_push_time < $current_time) && (($current_time - $last_push_time)/$intervalTime) >= $frequency && $subscribe ){
                 try{
                     $result=json_decode($this->SendTemplateMsg($openid,'_50YE4focEvF15sc19UGLztBXvI2OYMDyB6dLLAETOM',[],'http://web.actsboard.com'));
                     if($result->errcode==0){

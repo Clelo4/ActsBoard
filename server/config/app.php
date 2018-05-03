@@ -136,7 +136,9 @@ return [
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
-    'appid'=>'wxb569d7a3f448c503',
-    'secret'=>'29938d5779d3dd83b9dab916f6e469d4',
+    //'appid'=>'wx0334505f02be5764',
+    //'secret'=>'82261fa06554ec1ced099ff075a8bbc7',
+    'appid' => 'wxb569d7a3f448c503',
+    'secret' => '29938d5779d3dd83b9dab916f6e469d4',
     'Token'=>'tokenhera',
 ];
