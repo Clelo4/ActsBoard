@@ -47,8 +47,7 @@ class Getjsapi extends WeixinApiCommon{
             $result = json_decode(get_https($url));
             if (isset($result->errcode) && $result->errcode== 0){
                 $jsapi_ticket = $result->ticket;
-                $data = date('Y-m-d H:m:s');
-                $result = Db::name('jsapi_ticket')->where('type',2)->update(['jsapi_ticket' => $jsapi_ticket,'create_time' => $data]);
+                $result = Db::name('jsapi_ticket')->where('type',2)->update(['jsapi_ticket' => $jsapi_ticket,'create_time' =>date('Y-m-d H:i:s',strtotime('now'))]);
                 return 1;
             }
         } catch(Exception $e){
