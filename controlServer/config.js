@@ -1,0 +1,12 @@
+module.exports={
+	wechat:{
+		appid:"wx0334505f02be5764",
+		appsecret:"82261fa06554ec1ced099ff075a8bbc7",
+		token:"tokenhera"
+	},
+    wechat_test:{
+        appid:"wxb569d7a3f448c503",
+        appsecret:"29938d5779d3dd83b9dab916f6e469d4",
+        token:"tokenhera"
+    }
+};
