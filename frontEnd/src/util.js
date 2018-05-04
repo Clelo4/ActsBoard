@@ -4,7 +4,7 @@ import wx from 'weixin-js-sdk'
 // import wx from 'weixin-js-sdk'
 export default {
   getCode: (state,callback) => {
-    const AppId = 'wxb569d7a3f448c503';
+    const AppId = 'wx0334505f02be5764';
     // console.log(this.a);
     // const code = getUrlParam("code"); //这个getUrlParam需要自己实现
     let code;
@@ -67,7 +67,7 @@ export default {
     console.log(if_follow);
     if (if_follow != "1") {
       alert('进入到check_if_folloow')
-      const AppId = 'wxb569d7a3f448c503';
+      const AppId = 'wx0334505f02be5764';
       // console.log(this.a);
       // const code = getUrlParam("code"); //这个getUrlParam需要自己实现
       let code, subscribe;
@@ -134,7 +134,7 @@ export default {
         t_signature = response.data.data.signature;
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wxb569d7a3f448c503', // 必填，公众号的唯一标识
+          appId: 'wx0334505f02be5764', // 必填，公众号的唯一标识
           timestamp: t_timestamp, // 必填，生成签名的时间戳
           nonceStr: t_nonceStr, // 必填，生成签名的随机串
           signature: t_signature, // 必填，签名\
