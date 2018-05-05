@@ -8,7 +8,9 @@ import wx from 'weixin-js-sdk'
 import api from './api'
 import axios from 'axios'
 import util from './util'
+import ba from 'vue-ba'
 
+Vue.use(ba,'855be4e76fc64b860c8a0350f429d070');
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
