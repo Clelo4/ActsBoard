@@ -62,4 +62,6 @@ class PublishRule extends WeixinApiCommon{
         }
         return resultArray(['data'=>$result]);
      }
+
+
  }

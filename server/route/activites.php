@@ -8,7 +8,5 @@ Route::get('activities/getinfo','admin/activities.GetActivity/getActById');
 Route::any('activities/getacts','admin/activities.GetActivity/getActs');
 // 活动有效活动的总数
 Route::get('activities/getallnum','admin/activities.FindAll/getAllNum');
-
 // 获取用户活动推荐列表
 Route::get('activities/getrecommendacts','admin/activities.GetActivity/getActsByRecommend');
-// Route::get('');

@@ -201,6 +201,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.
         console.log('分享朋友圈成功')
       },
       cancel: function () {
@@ -212,7 +213,7 @@ export default {
     //分享给微信好友
     wx.onMenuShareAppMessage({
       title: 'Acts-Board,你的专属活动管家', // 分享标题
-      desc: '华工最大的同性交友平台', // 分享描述
+      desc: '华工最大的校园活动信息提供平台', // 分享描述
       link: 'http://web.iamxuyuan.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       //type: '', // 分享类型,music、video或link，不填默认为link
@@ -231,7 +232,7 @@ export default {
     //分享到QQ
     wx.onMenuShareQQ({
       title: 'Acts-Board,你的专属活动管家', // 分享标题
-      desc: '华工最大的同性交友平台', // 分享描述
+      desc: '华工最大的校园活动信息提供平台', // 分享描述
       link: 'http://web.iamxuyuan.com', // 分享链接
       imgUrl: '', // 分享图标
       success: function () {
@@ -246,7 +247,7 @@ export default {
     //分享到QQ空间
     wx.onMenuShareQZone({
       title: 'Acts-Board,你的专属活动管家', // 分享标题
-      desc: '华工最大的同性交友平台', // 分享描述
+      desc: '华工最大的校园活动信息提供平台', // 分享描述
       link: 'http://web.iamxuyuan.com', // 分享链接
       imgUrl: '', // 分享图标
       success: function () {
@@ -260,7 +261,7 @@ export default {
     // 分享到腾讯微博
     wx.onMenuShareWeibo({
       title: 'Acts-Board,你的专属活动管家', // 分享标题
-      desc: '华工最大的同性交友平台', // 分享描述
+      desc: '华工最大的校园活动信息提供平台', // 分享描述
       link: 'http://web.iamxuyuan.com', // 分享链接
       imgUrl: '', // 分享图标
       success: function () {
@@ -284,6 +285,11 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/',{type:'moments'}).then(
+          (response)=>{}
+        ).catch(
+          (error)=>{}
+        );
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -300,6 +306,11 @@ export default {
       //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/',{type:'wechatFriend'}).then(
+          (response)=>{}
+        ).catch(
+          (error)=>{}
+        );
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -315,6 +326,11 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/',{type:'QQ'}).then(
+          (response)=>{}
+        ).catch(
+          (error)=>{}
+        );
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -330,6 +346,11 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/',{type:'Qzone'}).then(
+          (response)=>{}
+        ).catch(
+          (error)=>{}
+        );
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -344,6 +365,11 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/',{type:'Tencent WBlog'}).then(
+          (response)=>{}
+        ).catch(
+          (error)=>{}
+        );
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
