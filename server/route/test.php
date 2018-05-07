@@ -1,6 +1,8 @@
 <?php
-// activities
+/**
+ * 测试模块
+ */
 use think\facade\Route;
 
-Route::get('test','admin/weixin.GetJsApi/getJsApi');
-
+// 临时测试接口
+Route::get('test','');
