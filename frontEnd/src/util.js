@@ -19,6 +19,11 @@ export default {
     console.log('code=' + code);
     let if_open_id = document.cookie.indexOf("openid");
     console.log('此时的openid的位置是' + if_open_id);
+    axios.post('http://web.iamxuyuan.com/manage/statistics/login',{}).then((response)=>{
+              console.log('记录登录信息成功');
+            }).catch((error)=>{
+              console.log('记录登录信息失败')
+            });
     // alert('code!' + code);
     if (if_open_id < 0) {
       // alert('没有open_id')
@@ -201,11 +206,12 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
-        axios.
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
         console.log('分享朋友圈成功')
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
         console.log('取消分享')
       }
     });
@@ -220,6 +226,7 @@ export default {
       //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
         console.log('分享给微信好友成功')
       },
       cancel: function () {
@@ -237,6 +244,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -252,6 +260,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -266,6 +275,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -285,11 +295,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
-        axios.post('http://web.iamxuyuan.com/',{type:'moments'}).then(
-          (response)=>{}
-        ).catch(
-          (error)=>{}
-        );
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -306,11 +312,7 @@ export default {
       //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
       success: function () {
         // 用户确认分享后执行的回调函数
-        axios.post('http://web.iamxuyuan.com/',{type:'wechatFriend'}).then(
-          (response)=>{}
-        ).catch(
-          (error)=>{}
-        );
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -326,11 +328,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
-        axios.post('http://web.iamxuyuan.com/',{type:'QQ'}).then(
-          (response)=>{}
-        ).catch(
-          (error)=>{}
-        );
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -346,11 +344,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
-        axios.post('http://web.iamxuyuan.com/',{type:'Qzone'}).then(
-          (response)=>{}
-        ).catch(
-          (error)=>{}
-        );
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数
@@ -365,11 +359,7 @@ export default {
       imgUrl: '', // 分享图标
       success: function () {
         // 用户确认分享后执行的回调函数
-        axios.post('http://web.iamxuyuan.com/',{type:'Tencent WBlog'}).then(
-          (response)=>{}
-        ).catch(
-          (error)=>{}
-        );
+        axios.post('http://web.iamxuyuan.com/manage/statistics/share').then().catch();
       },
       cancel: function () {
         // 用户取消分享后执行的回调函数

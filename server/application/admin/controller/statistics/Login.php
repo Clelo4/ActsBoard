@@ -12,18 +12,11 @@ class Login extends AdminApiCommon{
         if(!$this->request->isPost()){
             return ;
         }
-        $param = $this->param;
-        // 验证器
-        $validate = Validate::make(['type' => 'require']);
-        if(!$validate->check($param)){
-            return resultArray(['error' => $validate->getError()]);
-        }
-        //
-        $type = $param['type'];
         $openid = cookie('openid');
-        $loginInfoModel = model('');
+        $loginInfoModel = model('statistics.Login');
         try{
             $result = $loginInfoModel->setUserLoginInfo($openid);
+            $loginInfoModel->userLoginTimesEachHour($openid);
         } catch(Exception $e){
 
         }

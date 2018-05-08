@@ -16,17 +16,10 @@ class Share extends AdminApiCommon{
             return ;
         }
         $param = $this->param;
-        // 验证器
-        $validate = Validate::make(['type' => 'require']);
-        if(!$validate->check($param)){
-            return resultArray(['error' => $validate->getError()]);
-        }
-        //
-        $type = $param['type'];
         $openid = cookie('openid');
-        $shareInfoModel = model('');
+        $shareInfoModel = model('statistics.Share');
         try{
-            $result = $shareInfoModel->setUserShareInfo($openid,$type);
+            $result = $shareInfoModel->setUserShareInfo($openid);
         } catch(Exception $e){
 
         }

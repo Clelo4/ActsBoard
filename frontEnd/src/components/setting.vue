@@ -117,7 +117,7 @@ export default {
           if (response.data.data.frequency == 7) {
             console.log("此时此刻的_this.frequency[0]" + _this.frequency[0]);
             console.log("是设置成每周一次");
-            _this.frequency[0] = ["每周一次"];
+            _this.frequency = ["每周一次"];
           }
           _this.type = response.data.data.taglist;
           util.wx_common_share();

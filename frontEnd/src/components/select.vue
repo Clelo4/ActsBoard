@@ -29,6 +29,7 @@
 <script>
 import { Selector, Group, PopupPicker, Picker } from "vux";
 import { Flexbox, FlexboxItem } from "vux";
+// import ba from 'vue-ba';
 
 export default {
   components: {
@@ -63,13 +64,25 @@ export default {
     onChange() {
       // todo
       console.log("select 组件提交")
+      _hmt.push(['_trackEvent', 'nav', 'click', '测试']);
+      console.log(this.$ba);
      // console.log(this.value_type[0])
-      if (this.value_time[0] == "所有")
+      if (this.value_time[0] == "所有"){
         this.$emit("select", 0, this.value_type[0]);
-      if (this.value_time[0] == "未来三天")
+        this.$ba.trackEvent('nav','click','所有');
+        console.log('未来一天');
+      }
+      if (this.value_time[0] == "未来三天"){
+        this.$ba.trackEvent('nav','click','未来三天');
+        console.log('未来三天');
         this.$emit("select", 3, this.value_type[0]);
-      if (this.value_time[0] == "未来七天")
-        this.$emit("select", 7, this.value_type[0]);
+      }
+      if (this.value_time[0] == "未来七天"){
+         this.$ba.trackEvent('nav','click','未来七天');
+         this.$emit("select", 7, this.value_type[0]);
+         console.log('未来七天');
+      }
+       
     }
   }
 };

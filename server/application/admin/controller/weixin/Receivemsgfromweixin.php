@@ -143,7 +143,7 @@ class ReceiveMsgFromWeixin extends Common{
         // Tag: 目前不对用户发送的信息进行分析处理，只统一返回相同的数据
         $ToUserName = $data->FromUserName->__toString();
         $FromUserName = $data->ToUserName->__tostring();
-        $content = "你好，欢迎使用 ActsBoard\n\n本服务号将推送专属于您的校园活动信息\n\n<a href='http://web.iamxuyuan.com/#/setting'>请先点击此处完成偏好设置</a>\n\n*该版本为内测试用版本，仅供调试与参评";
+        $content = "你好，欢迎使用 ActsBoard\n\n本服务号将推送专属于您的校园活动信息\n\n<a href='http://web.iamxuyuan.com/user/setting'>请先点击此处完成偏好设置</a>\n\n*该版本为内测试用版本，仅供调试与参评";
         $CreateTime = intval(time());
         return "<xml><ToUserName><![CDATA[".$ToUserName."]]></ToUserName><FromUserName><![CDATA[".$FromUserName."]]></FromUserName><CreateTime>".$CreateTime."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$content."]]></Content></xml>";
     }

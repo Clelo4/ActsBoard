@@ -6,6 +6,7 @@ import ManageMain from '@/pages/Manage/ManageMain'
 import ManageAddActivities from '@/pages/Activities/ManageAddActivities'
 import ManageShowActs from '@/pages/Activities/ManageShowActs'
 import ManageShowActInfo from '@/pages/Activities/ManageShowActInfo'
+import ManageStatistics from '@/components/Excel/excel'
 import Home from '@/pages/Home/Home'
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ export default new Router({
       path: '/manage/getactInfo',
       name: 'ManageShowActInfo',
       component: ManageShowActInfo
+    },
+    {
+      path: '/manage/statisticsdata',
+      name: 'ManageStatistics',
+      component: ManageStatistics
     }
 
   ]
